@@ -20,12 +20,12 @@ public class ClientController {
     private final ClientService clientService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<Client> getClientById(@PathVariable @Min(0) Long id) {
+    public ResponseEntity<ClientDTO> getClientById(@PathVariable @Min(1) Long id) {
         return new ResponseEntity<>(clientService.getById(id), HttpStatus.OK);
     }
 
     @GetMapping
-    public ResponseEntity<List<Client>> getFilteredClients(@RequestParam(required = false) String email, @RequestParam(required = false) String name) {
+    public ResponseEntity<List<ClientDTO>> getFilteredClients(@RequestParam(required = false) String email, @RequestParam(required = false) String name) {
         if (email == null && name == null) {
             return new ResponseEntity<>(clientService.getAll(), HttpStatus.OK);
         }
@@ -36,7 +36,18 @@ public class ClientController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity<Client> createClient(@Valid @RequestBody ClientDTO clientDTO) {
+    public ResponseEntity<ClientDTO> createClient(@Valid @RequestBody ClientDTO clientDTO) {
         return new ResponseEntity<>(clientService.create(clientDTO), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<ClientDTO> updateClient(@PathVariable @Min(1) Long id, @Valid @RequestBody ClientDTO clientDTO) {
+        return new ResponseEntity<>(clientService.updateInfo(id, clientDTO), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/remove/{id}")
+    public ResponseEntity<String> deleteClient(@PathVariable @Min(1) Long id) {
+        clientService.removeById(id);
+        return new ResponseEntity<>("Client deleted", HttpStatus.NO_CONTENT);
     }
 }
