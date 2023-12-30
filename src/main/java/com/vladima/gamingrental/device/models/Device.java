@@ -24,5 +24,6 @@ public class Device {
     private boolean deviceIsAvailable = true;
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "device_base_id")
     private DeviceBase deviceBase;
 }

@@ -3,7 +3,7 @@ package com.vladima.gamingrental.device.dto;
 
 import com.vladima.gamingrental.device.models.DeviceBase;
 import com.vladima.gamingrental.helpers.BaseDTO;
-import com.vladima.gamingrental.helpers.validators.DateValidator;
+import com.vladima.gamingrental.helpers.validators.ValidateYear;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -25,7 +25,7 @@ public class DeviceBaseDTO implements BaseDTO<DeviceBase> {
     @Size(min = 2, message = "The name of the manufacturer must be longer")
     private String deviceBaseProducer;
 
-    @DateValidator
+    @ValidateYear
     private int deviceBaseYearOfRelease;
 
     @Override
@@ -33,4 +33,7 @@ public class DeviceBaseDTO implements BaseDTO<DeviceBase> {
         return new DeviceBase(deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease);
     }
 
+    public DeviceBaseExtrasDTO toExtended() {
+        return new DeviceBaseExtrasDTO(deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease);
+    }
 }

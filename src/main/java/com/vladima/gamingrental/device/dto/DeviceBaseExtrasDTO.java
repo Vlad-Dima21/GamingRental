@@ -20,4 +20,8 @@ public class DeviceBaseExtrasDTO extends DeviceBaseDTO{
 
     public DeviceBaseExtrasDTO() {
     }
+
+    public DeviceBaseExtrasDTO(@NotBlank(message = "Device must have a name") @Size(min = 2, message = "Device name must be longer") String deviceBaseName, @NotBlank @Size(min = 2, message = "The name of the manufacturer must be longer") String deviceBaseProducer, int deviceBaseYearOfRelease) {
+        super(deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease);
+    }
 }

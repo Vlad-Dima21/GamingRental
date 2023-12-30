@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/device")
+@RequestMapping("/api/devices")
 @RequiredArgsConstructor
 public class DeviceBaseController {
 
@@ -36,7 +36,7 @@ public class DeviceBaseController {
 
     @PostMapping("/create")
     public ResponseEntity<DeviceBaseDTO> createDevice(@Valid @RequestBody DeviceBaseDTO deviceBaseDTO) {
-        return new ResponseEntity<>(deviceBaseService.create((DeviceBaseExtrasDTO) deviceBaseDTO), HttpStatus.OK);
+        return new ResponseEntity<>(deviceBaseService.create(deviceBaseDTO.toExtended()), HttpStatus.OK);
     }
 
     @DeleteMapping("/remove/{id}")
