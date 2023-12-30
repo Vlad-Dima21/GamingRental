@@ -20,8 +20,8 @@ public class Device {
     @Column(nullable = false)
     private int deviceNumberOfControllers;
 
-    @Column(nullable = false)
-    private boolean deviceIsAvailable = true;
+    @Column(nullable = false, name = "device_is_available")
+    private boolean deviceAvailable = true;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "device_base_id")

@@ -30,8 +30,7 @@ public class DeviceBase implements BaseModel<DeviceBaseExtrasDTO> {
 
     private int deviceBaseYearOfRelease;
 
-    @OneToMany
-    @JoinColumn(name = "device_base_id")
+    @OneToMany(mappedBy = "deviceBase")
     private List<Device> devices;
 
     public DeviceBase(String deviceBaseName, String deviceBaseProducer, int deviceBaseYearOfRelease) {
@@ -42,6 +41,10 @@ public class DeviceBase implements BaseModel<DeviceBaseExtrasDTO> {
 
     @Override
     public DeviceBaseExtrasDTO toDTO() {
-        return new DeviceBaseExtrasDTO(deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease, devices != null ? devices.size() : 0);
+        int availableUnits = 0;
+        if (devices != null) {
+            availableUnits = (int) devices.stream().filter(Device::isDeviceAvailable).count();
+        }
+        return new DeviceBaseExtrasDTO(deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease, availableUnits);
     }
 }
