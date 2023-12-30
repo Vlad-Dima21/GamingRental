@@ -30,6 +30,11 @@ public class DeviceBaseServiceImpl extends BaseServiceImpl<DeviceBase, DeviceBas
     }
 
     @Override
+    public DeviceBase getByExactName(String name) {
+        return getRepository().findByDeviceBaseName(name);
+    }
+
+    @Override
     public List<DeviceBaseExtrasDTO> getByProducer(String producer) {
         return getRepository().findByDeviceBaseProducer(producer)
                 .stream()

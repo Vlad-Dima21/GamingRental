@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface DeviceBaseService extends BaseService<DeviceBase, DeviceBaseExtrasDTO> {
     List<DeviceBaseExtrasDTO> getByName(String name);
+    DeviceBase getByExactName(String name);
     List<DeviceBaseExtrasDTO> getByProducer(String producer);
     List<DeviceBaseExtrasDTO> getByYear(int year);
     List<DeviceBaseExtrasDTO> getFiltered(String name, String producer, Integer year, boolean ifAvailable);

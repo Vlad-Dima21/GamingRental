@@ -1,5 +1,8 @@
 package com.vladima.gamingrental.device.models;
 
+import com.vladima.gamingrental.device.dto.DeviceDTO;
+import com.vladima.gamingrental.device.dto.DeviceExtrasDTO;
+import com.vladima.gamingrental.helpers.BaseModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,7 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table
-public class Device {
+public class Device implements BaseModel<DeviceExtrasDTO> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deviceId;
@@ -26,4 +29,20 @@ public class Device {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "device_base_id")
     private DeviceBase deviceBase;
+
+    public Device(int deviceNumberOfControllers, boolean deviceAvailable) {
+        this.deviceNumberOfControllers = deviceNumberOfControllers;
+        this.deviceAvailable = deviceAvailable;
+    }
+
+    public Device(int deviceNumberOfControllers, boolean deviceAvailable, DeviceBase deviceBase) {
+        this.deviceNumberOfControllers = deviceNumberOfControllers;
+        this.deviceAvailable = deviceAvailable;
+        this.deviceBase = deviceBase;
+    }
+
+    @Override
+    public DeviceExtrasDTO toDTO() {
+        return new DeviceExtrasDTO(deviceNumberOfControllers, deviceAvailable, deviceBase.getDeviceBaseName());
+    }
 }
