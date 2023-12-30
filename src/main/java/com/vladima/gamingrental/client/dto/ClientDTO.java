@@ -10,7 +10,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.NumberFormat;
 
 @EqualsAndHashCode
 @AllArgsConstructor
@@ -33,4 +32,5 @@ public class ClientDTO implements BaseDTO<Client> {
     public Client toModel() {
         return new Client(clientName, clientEmail, clientPhone);
     }
+
 }

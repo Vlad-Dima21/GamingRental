@@ -4,8 +4,9 @@ import com.vladima.gamingrental.client.dto.ClientDTO;
 import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.client.repositories.ClientRepository;
 import com.vladima.gamingrental.client.services.ClientService;
+import com.vladima.gamingrental.helpers.BaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
-import lombok.RequiredArgsConstructor;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -13,37 +14,15 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class ClientServiceImpl implements ClientService {
+public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, ClientRepository> implements ClientService {
 
-    private final ClientRepository repository;
-
-    @Override
-    public List<ClientDTO> getAll() {
-        return repository.findAll()
-                .stream()
-                .map(Client::toDTO)
-                .toList();
-    }
-
-    public Client getOriginalById(Long id) {
-        return repository.findById(id).orElseThrow(() ->
-            new EntityOperationException(
-                    "Client not found",
-                    MessageFormat.format("Error fetching client with id {0}", id),
-                    HttpStatus.NOT_FOUND
-            )
-        );
-    }
-
-    @Override
-    public ClientDTO getById(Long id) {
-        return getOriginalById(id).toDTO();
+    public ClientServiceImpl(ClientRepository repository) {
+        super(repository);
     }
 
     @Override
     public ClientDTO getByEmail(String email) {
-        Client client = repository.findByClientEmail(email);
+        Client client = getRepository().findByClientEmail(email);
         if (client == null) {
             throw new EntityOperationException(
                 "Client not found",
@@ -56,7 +35,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public List<ClientDTO> getByName(String name) {
-        return repository.findByClientNameContaining(name)
+        return getRepository().findByClientNameContaining(name)
                 .stream()
                 .map(Client::toDTO)
                 .toList();
@@ -64,7 +43,7 @@ public class ClientServiceImpl implements ClientService {
 
     @Override
     public ClientDTO create(ClientDTO clientDTO) {
-        var existingClient = repository.findByClientEmail(clientDTO.getClientEmail());
+        var existingClient = getRepository().findByClientEmail(clientDTO.getClientEmail());
         if (existingClient != null) {
             throw new EntityOperationException(
                 "Client not registered",
@@ -72,26 +51,21 @@ public class ClientServiceImpl implements ClientService {
                 HttpStatus.BAD_REQUEST
             );
         }
-        return repository.save(clientDTO.toModel()).toDTO();
+        return getRepository().save(clientDTO.toModel()).toDTO();
     }
 
     @Override
+    @Transactional
     public ClientDTO updateInfo(Long id, ClientDTO clientDTO) {
-        var client = getOriginalById(id);
+        var client = getModelById(id);
         client.setClientName(clientDTO.getClientName());
         client.setClientEmail(clientDTO.getClientEmail());
         client.setClientPhone(client.getClientPhone());
-        repository.save(client);
         return client.toDTO();
     }
 
     @Override
-    public void removeById(Long id) {
-        repository.findById(id).orElseThrow(() -> new EntityOperationException(
-                "Client does not exist",
-                MessageFormat.format("Client with id {0} does not exist", id),
-                HttpStatus.BAD_REQUEST
-        ));
-        repository.deleteById(id);
+    public String getLogName() {
+        return "Client";
     }
 }

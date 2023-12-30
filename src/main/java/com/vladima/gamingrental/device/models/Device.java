@@ -16,8 +16,13 @@ public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long deviceId;
+
+    @Column(nullable = false)
     private int deviceNumberOfControllers;
-    private boolean deviceIsAvailable;
+
+    @Column(nullable = false)
+    private boolean deviceIsAvailable = true;
+
     @ManyToOne(cascade = CascadeType.ALL)
     private DeviceBase deviceBase;
 }
