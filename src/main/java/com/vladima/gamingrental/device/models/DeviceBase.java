@@ -2,6 +2,7 @@ package com.vladima.gamingrental.device.models;
 
 import com.vladima.gamingrental.device.dto.DeviceBaseDTO;
 import com.vladima.gamingrental.device.dto.DeviceBaseExtrasDTO;
+import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.helpers.BaseModel;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -30,8 +31,11 @@ public class DeviceBase implements BaseModel<DeviceBaseExtrasDTO> {
 
     private int deviceBaseYearOfRelease;
 
-    @OneToMany(mappedBy = "deviceBase", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "deviceBase", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Device> devices;
+
+    @OneToMany(mappedBy = "gameDevice", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<GameCopy> deviceGameCopies;
 
     public DeviceBase(String deviceBaseName, String deviceBaseProducer, int deviceBaseYearOfRelease) {
         this.deviceBaseName = deviceBaseName;

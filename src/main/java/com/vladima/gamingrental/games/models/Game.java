@@ -28,7 +28,7 @@ public class Game implements BaseModel<GameDTO> {
     @Column(nullable = false)
     private String gameGenre;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameBase")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "gameBase", orphanRemoval = true)
     private List<GameCopy> gameCopies;
 
     public Game(String gameName, String gameGenre) {

@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface ClientService extends BaseService<Client, ClientDTO> {
     ClientDTO getByEmail(String email);
+    ClientDTO getByExactName(String name);
     List<ClientDTO> getByName(String name);
 }

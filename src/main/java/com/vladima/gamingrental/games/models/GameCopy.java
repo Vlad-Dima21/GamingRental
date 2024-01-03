@@ -26,9 +26,11 @@ public class GameCopy implements BaseModel<GameCopyDTO>{
     private boolean isAvailable = true;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "game_id")
     private Game gameBase;
 
     @ManyToOne
+    @JoinColumn(name = "device_base_id")
     private DeviceBase gameDevice;
 
     public GameCopy(Game gameBase, DeviceBase gameDevice, boolean isAvailable) {

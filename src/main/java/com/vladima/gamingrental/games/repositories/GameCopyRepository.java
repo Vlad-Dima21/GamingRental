@@ -14,4 +14,7 @@ public interface GameCopyRepository extends JpaRepository<GameCopy, Long> {
 
     @Query("SELECT gc FROM GameCopy gc JOIN Game g where g.gameId = :id")
     List<GameCopy> findByGameId(Long id);
+
+    @Query("SELECT gc FROM GameCopy gc WHERE gc.isAvailable AND gc.gameCopyId IN (:ids)")
+    List<GameCopy> findActiveByIds(List<Long> ids);
 }

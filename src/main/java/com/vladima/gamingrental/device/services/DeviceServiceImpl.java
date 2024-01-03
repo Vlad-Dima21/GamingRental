@@ -4,7 +4,9 @@ import com.vladima.gamingrental.device.dto.DeviceExtrasDTO;
 import com.vladima.gamingrental.device.models.Device;
 import com.vladima.gamingrental.device.repositories.DeviceRepository;
 import com.vladima.gamingrental.helpers.BaseServiceImpl;
+import com.vladima.gamingrental.helpers.EntityOperationException;
 import jakarta.transaction.Transactional;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,10 +32,10 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, DeviceExtrasDTO, 
     }
 
     @Override
-    public List<DeviceExtrasDTO> getByDeviceBaseName(String name, boolean available) {
+    public List<DeviceExtrasDTO> getByDeviceBaseName(String name, boolean availableOnly) {
         deviceBaseService.getByExactName(name);
         return getRepository().findByDeviceBaseName(name).stream()
-                .filter(d -> !available || d.isDeviceAvailable())
+                .filter(d -> !availableOnly || d.isDeviceAvailable())
                 .map(Device::toDTO).toList();
     }
 
@@ -43,6 +45,19 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, DeviceExtrasDTO, 
         var unit = getModelById(id);
         unit.setDeviceAvailable(isAvailable);
         return unit.toDTO();
+    }
+
+    @Override
+    public Device getModelById(Long id, boolean shouldBeActive) {
+        var device = getModelById(id);
+        if (!device.isDeviceAvailable()) {
+            throw new EntityOperationException(
+                "Unavailable unit",
+                "Please choose another device unit",
+                HttpStatus.BAD_REQUEST
+            );
+        }
+        return device;
     }
 
     @Override

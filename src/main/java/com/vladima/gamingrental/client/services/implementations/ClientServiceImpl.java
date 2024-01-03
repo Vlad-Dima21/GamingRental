@@ -34,6 +34,11 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, Client
     }
 
     @Override
+    public ClientDTO getByExactName(String name) {
+        return getRepository().findByClientEmail(name).toDTO();
+    }
+
+    @Override
     public List<ClientDTO> getByName(String name) {
         return getRepository().findByClientNameContaining(name)
                 .stream()
