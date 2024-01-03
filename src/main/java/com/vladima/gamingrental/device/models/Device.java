@@ -26,7 +26,7 @@ public class Device implements BaseModel<DeviceExtrasDTO> {
     @Column(nullable = false, name = "device_is_available")
     private boolean deviceAvailable = true;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "device_base_id")
     private DeviceBase deviceBase;
 

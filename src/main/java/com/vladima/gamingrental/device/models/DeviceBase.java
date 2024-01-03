@@ -30,7 +30,7 @@ public class DeviceBase implements BaseModel<DeviceBaseExtrasDTO> {
 
     private int deviceBaseYearOfRelease;
 
-    @OneToMany(mappedBy = "deviceBase")
+    @OneToMany(mappedBy = "deviceBase", cascade = CascadeType.ALL)
     private List<Device> devices;
 
     public DeviceBase(String deviceBaseName, String deviceBaseProducer, int deviceBaseYearOfRelease) {

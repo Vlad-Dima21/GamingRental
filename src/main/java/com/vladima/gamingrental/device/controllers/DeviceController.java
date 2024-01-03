@@ -5,7 +5,6 @@ import com.vladima.gamingrental.device.services.DeviceService;
 import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,7 +23,7 @@ public class DeviceController {
     }
 
     @GetMapping("/of")
-    public ResponseEntity<List<DeviceExtrasDTO>> getByDeviceBaseName(@RequestParam String name, @RequestParam(required = false) boolean available) {
-        return new ResponseEntity<>(deviceService.getByDeviceBaseName(name, available), HttpStatus.OK);
+    public ResponseEntity<List<DeviceExtrasDTO>> getByDeviceBaseName(@RequestParam String name, @RequestParam(required = false, defaultValue = "false") boolean availableOnly) {
+        return new ResponseEntity<>(deviceService.getByDeviceBaseName(name, availableOnly), HttpStatus.OK);
     }
 }
