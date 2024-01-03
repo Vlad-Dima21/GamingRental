@@ -30,9 +30,11 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, DeviceExtrasDTO, 
     }
 
     @Override
-    public List<DeviceExtrasDTO> getByDeviceBaseName(String name) {
+    public List<DeviceExtrasDTO> getByDeviceBaseName(String name, boolean available) {
         deviceBaseService.getByExactName(name);
-        return getRepository().findByDeviceBaseName(name).stream().map(Device::toDTO).toList();
+        return getRepository().findByDeviceBaseName(name).stream()
+                .filter(d -> available || d.isDeviceAvailable())
+                .map(Device::toDTO).toList();
     }
 
     @Override
