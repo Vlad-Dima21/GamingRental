@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,7 +55,7 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
         Device device = deviceService.getModelById(rentalRequestDTO.getDeviceUnitId(), true);
         List<GameCopy> gameCopies = new ArrayList<>();
 
-        gameCopies = gameCopyService.getAvailableModelsByIds(rentalRequestDTO.getGameCopiesId(), device.getDeviceBase().getDeviceBaseId());
+        gameCopies = gameCopyService.getAvailableCopiesForDeviceByIds(rentalRequestDTO.getGameCopiesId(), device.getDeviceBase().getDeviceBaseId());
         if (rentalRequestDTO.getGameCopiesId().size() != gameCopies.size()) {
             throw new EntityOperationException(
                 "Invalid game copies",
