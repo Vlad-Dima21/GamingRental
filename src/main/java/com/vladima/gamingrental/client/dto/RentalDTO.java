@@ -32,6 +32,7 @@ public class RentalDTO implements BaseDTO<Rental> {
     private ClientDTO rentalClient;
 
     @Valid
+    @NotNull
     private DeviceDTO rentalDevice;
 
     @Valid

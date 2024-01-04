@@ -4,6 +4,7 @@ import com.vladima.gamingrental.client.dto.RentalDTO;
 import com.vladima.gamingrental.client.dto.RentalRequestDTO;
 import com.vladima.gamingrental.client.services.RentalService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,5 +32,10 @@ public class RentalController {
     @PostMapping("/create")
     public ResponseEntity<RentalDTO> createRental(@Valid @RequestBody RentalRequestDTO rentalRequestDTO) {
         return new ResponseEntity<>(rentalService.createRequest(rentalRequestDTO), HttpStatus.CREATED);
+    }
+
+    @PatchMapping("/return/{id}")
+    public ResponseEntity<RentalDTO> returnRental(@PathVariable @Min(1) Long id) {
+        return new ResponseEntity<>(rentalService.rentalReturned(id), HttpStatus.OK);
     }
 }

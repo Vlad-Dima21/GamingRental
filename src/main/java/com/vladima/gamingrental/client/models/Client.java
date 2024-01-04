@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
@@ -36,6 +38,9 @@ public class Client implements BaseModel<ClientDTO> {
 
     @Column(unique = true, nullable = false)
     private String clientPhone;
+
+    @OneToMany(mappedBy = "rentalClient", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rental> clientRentals;
 
     public Client(String clientName, String clientEmail, String clientPhone) {
         this.clientName = clientName;

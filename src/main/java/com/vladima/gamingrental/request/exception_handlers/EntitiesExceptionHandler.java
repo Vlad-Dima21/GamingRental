@@ -17,8 +17,7 @@ public class EntitiesExceptionHandler {
     public ResponseEntity<Map<String, String>> operationException(EntityOperationException e) {
         Map<String, String> response = new HashMap<>();
         response.put("message", e.getMessage());
-        response.put("details", e.getExtraInfo());
-
+        if (!e.getExtraInfo().isBlank()) response.put("details", e.getExtraInfo());
         return new ResponseEntity<>(response, e.getStatus());
     }
 

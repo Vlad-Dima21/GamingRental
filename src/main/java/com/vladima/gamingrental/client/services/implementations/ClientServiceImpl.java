@@ -35,7 +35,15 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, Client
 
     @Override
     public ClientDTO getByExactName(String name) {
-        return getRepository().findByClientEmail(name).toDTO();
+        var client = getRepository().findByClientName(name);
+        if (client == null) {
+            throw new EntityOperationException(
+                "Client not found",
+                MessageFormat.format("No client with name {0}", name),
+                HttpStatus.BAD_REQUEST
+            );
+        }
+        return client.toDTO();
     }
 
     @Override

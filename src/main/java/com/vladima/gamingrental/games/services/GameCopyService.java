@@ -7,7 +7,7 @@ import com.vladima.gamingrental.helpers.BaseService;
 import java.util.List;
 
 public interface GameCopyService extends BaseService<GameCopy, GameCopyDTO> {
-    List<GameCopy> getAvailableModelsByIds(List<Long> ids);
+    List<GameCopy> getAvailableModelsByIds(List<Long> ids, Long deviceId);
 
     void updateCopyAvailibility(GameCopy gameCopy, boolean isActive);
 }

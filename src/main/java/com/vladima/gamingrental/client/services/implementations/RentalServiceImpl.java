@@ -12,10 +12,12 @@ import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.games.services.GameCopyService;
 import com.vladima.gamingrental.helpers.BaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
+import jakarta.transaction.Transactional;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +39,10 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
     @Override
     public List<RentalDTO> getRentals(String clientName, String deviceName, Boolean returned, boolean pastDue) {
         if (clientName != null) clientService.getByExactName(clientName);
-        if (deviceName != null && deviceService.getByDeviceBaseName(deviceName, false) == null) {
+        if (deviceName != null && deviceService.getByDeviceBaseName(deviceName, false).isEmpty()) {
             throw new EntityOperationException(
                 "Device not found",
-                MessageFormat.format("No such device as \"{0}\"", deviceName),
+                MessageFormat.format("No such device as {0}", deviceName),
                 HttpStatus.BAD_REQUEST
             );
         }
@@ -51,21 +53,14 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
 
     public RentalDTO createRequest(RentalRequestDTO rentalRequestDTO) {
         var client = clientService.getModelById(rentalRequestDTO.getClientId());
-        Device device = null;
+        Device device = deviceService.getModelById(rentalRequestDTO.getDeviceUnitId(), true);
         List<GameCopy> gameCopies = new ArrayList<>();
 
-        try {
-            device = deviceService.getModelById(rentalRequestDTO.getDeviceUnitId(), true);
-        } catch (EntityOperationException e) {
-            if (rentalRequestDTO.getDeviceUnitId() != null) {
-                throw e;
-            }
-        }
-        gameCopies = gameCopyService.getAvailableModelsByIds(rentalRequestDTO.getGameCopiesId());
+        gameCopies = gameCopyService.getAvailableModelsByIds(rentalRequestDTO.getGameCopiesId(), device.getDeviceBase().getDeviceBaseId());
         if (rentalRequestDTO.getGameCopiesId().size() != gameCopies.size()) {
             throw new EntityOperationException(
                 "Invalid game copies",
-                "One or more invalid IDs",
+                "Copies may not exist or be unavailable",
                 HttpStatus.BAD_REQUEST
             );
         }
@@ -79,12 +74,35 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
         ));
     }
 
+    @Override
+    @Transactional
+    public RentalDTO rentalReturned(Long id) {
+        var rental = getRepository().findById(id).orElseThrow(() ->
+                new EntityOperationException(
+                        "Rental not found",
+                        "",
+                        HttpStatus.BAD_REQUEST
+                )
+        );
+        if (rental.getRentalReturnDate() != null) {
+            throw new EntityOperationException(
+                "Rental already returned",
+                MessageFormat.format("Was returned on {0}",rental.getRentalReturnDate().toLocalDate()),
+                HttpStatus.BAD_REQUEST
+            );
+        }
+        rental.setRentalReturnDate(LocalDateTime.now());
+        return rental.toDTO();
+    }
+
     private RentalDTO create(Rental rental) {
         var saved = getRepository().save(rental);
         if (saved.getRentalDevice() != null) deviceService.updateDeviceAvailability(saved.getRentalDevice().getDeviceId(), false);
         saved.getRentalGames().forEach(gc -> gameCopyService.updateCopyAvailibility(gc, false));
         return saved.toDTO();
     }
+
+    //region unused
 
     @Override
     public RentalDTO create(RentalDTO rentalDTO) {
@@ -115,6 +133,7 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
     public void removeById(Long id) {
 
     }
+    //endregion
 
     @Override
     public String getLogName() {

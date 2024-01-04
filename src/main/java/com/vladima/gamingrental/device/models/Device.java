@@ -1,5 +1,6 @@
 package com.vladima.gamingrental.device.models;
 
+import com.vladima.gamingrental.client.models.Rental;
 import com.vladima.gamingrental.device.dto.DeviceDTO;
 import com.vladima.gamingrental.device.dto.DeviceExtrasDTO;
 import com.vladima.gamingrental.helpers.BaseModel;
@@ -8,6 +9,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -29,6 +32,9 @@ public class Device implements BaseModel<DeviceExtrasDTO> {
     @ManyToOne(optional = false)
     @JoinColumn(name = "device_base_id")
     private DeviceBase deviceBase;
+
+    @OneToMany(mappedBy = "rentalDevice", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Rental> deviceRentals;
 
     public Device(int deviceNumberOfControllers, boolean deviceAvailable) {
         this.deviceNumberOfControllers = deviceNumberOfControllers;

@@ -31,9 +31,11 @@ public class Rental implements BaseModel<RentalDTO> {
     private LocalDateTime rentalReturnDate;
 
     @ManyToOne(optional = false)
+    @JoinColumn(name = "rental_client_id")
     private Client rentalClient;
 
-    @ManyToOne
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "rental_device_id")
     private Device rentalDevice;
 
     @ManyToMany(cascade = CascadeType.ALL)

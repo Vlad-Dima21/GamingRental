@@ -16,8 +16,8 @@ public class GameCopyServiceImpl extends BaseServiceImpl<GameCopy, GameCopyDTO, 
     }
 
     @Override
-    public List<GameCopy> getAvailableModelsByIds(List<Long> ids) {
-        return getRepository().findActiveByIds(ids);
+    public List<GameCopy> getAvailableModelsByIds(List<Long> ids, Long deviceId) {
+        return getRepository().findActiveByIds(ids, deviceId);
     }
 
     @Override
