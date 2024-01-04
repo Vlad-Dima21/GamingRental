@@ -10,11 +10,11 @@ import java.util.List;
 @Repository
 public interface RentalRepository extends JpaRepository<Rental, Long> {
     @Query("SELECT r FROM Rental r " +
-            "WHERE COALESCE((r.rentalClient.clientName = :clientName), true)" +
+            "WHERE COALESCE((r.rentalClient.clientEmail = :clientEmail), true)" +
             "AND COALESCE(((r.rentalDevice.deviceBase.deviceBaseName = :deviceName)), true)" +
             "AND CASE WHEN :returned = true THEN (r.rentalReturnDate IS NOT NULL) WHEN :returned = false THEN (r.rentalReturnDate IS NULL) ELSE true END " +
             "AND (:pastDue = false OR r.rentalReturnDate > r.rentalDueDate)")
     List<Rental> getRentals(
-        String clientName, String deviceName, Boolean returned, boolean pastDue
+        String clientEmail, String deviceName, Boolean returned, boolean pastDue
     );
 }

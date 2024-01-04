@@ -43,7 +43,7 @@ public class ClientServiceMySqlIntegrationTests {
     }
 
     @Test
-    @DisplayName("Unit test for finding a client by id")
+    @DisplayName("Integration test for finding a client by id")
     public void whenExistingClient_getById_returnsClient() {
         var firstId = testingClients.get(0).getClientId();
         var client = clientService.getById(firstId);
@@ -52,7 +52,7 @@ public class ClientServiceMySqlIntegrationTests {
 
     @Test
     @DisplayName("When the ID does not match with any entity, EntityOperationException should be thrown")
-    public void whenNoClientWithEmail_getById_throwsEntityOperationException() {
+    public void whenNoClientWithId_getById_throwsEntityOperationException() {
         var invalidId = Long.MAX_VALUE;
         var exception = Assertions.assertThrows(EntityOperationException.class,
                 () -> clientService.getById(invalidId));

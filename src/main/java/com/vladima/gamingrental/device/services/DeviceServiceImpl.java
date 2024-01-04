@@ -48,7 +48,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, DeviceExtrasDTO, 
     }
 
     @Override
-    public Device getModelById(Long id, boolean shouldBeActive) {
+    public Device getModelById(Long id, boolean shouldBeAvailable) {
         var device = getModelById(id);
         if (!device.isDeviceAvailable()) {
             throw new EntityOperationException(

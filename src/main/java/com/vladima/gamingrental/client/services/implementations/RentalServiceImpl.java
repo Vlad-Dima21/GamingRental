@@ -36,8 +36,8 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
     }
 
     @Override
-    public List<RentalDTO> getRentals(String clientName, String deviceName, Boolean returned, boolean pastDue) {
-        if (clientName != null) clientService.getByExactName(clientName);
+    public List<RentalDTO> getRentals(String clientEmail, String deviceName, Boolean returned, boolean pastDue) {
+        if (clientEmail != null) clientService.getByEmail(clientEmail);
         if (deviceName != null && deviceService.getByDeviceBaseName(deviceName, false).isEmpty()) {
             throw new EntityOperationException(
                 "Device not found",
@@ -45,7 +45,7 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
                 HttpStatus.BAD_REQUEST
             );
         }
-        return getRepository().getRentals(clientName, deviceName, returned, pastDue)
+        return getRepository().getRentals(clientEmail, deviceName, returned, pastDue)
                 .stream().map(Rental::toDTO)
                 .toList();
     }
@@ -105,21 +105,6 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
 
     @Override
     public RentalDTO create(RentalDTO rentalDTO) {
-        return null;
-    }
-
-    @Override
-    public List<RentalDTO> getAll() {
-        return null;
-    }
-
-    @Override
-    public Rental getModelById(Long id) {
-        return null;
-    }
-
-    @Override
-    public RentalDTO getById(Long id) {
         return null;
     }
 
