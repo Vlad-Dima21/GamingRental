@@ -88,6 +88,7 @@ public class DeviceBaseServiceImpl extends BaseServiceImpl<DeviceBase, DeviceBas
         return getRepository().save(deviceBaseDTO.toModel()).toDTO();
     }
 
+    //unused
     @Override
     @Transactional
     public DeviceBaseExtrasDTO updateInfo(Long id, DeviceBaseExtrasDTO deviceBaseDTO) {

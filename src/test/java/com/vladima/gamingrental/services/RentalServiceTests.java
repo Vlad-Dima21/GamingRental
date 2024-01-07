@@ -3,7 +3,6 @@ package com.vladima.gamingrental.services;
 import com.vladima.gamingrental.client.dto.RentalRequestDTO;
 import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.client.models.Rental;
-import com.vladima.gamingrental.client.repositories.ClientRepository;
 import com.vladima.gamingrental.client.repositories.RentalRepository;
 import com.vladima.gamingrental.client.services.ClientService;
 import com.vladima.gamingrental.client.services.implementations.RentalServiceImpl;
@@ -32,7 +31,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class RentalServiceTest {
+public class RentalServiceTests {
     @Mock
     private ClientService clientService;
 
