@@ -60,6 +60,7 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, DeviceExtrasDTO, 
         return device;
     }
 
+    //region unused
     @Override
     public DeviceExtrasDTO create(DeviceExtrasDTO deviceExtrasDTO) {
         var unit = deviceExtrasDTO.toModel();
@@ -77,6 +78,8 @@ public class DeviceServiceImpl extends BaseServiceImpl<Device, DeviceExtrasDTO, 
     public DeviceExtrasDTO updateInfo(Long id, DeviceExtrasDTO deviceExtrasDTO) {
         return null;
     }
+
+    //endregion
 
     @Override
     public String getLogName() {
