@@ -9,5 +9,5 @@ import java.util.List;
 public interface GameCopyService extends BaseService<GameCopy, GameCopyDTO> {
     List<GameCopy> getAvailableCopiesForDeviceByIds(List<Long> ids, Long deviceId);
     List<GameCopyDTO> getCopies(Long gameId, Long deviceId, boolean onlyAvailable);
-    void updateCopyAvailibility(GameCopy gameCopy, boolean isActive);
+    void updateCopyAvailability(GameCopy gameCopy, boolean isAvailable);
 }

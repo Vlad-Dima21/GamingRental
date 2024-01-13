@@ -53,7 +53,7 @@ public class GameCopyServiceImpl extends BaseServiceImpl<GameCopy, GameCopyDTO, 
 
     @Override
     @Transactional
-    public void updateCopyAvailibility(GameCopy gameCopy, boolean isAvailable) {
+    public void updateCopyAvailability(GameCopy gameCopy, boolean isAvailable) {
         gameCopy.setAvailable(isAvailable);
     }
 

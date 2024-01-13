@@ -21,12 +21,12 @@ public class RentalController {
 
     @GetMapping
     public ResponseEntity<List<RentalDTO>> getLoans(
-        @RequestParam(required = false) String clientName,
+        @RequestParam(required = false) String clientEmail,
         @RequestParam(required = false) String  deviceName,
         @RequestParam(required = false) Boolean returned,
         @RequestParam(defaultValue = "false") boolean pastDue
     ) {
-        return new ResponseEntity<>(rentalService.getRentals(clientName, deviceName, returned, pastDue), HttpStatus.OK);
+        return new ResponseEntity<>(rentalService.getRentals(clientEmail, deviceName, returned, pastDue), HttpStatus.OK);
     }
 
     @PostMapping("/create")

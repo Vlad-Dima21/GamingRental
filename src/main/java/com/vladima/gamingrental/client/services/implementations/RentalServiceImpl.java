@@ -97,7 +97,7 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
     private RentalDTO create(Rental rental) {
         var saved = getRepository().save(rental);
         if (saved.getRentalDevice() != null) deviceService.updateDeviceAvailability(saved.getRentalDevice().getDeviceId(), false);
-        saved.getRentalGames().forEach(gc -> gameCopyService.updateCopyAvailibility(gc, false));
+        saved.getRentalGames().forEach(gc -> gameCopyService.updateCopyAvailability(gc, false));
         return saved.toDTO();
     }
 
