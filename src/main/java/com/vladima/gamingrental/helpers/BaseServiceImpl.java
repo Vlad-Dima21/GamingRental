@@ -49,7 +49,7 @@ public abstract class BaseServiceImpl<Model extends BaseModel<ModelDTO>, ModelDT
                 new EntityOperationException(
                     MessageFormat.format("{0} does not exist", LOG_NAME),
                     MessageFormat.format("{0} with id {1} does not exist", LOG_NAME, id),
-                    HttpStatus.BAD_REQUEST
+                    HttpStatus.NOT_FOUND
                 ));
         repository.deleteById(id);
     }

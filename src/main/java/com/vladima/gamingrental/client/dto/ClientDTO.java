@@ -21,11 +21,11 @@ public class ClientDTO implements BaseDTO<Client> {
     @Size(min = 3, max = 20, message = "Client name should be 3-20 characters long")
     private String clientName;
 
-    @NotBlank
+    @NotBlank(message = "Client must have an email")
     @Email(message = "Invalid email", regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$")
     private String clientEmail;
 
-    @NotBlank
+    @NotBlank(message = "Client must have a phone number")
     @Pattern(message = "Invalid phone number", regexp = "^(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\\s|\\.|\\-)?([0-9]{3}(\\s|\\.|\\-|)){2}$")
     private String clientPhone;
 

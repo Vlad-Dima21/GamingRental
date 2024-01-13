@@ -106,7 +106,7 @@ public class DeviceBaseServiceTests {
         var serviceException = new EntityOperationException(
             "Device not added",
             "A device with the same name already exists",
-            HttpStatus.BAD_REQUEST
+            HttpStatus.CONFLICT
         );
 
         given(repository.findByDeviceBaseName(ps5.getDeviceBaseName()))

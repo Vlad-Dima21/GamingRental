@@ -48,7 +48,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, Client
             throw new EntityOperationException(
                 "Client not registered",
                 "Email is already in use",
-                HttpStatus.BAD_REQUEST
+                HttpStatus.CONFLICT
             );
         }
         return getRepository().save(clientDTO.toModel()).toDTO();

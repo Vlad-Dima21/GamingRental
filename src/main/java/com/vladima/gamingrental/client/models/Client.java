@@ -19,14 +19,8 @@ import java.util.List;
 public class Client implements BaseModel<ClientDTO> {
 
     @Id
-    @SequenceGenerator(
-        name = "client_sequence",
-        sequenceName = "client_sequence",
-        allocationSize = 1
-    )
     @GeneratedValue(
-        strategy = GenerationType.SEQUENCE,
-        generator = "client_sequence"
+        strategy = GenerationType.IDENTITY
     )
     private Long clientId;
 

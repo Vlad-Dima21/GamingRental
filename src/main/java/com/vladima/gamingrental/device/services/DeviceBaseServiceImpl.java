@@ -82,7 +82,7 @@ public class DeviceBaseServiceImpl extends BaseServiceImpl<DeviceBase, DeviceBas
             throw new EntityOperationException(
                 "Device not added",
                 "A device with the same name already exists",
-                HttpStatus.BAD_REQUEST
+                HttpStatus.CONFLICT
             );
         }
         return getRepository().save(deviceBaseDTO.toModel()).toDTO();

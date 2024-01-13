@@ -25,7 +25,7 @@ public class EntitiesExceptionHandler {
     public ResponseEntity<Map<String, String>> operationException(MethodArgumentNotValidException e) {
         Map<String, String> response = new HashMap<>();
         String fieldName = e.getBindingResult().getFieldError().getField();
-        String fieldValue = e.getBindingResult().getFieldError().getRejectedValue().toString();
+        var fieldValue = e.getBindingResult().getFieldError().getRejectedValue();
         String fieldMessage = e.getBindingResult().getFieldError().getDefaultMessage();
         response.put("details", MessageFormat.format("Invalid value {0} for {1}", fieldValue, fieldName));
         response.put("message", fieldMessage);
