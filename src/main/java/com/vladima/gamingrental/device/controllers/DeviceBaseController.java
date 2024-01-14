@@ -104,10 +104,6 @@ public class DeviceBaseController {
     @ApiResponses(value = {
             @ApiResponse(
                     responseCode = "204",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = DeviceBaseExtrasDTO.class)
-                    ),
                     description = "Device was removed"
             ),
             @ApiResponse(
@@ -120,7 +116,9 @@ public class DeviceBaseController {
             )
     })
     @DeleteMapping("/remove/{id}")
-    public ResponseEntity<String> deleteDevice(@PathVariable @Min(1) Long id) {
+    public ResponseEntity<String> deleteDevice(
+            @PathVariable @Min(1) @Parameter(description = "Device ID") Long id
+    ) {
         deviceBaseService.removeById(id);
         return new ResponseEntity<>("Device deleted", HttpStatus.NO_CONTENT);
     }

@@ -6,6 +6,7 @@ import com.vladima.gamingrental.games.services.GameCopyService;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -30,12 +31,12 @@ public class GameCopyController {
     @Operation(summary = "Get filtered game copies")
     @ApiResponses(value = {
             @ApiResponse(
-                    responseCode = "204",
+                    responseCode = "200",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = DeviceBaseExtrasDTO.class)
+                            array = @ArraySchema(schema = @Schema(implementation = GameCopyDTO.class))
                     ),
-                    description = "Device was removed"
+                    description = "List of game copies"
             ),
             @ApiResponse(
                     responseCode = "404",
@@ -43,7 +44,7 @@ public class GameCopyController {
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = EntitiesExceptionHandler.ExceptionFormat.class)
                     ),
-                    description = "Device not found"
+                    description = "Game or device not found"
             )
     })
     @GetMapping
