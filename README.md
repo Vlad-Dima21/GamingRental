@@ -40,10 +40,10 @@ Get a client by ID
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Client found |
-| 404 | Client not found |
+| Code | Description      | Schema                                         |
+|------|------------------|------------------------------------------------|
+| 200  | Client found     | ```ClientDTO```                                |
+| 404  | Client not found | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 ### /api/clients
 
@@ -61,10 +61,10 @@ Filter clients
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Valid filters and clients found |
-| 400 | Invalid filters |
+| Code | Description                     | Schema                                         |
+|------|---------------------------------|------------------------------------------------|
+| 200  | Valid filters and clients found | ```List<ClientDTO>```                          |
+| 400  | Invalid filters                 | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 ### /api/clients/update/{id}
 
@@ -75,16 +75,16 @@ Update client info
 
 ##### Parameters
 
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| id | path | The client ID | Yes | long |
+| Name | Located in | Description   | Required | Schema |
+|------|------------|---------------|----------|--------|
+| id   | path       | The client ID | Yes      | long   |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Client info updated |
-| 404 | Client not found |
+| Code | Description         | Schema                                         |
+|------|---------------------|------------------------------------------------|
+| 200  | Client info updated | ```ClientDTO```                                |
+| 404  | Client not found    | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 ### /api/clients/create
 
@@ -95,10 +95,10 @@ Add a new client
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 201 | Client added |
-| 409 | Email is already in use |
+| Code | Description             | Schema                                         |
+|------|-------------------------|------------------------------------------------|
+| 201  | Client added            | ```ClientDTO```                                |
+| 409  | Email is already in use | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 
 ### /api/clients/remove/{id}
@@ -110,16 +110,16 @@ Remove a client
 
 ##### Parameters
 
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| id | path | The client ID | Yes | long |
+| Name | Located in | Description   | Required | Schema |
+|------|------------|---------------|----------|--------|
+| id   | path       | The client ID | Yes      | long   |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 204 | Client removed |
-| 404 | Client not found |
+| Code | Description      | Schema                                         |
+|------|------------------|------------------------------------------------|
+| 204  | Client removed   | no content                                     |
+| 404  | Client not found | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 
 ### /api/rentals/return/{id}
@@ -132,16 +132,16 @@ Register rental return
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| id | path | Rental ID | Yes | long |
+|------|------------|-------------|----------|--------|
+| id   | path       | Rental ID   | Yes      | long   |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Rental was returned successfully |
-| 400 | Rental has been already returned |
-| 404 | Rental was not found |
+| Code | Description                      | Schema                                         |
+|------|----------------------------------|------------------------------------------------|
+| 200  | Rental was returned successfully | ```RentalDTO```                                |
+| 400  | Rental has been already returned | ```EntitiesExceptionHandler.ExceptionFormat``` |
+| 404  | Rental was not found             | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 ### /api/rentals
 
@@ -152,19 +152,19 @@ Get filtered rentals
 
 ##### Parameters
 
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| clientEmail | query | Client Email | No | string |
-| deviceName | query | Device Name | No | string |
-| returned | query | Only rentals that have been returned | No | boolean |
-| pastDue | query | Only rentals that are past due | No | boolean |
+| Name        | Located in | Description                          | Required | Schema  |
+|-------------|------------|--------------------------------------|----------|---------|
+| clientEmail | query      | Client Email                         | No       | string  |
+| deviceName  | query      | Device Name                          | No       | string  |
+| returned    | query      | Only rentals that have been returned | No       | boolean |
+| pastDue     | query      | Only rentals that are past due       | No       | boolean |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Valid filters and rentals found |
-| 404 | Client or device not found |
+| Code | Description                     | Schema                                         |
+|------|---------------------------------|------------------------------------------------|
+| 200  | Valid filters and rentals found | ```List<RentalDTO>```                          |
+| 404  | Client or device not found      | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 ### /api/rentals/create
 
@@ -175,11 +175,11 @@ Register a new rental
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Rental was registered successfully |
-| 400 | Device unit not available or game copies not found/not available |
-| 404 | Client not found or device unit not found |
+| Code | Description                                                      | Schema                                         |
+|------|------------------------------------------------------------------|------------------------------------------------|
+| 200  | Rental was registered successfully                               | ```RentalDTO```                                |
+| 400  | Device unit not available or game copies not found/not available | ```EntitiesExceptionHandler.ExceptionFormat``` |
+| 404  | Client not found or device unit not found                        | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 
 ### /api/devices/create
@@ -191,10 +191,10 @@ Register a new device
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Device was registered |
-| 409 | Device with the same name already exists |
+| Code | Description                              |
+|------|------------------------------------------|
+| 200  | Device was registered                    |
+| 409  | Device with the same name already exists |
 
 ### /api/devices
 
@@ -205,18 +205,18 @@ Get filtered devices
 
 ##### Parameters
 
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| name | query | Name should contain | No | string |
-| producer | query | Producer name should contain | No | string |
-| year | query | Released after the year | No | integer |
-| ifAvailable | query | Only available | No | boolean |
+| Name        | Located in | Description                  | Required | Schema  |
+|-------------|------------|------------------------------|----------|---------|
+| name        | query      | Name should contain          | No       | string  |
+| producer    | query      | Producer name should contain | No       | string  |
+| year        | query      | Released after the year      | No       | integer |
+| ifAvailable | query      | Only available               | No       | boolean |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Valid filters |
+| Code | Description   | Schema                          |
+|------|---------------|---------------------------------|
+| 200  | Valid filters | ```List<DeviceBaseExtrasDTO>``` |
 
 ### /api/devices/{id}
 
@@ -228,15 +228,15 @@ Get device by ID
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| id | path | Device ID | Yes | long |
+|------|------------|-------------|----------|--------|
+| id   | path       | Device ID   | Yes      | long   |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Device found |
-| 404 | Device not found |
+| Code | Description      | Schema                                         |
+|------|------------------|------------------------------------------------|
+| 200  | Device found     | ```DeviceBaseExtrasDTO```                      |
+| 404  | Device not found | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 ### /api/devices/remove/{id}
 
@@ -248,15 +248,15 @@ Remove a device
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| id | path | Device ID | Yes | long |
+|------|------------|-------------|----------|--------|
+| id   | path       | Device ID   | Yes      | long   |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 204 | Device was removed |
-| 404 | Device not found |
+| Code | Description        | Schema                                         |
+|------|--------------------|------------------------------------------------|
+| 204  | Device was removed | no content                                     |
+| 404  | Device not found   | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 
 ### /api/units/of
@@ -268,17 +268,17 @@ Get device units by the device and filter by availability
 
 ##### Parameters
 
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| name | query | Device name | Yes | string |
-| availableOnly | query |  | No | boolean |
+| Name          | Located in | Description          | Required | Schema  |
+|---------------|------------|----------------------|----------|---------|
+| name          | query      | Device name          | Yes      | string  |
+| availableOnly | query      | Only available units | No       | boolean |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Device units returned |
-| 404 | Device not found |
+| Code | Description           | Schema                                         |
+|------|-----------------------|------------------------------------------------|
+| 200  | Device units returned | ```List<DeviceExtrasDTO>```                    |
+| 404  | Device not found      | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 ### /api/units/of-id/{id}
 
@@ -290,15 +290,15 @@ Get device units by the device ID
 ##### Parameters
 
 | Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| id | path | Device ID | Yes | long |
+|------|------------|-------------|----------|--------|
+| id   | path       | Device ID   | Yes      | long   |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | Device units returned |
-| 404 | Device not found |
+| Code | Description           | Schema                                         |
+|------|-----------------------|------------------------------------------------|
+| 200  | Device units returned | ```List<DeviceExtrasDTO>```                    |
+| 404  | Device not found      | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 
 ### /api/games
@@ -310,15 +310,15 @@ Get filtered game copies
 
 ##### Parameters
 
-| Name | Located in | Description | Required | Schema |
-| ---- | ---------- | ----------- | -------- | ---- |
-| gameId | query | Filter by game ID | No | long |
-| deviceId | query | Filter by device ID | No | long |
-| onlyAvailable | query | Fetch only available copies | No | boolean |
+| Name          | Located in | Description                 | Required | Schema  |
+|---------------|------------|-----------------------------|----------|---------|
+| gameId        | query      | Filter by game ID           | No       | long    |
+| deviceId      | query      | Filter by device ID         | No       | long    |
+| onlyAvailable | query      | Fetch only available copies | No       | boolean |
 
 ##### Responses
 
-| Code | Description |
-| ---- | ----------- |
-| 200 | List of game copies |
-| 404 | Game or device not found |
+| Code | Description              | Schema                                         |
+|------|--------------------------|------------------------------------------------|
+| 200  | List of game copies      | ```List<GameCopyDTO>```                        |
+| 404  | Game or device not found | ```EntitiesExceptionHandler.ExceptionFormat``` |

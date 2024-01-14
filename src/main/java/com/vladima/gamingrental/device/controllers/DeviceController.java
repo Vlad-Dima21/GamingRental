@@ -74,7 +74,7 @@ public class DeviceController {
     @GetMapping("/of")
     public ResponseEntity<List<DeviceExtrasDTO>> getByDeviceBaseName(
             @RequestParam @Parameter(description = "Device name") String name,
-            @RequestParam(required = false, defaultValue = "false") boolean availableOnly
+            @RequestParam(required = false, defaultValue = "false") @Parameter(description = "Only available units") boolean availableOnly
     ) {
         return new ResponseEntity<>(deviceService.getByDeviceBaseName(name, availableOnly), HttpStatus.OK);
     }
