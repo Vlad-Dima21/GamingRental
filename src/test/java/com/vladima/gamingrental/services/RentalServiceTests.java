@@ -101,7 +101,7 @@ public class RentalServiceTests {
                 .willThrow(serviceException);
 
         var exception = Assertions.assertThrows(EntityOperationException.class,
-                () -> rentalService.createRequest(new RentalRequestDTO(
+                () -> rentalService.createRental(new RentalRequestDTO(
                         client.getClientId(), deviceBase.getDevices().get(0).getDeviceId(),
                         deviceBase.getDeviceGameCopies().stream().map(GameCopy::getGameCopyId).toList(),
                         30L
@@ -121,7 +121,7 @@ public class RentalServiceTests {
                 .willThrow(serviceException);
 
         var exception = Assertions.assertThrows(EntityOperationException.class,
-                () -> rentalService.createRequest(new RentalRequestDTO(
+                () -> rentalService.createRental(new RentalRequestDTO(
                         client.getClientId(), device.getDeviceId(),
                         deviceBase.getDeviceGameCopies().stream().map(GameCopy::getGameCopyId).toList(),
                         30L
@@ -139,7 +139,7 @@ public class RentalServiceTests {
                 .willReturn(device);
 
         var exception = Assertions.assertThrows(EntityOperationException.class,
-                () -> rentalService.createRequest(new RentalRequestDTO(
+                () -> rentalService.createRental(new RentalRequestDTO(
                         client.getClientId(), device.getDeviceId(),
                         deviceBase.getDeviceGameCopies().stream().map(GameCopy::getGameCopyId).toList(),
                         30L

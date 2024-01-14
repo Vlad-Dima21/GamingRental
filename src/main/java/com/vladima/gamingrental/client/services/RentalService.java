@@ -9,6 +9,6 @@ import java.util.List;
 
 public interface RentalService extends BaseService<Rental, RentalDTO> {
     List<RentalDTO> getRentals(String clientName, String deviceName, Boolean returned, boolean pastDue);
-    RentalDTO createRequest(RentalRequestDTO rental);
+    RentalDTO createRental(RentalRequestDTO rental);
     RentalDTO rentalReturned(Long id);
 }

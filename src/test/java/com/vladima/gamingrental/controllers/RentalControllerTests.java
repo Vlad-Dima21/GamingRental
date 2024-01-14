@@ -1,6 +1,5 @@
 package com.vladima.gamingrental.controllers;
 
-import com.vladima.gamingrental.client.controllers.ClientController;
 import com.vladima.gamingrental.client.controllers.RentalController;
 import com.vladima.gamingrental.client.dto.RentalRequestDTO;
 import com.vladima.gamingrental.client.models.Client;
@@ -27,7 +26,6 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.text.MessageFormat;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.mockito.BDDMockito.*;
@@ -102,7 +100,7 @@ public class RentalControllerTests {
                 "Copies may not exist or be unavailable",
                 HttpStatus.BAD_REQUEST
         );
-        given(service.createRequest(ArgumentMatchers.any()))
+        given(service.createRental(ArgumentMatchers.any()))
                 .willThrow(exception);
         mockMvc.perform(post("/api/rentals/create")
                 .contentType(MediaType.APPLICATION_JSON)

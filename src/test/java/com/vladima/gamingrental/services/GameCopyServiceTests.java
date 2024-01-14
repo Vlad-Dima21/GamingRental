@@ -31,7 +31,7 @@ public class GameCopyServiceTests {
         var serviceException = new EntityOperationException(
             "Incorrect game ID",
             "",
-            HttpStatus.BAD_REQUEST
+            HttpStatus.NOT_FOUND
         );
         given(gameRepository.existsById(ArgumentMatchers.anyLong()))
                 .willThrow(serviceException);

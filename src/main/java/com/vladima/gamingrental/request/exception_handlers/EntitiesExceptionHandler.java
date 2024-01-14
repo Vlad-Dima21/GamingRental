@@ -1,6 +1,8 @@
 package com.vladima.gamingrental.request.exception_handlers;
 
 import com.vladima.gamingrental.helpers.EntityOperationException;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -13,6 +15,12 @@ import java.util.Map;
 
 @RestControllerAdvice
 public class EntitiesExceptionHandler {
+
+    @Data
+    @AllArgsConstructor
+    public static class ExceptionFormat {
+        String message, details;
+    }
     @ExceptionHandler({EntityOperationException.class})
     public ResponseEntity<Map<String, String>> operationException(EntityOperationException e) {
         Map<String, String> response = new HashMap<>();

@@ -42,7 +42,7 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
             throw new EntityOperationException(
                 "Device not found",
                 MessageFormat.format("No such device as {0}", deviceName),
-                HttpStatus.BAD_REQUEST
+                HttpStatus.NOT_FOUND
             );
         }
         return getRepository().getRentals(clientEmail, deviceName, returned, pastDue)
@@ -50,7 +50,7 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
                 .toList();
     }
 
-    public RentalDTO createRequest(RentalRequestDTO rentalRequestDTO) {
+    public RentalDTO createRental(RentalRequestDTO rentalRequestDTO) {
         var client = clientService.getModelById(rentalRequestDTO.getClientId());
         Device device = deviceService.getModelById(rentalRequestDTO.getDeviceUnitId(), true);
         List<GameCopy> gameCopies = new ArrayList<>();
@@ -80,7 +80,7 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
                 new EntityOperationException(
                         "Rental not found",
                         "",
-                        HttpStatus.BAD_REQUEST
+                        HttpStatus.NOT_FOUND
                 )
         );
         if (rental.getRentalReturnDate() != null) {

@@ -45,7 +45,7 @@ public class GameCopyServiceImpl extends BaseServiceImpl<GameCopy, GameCopyDTO, 
             throw new EntityOperationException(
                     MessageFormat.format("Incorrect {0} ID", incorrectModelName),
                     "",
-                    HttpStatus.BAD_REQUEST
+                    HttpStatus.NOT_FOUND
             );
         }
         return getRepository().findCopies(gameId, deviceId, onlyAvailable).stream().map(GameCopy::toDTO).toList();
