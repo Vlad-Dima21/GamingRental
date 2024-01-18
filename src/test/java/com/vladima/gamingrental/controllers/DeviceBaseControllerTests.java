@@ -10,6 +10,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -54,11 +55,11 @@ public class DeviceBaseControllerTests {
                 "A device with the same name already exists",
                 HttpStatus.CONFLICT
         );
-        given(service.create(ps5.toDTO()))
+        given(service.create(ArgumentMatchers.any()))
                 .willThrow(exception);
         mockMvc.perform(post("/api/devices/create")
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(StringifyJSON.toJSON(ps5)))
+                .content(StringifyJSON.toJSON(ps5.toDTO())))
                 .andDo(print())
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.message").value(exception.getMessage()));
