@@ -74,6 +74,4 @@ public class ClientServiceTests {
                 () -> clientService.create(client.toDTO()));
         assertEquals("Email is already in use", exception.getExtraInfo());
     }
-
-    //todo maybe add a test for updating clients
 }

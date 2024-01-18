@@ -81,10 +81,11 @@ Update client info
 
 ##### Responses
 
-| Code | Description         | Schema                                         |
-|------|---------------------|------------------------------------------------|
-| 200  | Client info updated | ```ClientDTO```                                |
-| 404  | Client not found    | ```EntitiesExceptionHandler.ExceptionFormat``` |
+| Code | Description                | Schema                                         |
+|------|----------------------------|------------------------------------------------|
+| 200  | Client info updated        | ```ClientDTO```                                |
+| 404  | Client not found           | ```EntitiesExceptionHandler.ExceptionFormat``` |
+| 409  | Email/Phone already in use | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 ### /api/clients/create
 
@@ -95,10 +96,10 @@ Add a new client
 
 ##### Responses
 
-| Code | Description             | Schema                                         |
-|------|-------------------------|------------------------------------------------|
-| 201  | Client added            | ```ClientDTO```                                |
-| 409  | Email is already in use | ```EntitiesExceptionHandler.ExceptionFormat``` |
+| Code | Description                   | Schema                                         |
+|------|-------------------------------|------------------------------------------------|
+| 201  | Client added                  | ```ClientDTO```                                |
+| 409  | Email/Phone is already in use | ```EntitiesExceptionHandler.ExceptionFormat``` |
 
 
 ### /api/clients/remove/{id}

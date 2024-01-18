@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.MessageFormat;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, ClientRepository> implements ClientService {
@@ -43,12 +44,20 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, Client
 
     @Override
     public ClientDTO create(ClientDTO clientDTO) {
-        var existingClient = getRepository().findByClientEmail(clientDTO.getClientEmail());
-        if (existingClient != null) {
+        var existingClientEmail = getRepository().findByClientEmail(clientDTO.getClientEmail());
+        var existingClientPhone = getRepository().findByClientPhone(clientDTO.getClientPhone());
+        if (existingClientEmail != null) {
             throw new EntityOperationException(
                 "Client not registered",
                 "Email is already in use",
                 HttpStatus.CONFLICT
+            );
+        }
+        if (existingClientPhone != null) {
+            throw new EntityOperationException(
+                    "Client not registered",
+                    "Phone is already in use",
+                    HttpStatus.CONFLICT
             );
         }
         return getRepository().save(clientDTO.toModel()).toDTO();
@@ -58,6 +67,22 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, Client
     @Transactional
     public ClientDTO updateInfo(Long id, ClientDTO clientDTO) {
         var client = getModelById(id);
+        var cEmail = getRepository().findByClientEmail(clientDTO.getClientEmail());
+        var cPhone = getRepository().findByClientPhone(clientDTO.getClientPhone());
+        if (cPhone != null && !Objects.equals(cPhone.getClientId(), client.getClientId())) {
+            throw new EntityOperationException(
+                    "Client not updated",
+                    "Phone is already in use",
+                    HttpStatus.CONFLICT
+            );
+        }
+        if (cEmail != null && !Objects.equals(cEmail.getClientId(), client.getClientId())) {
+            throw new EntityOperationException(
+                    "Client not updated",
+                    "Email is already in use",
+                    HttpStatus.CONFLICT
+            );
+        }
         client.setClientName(clientDTO.getClientName());
         client.setClientEmail(clientDTO.getClientEmail());
         client.setClientPhone(client.getClientPhone());

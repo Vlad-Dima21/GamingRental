@@ -68,8 +68,8 @@ public class DeviceBaseController {
     })
     @GetMapping
     public ResponseEntity<List<DeviceBaseExtrasDTO>> getFilteredDevices(
-        @RequestParam(required = false) @Parameter(description = "Name should contain") String name,
-        @RequestParam(required = false) @Parameter(description = "Producer name should contain") String producer,
+        @RequestParam(required = false) @Parameter(description = "Name of device") String name,
+        @RequestParam(required = false) @Parameter(description = "Producer name") String producer,
         @RequestParam(required = false) @Parameter(description = "Released after the year") Integer year,
         @RequestParam(required = false, defaultValue = "false") @Parameter(description = "Only available") boolean ifAvailable
     ) {

@@ -102,7 +102,7 @@ public class ClientController {
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
                             schema = @Schema(implementation = EntitiesExceptionHandler.ExceptionFormat.class)
                     ),
-                    description = "Email is already in use"
+                    description = "Email or phone is already in use"
             )
     })
     @PostMapping("/create")
@@ -127,6 +127,14 @@ public class ClientController {
                             schema = @Schema(implementation = EntitiesExceptionHandler.ExceptionFormat.class)
                     ),
                     description = "Client not found"
+            ),
+            @ApiResponse(
+                    responseCode = "409",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = EntitiesExceptionHandler.ExceptionFormat.class)
+                    ),
+                    description = "Email or phone is already in use"
             )
     })
     @PutMapping("/update/{id}")
