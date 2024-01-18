@@ -51,7 +51,7 @@ public class RentalController {
     public ResponseEntity<List<RentalDTO>> getRentals(
         @RequestParam(required = false) @Parameter(description = "Client Email") String clientEmail,
         @RequestParam(required = false) @Parameter(description = "Device Name") String  deviceName,
-        @RequestParam(required = false) @Parameter(description = "Only rentals that have been returned") Boolean returned,
+        @RequestParam(required = false) @Parameter(description = "Rental is returned") Boolean returned,
         @RequestParam(defaultValue = "false") @Parameter(description = "Only rentals that are past due") boolean pastDue
     ) {
         return new ResponseEntity<>(rentalService.getRentals(clientEmail, deviceName, returned, pastDue), HttpStatus.OK);

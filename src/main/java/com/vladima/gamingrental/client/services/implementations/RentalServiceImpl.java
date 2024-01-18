@@ -91,6 +91,8 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
             );
         }
         rental.setRentalReturnDate(LocalDateTime.now());
+        rental.getRentalDevice().setDeviceAvailable(true);
+        rental.getRentalGames().forEach(gc -> gc.setAvailable(true));
         return rental.toDTO();
     }
 
