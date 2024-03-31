@@ -1,3 +1,5 @@
+-- init roles
+insert into role(role_id, authority) values(1, 'CLIENT');
 
 -- init devices
 insert into device_base(device_base_id, device_base_name, device_base_producer, device_base_year_of_release)

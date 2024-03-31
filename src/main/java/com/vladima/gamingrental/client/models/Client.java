@@ -34,7 +34,7 @@ public class Client implements BaseModel<ClientDTO> {
     @Column(unique = true, nullable = false)
     private String clientPhone;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "client_user_id")
     private User clientUser;
 
@@ -45,6 +45,13 @@ public class Client implements BaseModel<ClientDTO> {
         this.clientName = clientName;
         this.clientEmail = clientEmail;
         this.clientPhone = clientPhone;
+    }
+
+    public Client(String userName, String userEmail, String userPhone, User user) {
+        this.clientName = userName;
+        this.clientEmail = userEmail;
+        this.clientPhone = userPhone;
+        this.clientUser = user;
     }
 
 

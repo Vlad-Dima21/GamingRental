@@ -2,18 +2,16 @@ package com.vladima.gamingrental.security.models;
 
 import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.helpers.BaseModel;
+import com.vladima.gamingrental.security.dto.UserClientDTO;
 import com.vladima.gamingrental.security.dto.UserDTO;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 @NoArgsConstructor
@@ -31,16 +29,20 @@ public class User implements UserDetails, BaseModel<UserDTO> {
     @Column(nullable = false)
     private String userPassword;
 
-    @OneToOne(mappedBy = "clientUser", optional = false)
+    @OneToOne(mappedBy = "clientUser", optional = false, cascade = CascadeType.ALL)
     private Client client;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_role_id")
     private Role authority;
 
-    public User(String userPassword, String userEmail) {
+    public User(String userPassword, String userEmail, String userName, String userPhone) {
         this.userPassword = userPassword;
-        this.client = new Client(null, userEmail, null);
+        this.client = new Client(userName, userEmail, userPhone, this);
+    }
+
+    public User(String userEmail, String userPassword) {
+        throw new UnsupportedOperationException("Only client users can exist");
     }
 
 
