@@ -31,7 +31,7 @@ public class Client implements BaseModel<ClientDTO> {
     @Column(unique = true, nullable = false)
     private String clientEmail;
 
-    @Column(unique = true, nullable = false)
+    @Column(nullable = false)
     private String clientPhone;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

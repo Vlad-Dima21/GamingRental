@@ -1,5 +1,6 @@
 package com.vladima.gamingrental.security.services.implementations;
 
+import com.vladima.gamingrental.client.repositories.ClientRepository;
 import com.vladima.gamingrental.helpers.BaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
 import com.vladima.gamingrental.security.dto.UserClientDTO;
@@ -28,14 +29,16 @@ import java.util.stream.Collectors;
 public class UserServiceImpl extends BaseServiceImpl<User, UserDTO, UserRepository> implements UserService {
 
     private final RoleRepository roleRepository;
+    private final ClientRepository clientRepository;
     private final AuthenticationManager authenticationManager;
     private final JwtEncoder jwtEncoder;
 
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository repository, RoleRepository roleRepository, AuthenticationManager authenticationManager, JwtEncoder jwtEncoder, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository repository, RoleRepository roleRepository, ClientRepository clientRepository, AuthenticationManager authenticationManager, JwtEncoder jwtEncoder, PasswordEncoder passwordEncoder) {
         super(repository);
         this.roleRepository = roleRepository;
+        this.clientRepository = clientRepository;
         this.authenticationManager = authenticationManager;
         this.jwtEncoder = jwtEncoder;
         this.passwordEncoder = passwordEncoder;
@@ -43,7 +46,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserDTO, UserReposito
 
     @Override
     public UserResponseDTO login(UserDTO userDTO) {
-        return null;
+        return authenticateUser(userDTO);
     }
 
     @Override
@@ -59,8 +62,6 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserDTO, UserReposito
             throw new EntityOperationException("Internal error", "Client role not found", HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
-//        userClientDTO.setUserPassword(passwordEncoder.encode(userClientDTO.getUserPassword()));
-
         var newUser = new UserClientDTO(
                 userClientDTO.getUserEmail(),
                 passwordEncoder.encode(userClientDTO.getUserPassword()),
@@ -68,6 +69,13 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserDTO, UserReposito
                 userClientDTO.getUserPhone()
         ).toModel();
         newUser.setAuthority(clientRole);
+        var matchedClient = clientRepository.findByClientEmail(userClientDTO.getUserEmail());
+        if (matchedClient != null) {
+            matchedClient.setClientUser(newUser);
+            matchedClient.setClientPhone(userClientDTO.getUserPhone());
+            matchedClient.setClientName(userClientDTO.getUserName());
+            newUser.setClient(matchedClient);
+        }
 
         getRepository().save(newUser);
         return authenticateUser(userClientDTO);

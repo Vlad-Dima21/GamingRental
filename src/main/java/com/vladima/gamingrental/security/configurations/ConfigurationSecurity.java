@@ -7,6 +7,8 @@ import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.vladima.gamingrental.security.utilities.RsaKeyProperties;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,20 +34,42 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
 import java.util.Arrays;
 import java.util.Collections;
 
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
+@SecurityScheme(
+        name = "Bearer Authentication",
+        type = SecuritySchemeType.HTTP,
+        bearerFormat = "JWT",
+        scheme = "bearer"
+)
 @RequiredArgsConstructor
 public class ConfigurationSecurity {
 
     private final RsaKeyProperties keyProperties;
 
-    private final String[] ADMIN_LIST = {};
+    private final String[] PUBLIC_ACCESS = {
+            "/api/auth/**",
+            "/api/devices",
+            "/api/devices/**",
+            "/api/units/**",
+            "/api/games",
+
+            "/v3/api-docs/**",
+            "/swagger-ui/**",
+            "/swagger-ui.html"
+    };
+    private final String[] ADMIN_ACCESS = {
+            "/api/clients/**",
+            "/api/devices/create",
+            "/api/devices/remove/**",
+    };
+    private final String[] CLIENT_ACCESS = {
+            "/api/rentals/**"
+    };
 
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
@@ -92,14 +116,10 @@ public class ConfigurationSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
-                            auth.requestMatchers(
-                                    "/api/auth/**",
-                                    "/v3/api-docs/**",
-                                    "/swagger-ui/**",
-                                    "/swagger-ui.html"
-                            ).permitAll();
-                            auth.requestMatchers(ADMIN_LIST).hasRole("ADMIN");
-                            auth.anyRequest().hasAnyRole("ADMIN", "USER");
+                            auth.requestMatchers(PUBLIC_ACCESS).permitAll();
+                            auth.requestMatchers(ADMIN_ACCESS).hasRole("ADMIN");
+                            auth.requestMatchers(CLIENT_ACCESS).hasRole("CLIENT");
+                            auth.anyRequest().hasAnyRole("ADMIN", "CLIENT");
                         }
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2
