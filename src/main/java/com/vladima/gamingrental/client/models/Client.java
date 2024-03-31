@@ -2,6 +2,7 @@ package com.vladima.gamingrental.client.models;
 
 import com.vladima.gamingrental.client.dto.ClientDTO;
 import com.vladima.gamingrental.helpers.BaseModel;
+import com.vladima.gamingrental.security.models.User;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,6 +33,10 @@ public class Client implements BaseModel<ClientDTO> {
 
     @Column(unique = true, nullable = false)
     private String clientPhone;
+
+    @OneToOne
+    @JoinColumn(name = "client_user_id")
+    private User clientUser;
 
     @OneToMany(mappedBy = "rentalClient", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Rental> clientRentals;
