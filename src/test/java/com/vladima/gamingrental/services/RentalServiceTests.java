@@ -53,7 +53,7 @@ public class RentalServiceTests {
 
     @BeforeEach
     public void init() {
-        client = new Client(1L, "ionut", "ion@email.com", "0729289182", new ArrayList<>());
+        client = new Client(1L, "ionut", "ion@email.com", "0729289182", null, new ArrayList<>());
         game = new Game(1L, "Roblox", "Sandbox", List.of());
         deviceBase = new DeviceBase(
                 1L, "PS5", "Sony", 2018,
@@ -101,8 +101,7 @@ public class RentalServiceTests {
                 .willThrow(serviceException);
 
         var exception = Assertions.assertThrows(EntityOperationException.class,
-                () -> rentalService.createRental(new RentalRequestDTO(
-                        client.getClientId(), deviceBase.getDevices().get(0).getDeviceId(),
+                () -> rentalService.createRental(client.getClientEmail(), new RentalRequestDTO(deviceBase.getDevices().get(0).getDeviceId(),
                         deviceBase.getDeviceGameCopies().stream().map(GameCopy::getGameCopyId).toList(),
                         30L
                     )));
@@ -121,8 +120,8 @@ public class RentalServiceTests {
                 .willThrow(serviceException);
 
         var exception = Assertions.assertThrows(EntityOperationException.class,
-                () -> rentalService.createRental(new RentalRequestDTO(
-                        client.getClientId(), device.getDeviceId(),
+                () -> rentalService.createRental(
+                        client.getClientEmail(), new RentalRequestDTO(device.getDeviceId(),
                         deviceBase.getDeviceGameCopies().stream().map(GameCopy::getGameCopyId).toList(),
                         30L
                 )));
@@ -139,8 +138,8 @@ public class RentalServiceTests {
                 .willReturn(device);
 
         var exception = Assertions.assertThrows(EntityOperationException.class,
-                () -> rentalService.createRental(new RentalRequestDTO(
-                        client.getClientId(), device.getDeviceId(),
+                () -> rentalService.createRental(
+                        client.getClientEmail(), new RentalRequestDTO(device.getDeviceId(),
                         deviceBase.getDeviceGameCopies().stream().map(GameCopy::getGameCopyId).toList(),
                         30L
                 )));

@@ -30,7 +30,7 @@ public class ClientServiceTests {
     @Test
     @DisplayName("Unit test for finding a client by id that returns the client")
     public void whenExistingClient_getById_returnsClient() {
-        var client = new Client(1L, "Alexandru", "alex@email.com", "0720 000 000", new ArrayList<>());
+        var client = new Client(1L, "Alexandru", "alex@email.com", "0720 000 000", null, new ArrayList<>());
 
         given(clientRepository.findById(client.getClientId()))
                 .willReturn(Optional.of(client));
@@ -66,7 +66,7 @@ public class ClientServiceTests {
     @Test
     @DisplayName("Unit test for creating a client with an email already in use that throws an error")
     public void whenNewClientHasExistingEmail_create_throwsEntityOperationException() {
-        var client = new Client(1L, "Alexandru", "alex@email.com", "0720 000 000", new ArrayList<>());
+        var client = new Client(1L, "Alexandru", "alex@email.com", "0720 000 000", null, new ArrayList<>());
         given(clientRepository.findByClientEmail(client.getClientEmail()))
                 .willReturn(client);
 

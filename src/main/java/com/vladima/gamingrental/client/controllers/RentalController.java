@@ -18,6 +18,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.lang.model.element.Name;
@@ -52,12 +53,13 @@ public class RentalController {
     })
     @GetMapping
     public ResponseEntity<List<RentalDTO>> getRentals(
-        @RequestParam(required = false) @Parameter(description = "Client Email") String clientEmail,
+        Authentication authentication,
+//        @RequestParam(required = false) @Parameter(description = "Client Email") String clientEmail,
         @RequestParam(required = false) @Parameter(description = "Device Name") String  deviceName,
         @RequestParam(required = false) @Parameter(description = "Rental is returned") Boolean returned,
         @RequestParam(defaultValue = "false") @Parameter(description = "Only rentals that are past due") boolean pastDue
     ) {
-        return new ResponseEntity<>(rentalService.getRentals(clientEmail, deviceName, returned, pastDue), HttpStatus.OK);
+        return new ResponseEntity<>(rentalService.getRentals(authentication.getName(), deviceName, returned, pastDue), HttpStatus.OK);
     }
 
     @Operation(summary = "Register a new rental")
@@ -70,14 +72,14 @@ public class RentalController {
                     ),
                     description = "Rental was registered successfully"
             ),
-            @ApiResponse(
-                    responseCode = "404",
-                    content = @Content(
-                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = EntitiesExceptionHandler.ExceptionFormat.class)
-                    ),
-                    description = "Client not found or device unit not found"
-            ),
+//            @ApiResponse(
+//                    responseCode = "404",
+//                    content = @Content(
+//                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+//                            schema = @Schema(implementation = EntitiesExceptionHandler.ExceptionFormat.class)
+//                    ),
+//                    description = "Client not found or device unit not found"
+//            ),
             @ApiResponse(
                     responseCode = "400",
                     content = @Content(
@@ -88,8 +90,11 @@ public class RentalController {
             )
     })
     @PostMapping("/create")
-    public ResponseEntity<RentalDTO> createRental(@Valid @RequestBody RentalRequestDTO rentalRequestDTO) {
-        return new ResponseEntity<>(rentalService.createRental(rentalRequestDTO), HttpStatus.CREATED);
+    public ResponseEntity<RentalDTO> createRental(
+            Authentication authentication,
+            @Valid @RequestBody RentalRequestDTO rentalRequestDTO
+    ) {
+        return new ResponseEntity<>(rentalService.createRental(authentication.getName(), rentalRequestDTO), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Register rental return")

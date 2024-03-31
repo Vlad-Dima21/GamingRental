@@ -1,5 +1,6 @@
 package com.vladima.gamingrental.controllers;
 
+import com.vladima.gamingrental.client.controllers.ClientController;
 import com.vladima.gamingrental.client.controllers.RentalController;
 import com.vladima.gamingrental.client.dto.RentalRequestDTO;
 import com.vladima.gamingrental.client.models.Client;
@@ -11,6 +12,8 @@ import com.vladima.gamingrental.games.models.Game;
 import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.helpers.EntityOperationException;
 import com.vladima.gamingrental.helpers.StringifyJSON;
+import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
+import com.vladima.gamingrental.security.configurations.TestConfigurationSecurity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,8 +23,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.text.MessageFormat;
@@ -35,6 +41,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(RentalController.class)
+@ContextConfiguration(classes = RentalController.class)
+@Import({TestConfigurationSecurity.class, EntitiesExceptionHandler.class})
 public class RentalControllerTests {
 
     @Autowired
@@ -49,7 +57,7 @@ public class RentalControllerTests {
 
     @BeforeEach
     public void init() {
-        client = new Client(1L, "ionut", "ion@email.com", "0729289182", List.of());
+        client = new Client(1L, "ionut", "ion@email.com", "0729289182", null, List.of());
         game = new Game(1L, "Roblox", "Sandbox", List.of());
         deviceBase = new DeviceBase(
                 1L, "PS5", "Sony", 2018,
@@ -62,13 +70,14 @@ public class RentalControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "test", password = "test")
     @DisplayName("Unit test for fetching rentals with a nonexistent client email that returns an error")
     public void whenInvalidName_getRentals_returnErrorJSON() throws Exception {
         var exception = new EntityOperationException(
             "Client not found",
             MessageFormat.format("Error fetching client with email {0}", client.getClientEmail()),
             HttpStatus.NOT_FOUND);
-        given(service.getRentals(client.getClientEmail(),null,null,false))
+        given(service.getRentals("test",null,null,false))
                 .willThrow(exception);
 
         mockMvc.perform(get("/api/rentals")
@@ -80,9 +89,10 @@ public class RentalControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "test", password = "test")
     @DisplayName("Unit test for fetching rentals that returns the list")
     public void givenFilters_getRentals_returnRentalsJSON() throws Exception {
-        given(service.getRentals(null, deviceBase.getDeviceBaseName(), null, false))
+        given(service.getRentals("test", deviceBase.getDeviceBaseName(), null, false))
                 .willReturn(client.getClientRentals().stream().map(Rental::toDTO).toList());
 
         mockMvc.perform(get("/api/rentals")
@@ -93,6 +103,7 @@ public class RentalControllerTests {
     }
 
     @Test
+    @WithMockUser(username = "test", password = "test")
     @DisplayName("Unit test for renting games that are not available that returns an error json")
     public void whenNoAvailableGameCopies_createRental_returnsErrorJSON() throws Exception {
         var exception = new EntityOperationException(
@@ -100,12 +111,12 @@ public class RentalControllerTests {
                 "Copies may not exist or be unavailable",
                 HttpStatus.BAD_REQUEST
         );
-        given(service.createRental(ArgumentMatchers.any()))
+        given(service.createRental(ArgumentMatchers.anyString(), ArgumentMatchers.any()))
                 .willThrow(exception);
         mockMvc.perform(post("/api/rentals/create")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(StringifyJSON.toJSON(
-                    new RentalRequestDTO(client.getClientId(), deviceBase.getDeviceBaseId(),
+                    new RentalRequestDTO(deviceBase.getDeviceBaseId(),
                     deviceBase.getDeviceGameCopies().stream().map(GameCopy::getGameCopyId).toList(),
                     45L)
                 )))

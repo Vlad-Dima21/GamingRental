@@ -3,6 +3,7 @@ package com.vladima.gamingrental.client.services.implementations;
 import com.vladima.gamingrental.client.dto.RentalDTO;
 import com.vladima.gamingrental.client.dto.RentalRequestDTO;
 import com.vladima.gamingrental.client.models.Rental;
+import com.vladima.gamingrental.client.repositories.ClientRepository;
 import com.vladima.gamingrental.client.repositories.RentalRepository;
 import com.vladima.gamingrental.client.services.ClientService;
 import com.vladima.gamingrental.client.services.RentalService;
@@ -25,12 +26,14 @@ import java.util.List;
 public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, RentalRepository> implements RentalService {
 
     private final ClientService clientService;
+    private final ClientRepository clientRepository;
     private final DeviceService deviceService;
     private final GameCopyService gameCopyService;
 
-    public RentalServiceImpl(RentalRepository repository, ClientService clientService, DeviceService deviceService, GameCopyService gameCopyService) {
+    public RentalServiceImpl(RentalRepository repository, ClientService clientService, ClientRepository clientRepository, DeviceService deviceService, GameCopyService gameCopyService) {
         super(repository);
         this.clientService = clientService;
+        this.clientRepository = clientRepository;
         this.deviceService = deviceService;
         this.gameCopyService = gameCopyService;
     }
@@ -50,8 +53,9 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
                 .toList();
     }
 
-    public RentalDTO createRental(RentalRequestDTO rentalRequestDTO) {
-        var client = clientService.getModelById(rentalRequestDTO.getClientId());
+    public RentalDTO createRental(String clientEmail, RentalRequestDTO rentalRequestDTO) {
+//        var client = clientService.getModelById(rentalRequestDTO.getClientId());
+        var client = clientRepository.findByClientEmail(clientEmail);
         Device device = deviceService.getModelById(rentalRequestDTO.getDeviceUnitId(), true);
         List<GameCopy> gameCopies = new ArrayList<>();
 

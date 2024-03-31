@@ -5,6 +5,8 @@ import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.client.services.implementations.ClientServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
 import com.vladima.gamingrental.helpers.StringifyJSON;
+import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
+import com.vladima.gamingrental.security.configurations.TestConfigurationSecurity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -16,8 +18,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -33,7 +37,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 
 @ExtendWith(MockitoExtension.class)
+@ContextConfiguration(classes = ClientController.class)
 @WebMvcTest(ClientController.class)
+@Import({TestConfigurationSecurity.class, EntitiesExceptionHandler.class})
 public class ClientControllerTests {
 
     @Autowired
@@ -47,8 +53,8 @@ public class ClientControllerTests {
 
     @BeforeEach
     public void init() {
-        client1 = new Client(1L, "Adrian", "adrian@email.com", "0720 000 000", List.of());
-        client2 = new Client(2L, "Vasile", "vasile@email.com", "0720 000 000", List.of());
+        client1 = new Client(1L, "Adrian", "adrian@email.com", "0720 000 000", null, List.of());
+        client2 = new Client(2L, "Vasile", "vasile@email.com", "0720 000 000", null, List.of());
     }
 
     @Test

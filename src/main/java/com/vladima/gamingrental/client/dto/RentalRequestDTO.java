@@ -17,8 +17,6 @@ import java.util.List;
 @Data
 @ValidateRentalRequest
 public class RentalRequestDTO {
-    @NotNull
-    private Long clientId;
 
     @NotNull
     private Long deviceUnitId;

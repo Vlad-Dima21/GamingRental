@@ -112,7 +112,7 @@ public class ConfigurationSecurity {
                 .authorizeHttpRequests(auth -> {
                             auth.requestMatchers(PUBLIC_ACCESS).permitAll();
                             auth.requestMatchers(ADMIN_ACCESS).hasRole("ADMIN");
-                            auth.requestMatchers(CLIENT_ACCESS).hasAnyRole("CLIENT", "ADMIN");
+                            auth.requestMatchers(CLIENT_ACCESS).hasAnyRole("CLIENT");
                             auth.anyRequest().hasAnyRole("ADMIN", "CLIENT");
                         }
                 )
@@ -135,4 +135,6 @@ public class ConfigurationSecurity {
         daoProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(daoProvider);
     }
+
+    //todo https://www.baeldung.com/spring-security-custom-authentication-failure-handler
 }

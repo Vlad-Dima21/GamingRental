@@ -8,7 +8,7 @@ import com.vladima.gamingrental.helpers.BaseService;
 import java.util.List;
 
 public interface RentalService extends BaseService<Rental, RentalDTO> {
-    List<RentalDTO> getRentals(String clientName, String deviceName, Boolean returned, boolean pastDue);
-    RentalDTO createRental(RentalRequestDTO rental);
+    List<RentalDTO> getRentals(String clientEmail, String deviceName, Boolean returned, boolean pastDue);
+    RentalDTO createRental(String clientEmail, RentalRequestDTO rental);
     RentalDTO rentalReturned(Long id);
 }
