@@ -3,9 +3,7 @@ package com.vladima.gamingrental.security.services.implementations;
 import com.vladima.gamingrental.client.repositories.ClientRepository;
 import com.vladima.gamingrental.helpers.BaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
-import com.vladima.gamingrental.security.dto.UserClientDTO;
-import com.vladima.gamingrental.security.dto.UserDTO;
-import com.vladima.gamingrental.security.dto.UserResponseDTO;
+import com.vladima.gamingrental.security.dto.*;
 import com.vladima.gamingrental.security.models.User;
 import com.vladima.gamingrental.security.repositories.RoleRepository;
 import com.vladima.gamingrental.security.repositories.UserRepository;
@@ -79,6 +77,14 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserDTO, UserReposito
 
         getRepository().save(newUser);
         return authenticateUser(userClientDTO);
+    }
+
+    @Override
+    public AdminResponseDTO loginAdmin(AdminDTO adminDTO) {
+        Authentication auth = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(adminDTO.getUserName(), adminDTO.getUserPassword())
+        );
+        return new AdminResponseDTO(generateTokenFromAuth(auth));
     }
 
     private UserResponseDTO authenticateUser(UserDTO userDTO) {

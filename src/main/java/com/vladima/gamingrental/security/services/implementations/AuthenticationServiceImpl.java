@@ -12,6 +12,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.regex.Pattern;
+
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements AuthenticationService {
@@ -21,6 +23,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        var emailPattern = Pattern.compile("^[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}$", Pattern.CASE_INSENSITIVE);
+        if (!emailPattern.matcher(username).matches()) {
+            return repository.findByAdminUsername(username).orElseThrow(() -> new EntityOperationException("User not found", "Invalid admin", HttpStatus.NOT_FOUND));
+        }
         return repository.findByClient_ClientEmail(username).orElseThrow(() -> new EntityOperationException("User not found", "Email not found", HttpStatus.NOT_FOUND));
     }
 }

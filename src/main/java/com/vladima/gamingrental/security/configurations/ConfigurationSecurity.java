@@ -40,12 +40,6 @@ import java.util.Collections;
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity
-@SecurityScheme(
-        name = "Bearer Authentication",
-        type = SecuritySchemeType.HTTP,
-        bearerFormat = "JWT",
-        scheme = "bearer"
-)
 @RequiredArgsConstructor
 public class ConfigurationSecurity {
 
@@ -118,7 +112,7 @@ public class ConfigurationSecurity {
                 .authorizeHttpRequests(auth -> {
                             auth.requestMatchers(PUBLIC_ACCESS).permitAll();
                             auth.requestMatchers(ADMIN_ACCESS).hasRole("ADMIN");
-                            auth.requestMatchers(CLIENT_ACCESS).hasRole("CLIENT");
+                            auth.requestMatchers(CLIENT_ACCESS).hasAnyRole("CLIENT", "ADMIN");
                             auth.anyRequest().hasAnyRole("ADMIN", "CLIENT");
                         }
                 )

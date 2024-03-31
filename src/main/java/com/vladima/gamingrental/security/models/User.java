@@ -29,6 +29,9 @@ public class User implements UserDetails, BaseModel<UserDTO> {
     @Column(nullable = false)
     private String userPassword;
 
+    @Column(unique = true)
+    private String adminUsername;
+
     @OneToOne(mappedBy = "clientUser", optional = false, cascade = CascadeType.ALL)
     private Client client;
 
@@ -42,9 +45,14 @@ public class User implements UserDetails, BaseModel<UserDTO> {
     }
 
     public User(String userEmail, String userPassword) {
-        throw new UnsupportedOperationException("Only client users can exist");
+        throw new UnsupportedOperationException("Only client users can be created using an email");
     }
 
+    public User(String adminUsername, String userPassword, Role authority) {
+        this.adminUsername = adminUsername;
+        this.userPassword = userPassword;
+        this.authority = authority;
+    }
 
     @Override
     public Set<Role> getAuthorities() {
@@ -58,7 +66,7 @@ public class User implements UserDetails, BaseModel<UserDTO> {
 
     @Override
     public String getUsername() {
-        return client.getClientEmail();
+        return adminUsername == null ? client.getClientEmail() : adminUsername;
     }
 
     @Override

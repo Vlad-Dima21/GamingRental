@@ -25,4 +25,8 @@ public class Role implements GrantedAuthority {
 
     @OneToMany(mappedBy = "authority", cascade = CascadeType.ALL)
     private List<User> roleUsers;
+
+    public Role(String authority) {
+        this.authority = authority;
+    }
 }

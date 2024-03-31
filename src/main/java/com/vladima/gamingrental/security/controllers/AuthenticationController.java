@@ -1,9 +1,7 @@
 package com.vladima.gamingrental.security.controllers;
 
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
-import com.vladima.gamingrental.security.dto.UserClientDTO;
-import com.vladima.gamingrental.security.dto.UserDTO;
-import com.vladima.gamingrental.security.dto.UserResponseDTO;
+import com.vladima.gamingrental.security.dto.*;
 import com.vladima.gamingrental.security.services.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -82,5 +80,29 @@ public class AuthenticationController {
     @PostMapping("/register/client")
     public ResponseEntity<UserResponseDTO> registerClient(@Valid @RequestBody UserClientDTO userClientDTO) {
         return new ResponseEntity<>(userService.registerClient(userClientDTO), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Login admin")
+    @ApiResponses(value = {
+            @ApiResponse(
+                    responseCode = "200",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = AdminResponseDTO.class)
+                    ),
+                    description = "Admin logged in"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = EntitiesExceptionHandler.ExceptionFormat.class)
+                    ),
+                    description = "Admin not found"
+            )
+    })
+    @PostMapping("/admin/login")
+    public ResponseEntity<AdminResponseDTO> loginAdmin(@Valid @RequestBody AdminDTO adminDTO) {
+        return ResponseEntity.ok(userService.loginAdmin(adminDTO));
     }
 }
