@@ -6,6 +6,8 @@ import com.vladima.gamingrental.device.models.DeviceBase;
 import com.vladima.gamingrental.device.services.DeviceBaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
 import com.vladima.gamingrental.helpers.StringifyJSON;
+import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
+import com.vladima.gamingrental.security.configurations.TestConfigurationSecurity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -15,8 +17,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -28,6 +32,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(DeviceBaseController.class)
+@ContextConfiguration(classes = DeviceBaseController.class)
+@Import({TestConfigurationSecurity.class, EntitiesExceptionHandler.class})
 public class DeviceBaseControllerTests {
 
     @Autowired

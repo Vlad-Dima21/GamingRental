@@ -48,7 +48,7 @@ public class ConfigurationSecurity {
     private final String[] PUBLIC_ACCESS = {
             "/api/auth/**",
             "/api/devices",
-            "/api/devices/**",
+            "/api/devices/{id}",
             "/api/units/**",
             "/api/games",
 
@@ -110,9 +110,9 @@ public class ConfigurationSecurity {
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> {
-                            auth.requestMatchers(PUBLIC_ACCESS).permitAll();
                             auth.requestMatchers(ADMIN_ACCESS).hasRole("ADMIN");
                             auth.requestMatchers(CLIENT_ACCESS).hasAnyRole("CLIENT");
+                            auth.requestMatchers(PUBLIC_ACCESS).permitAll();
                             auth.anyRequest().hasAnyRole("ADMIN", "CLIENT");
                         }
                 )

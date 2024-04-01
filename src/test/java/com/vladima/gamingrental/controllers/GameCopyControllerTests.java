@@ -6,6 +6,8 @@ import com.vladima.gamingrental.games.dto.GameCopyDTO;
 import com.vladima.gamingrental.games.models.Game;
 import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.games.services.GameCopyService;
+import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
+import com.vladima.gamingrental.security.configurations.TestConfigurationSecurity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.List;
@@ -25,6 +29,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 
 @ExtendWith(MockitoExtension.class)
 @WebMvcTest(GameCopyController.class)
+@ContextConfiguration(classes = GameCopyController.class)
+@Import({TestConfigurationSecurity.class, EntitiesExceptionHandler.class})
 public class GameCopyControllerTests {
 
     @Autowired
