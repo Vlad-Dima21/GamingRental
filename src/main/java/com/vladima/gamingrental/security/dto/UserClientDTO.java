@@ -11,10 +11,10 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class UserClientDTO extends UserDTO {
 
     public UserClientDTO(@NotBlank @Email(message = "Invalid email", regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$") String userEmail, @NotBlank @Size(min = 3, max = 30, message = "The password should be 3-30 characters long") String userPassword, String userName, String userPhone) {

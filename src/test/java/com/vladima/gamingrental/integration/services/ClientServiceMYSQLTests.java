@@ -1,4 +1,4 @@
-package com.vladima.gamingrental.services;
+package com.vladima.gamingrental.integration.services;
 
 import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.client.repositories.ClientRepository;
@@ -16,9 +16,9 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
-@ActiveProfiles("test")
+@ActiveProfiles("mysql")
 @Transactional
-public class ClientServiceMySqlIntegrationTests {
+public class ClientServiceMYSQLTests {
 
     @Autowired
     private ClientRepository clientRepository;

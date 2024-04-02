@@ -1,6 +1,5 @@
-package com.vladima.gamingrental.controllers;
+package com.vladima.gamingrental.unit.controllers;
 
-import com.vladima.gamingrental.client.controllers.ClientController;
 import com.vladima.gamingrental.client.controllers.RentalController;
 import com.vladima.gamingrental.client.dto.RentalRequestDTO;
 import com.vladima.gamingrental.client.models.Client;
@@ -13,7 +12,7 @@ import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.helpers.EntityOperationException;
 import com.vladima.gamingrental.helpers.StringifyJSON;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
-import com.vladima.gamingrental.security.configurations.TestConfigurationSecurity;
+import com.vladima.gamingrental.unit.configurations.TestConfigurationSecurity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

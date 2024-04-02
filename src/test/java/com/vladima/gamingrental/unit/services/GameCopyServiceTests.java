@@ -1,4 +1,4 @@
-package com.vladima.gamingrental.services;
+package com.vladima.gamingrental.unit.services;
 
 import com.vladima.gamingrental.device.services.DeviceBaseService;
 import com.vladima.gamingrental.games.repositories.GameCopyRepository;

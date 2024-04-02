@@ -1,4 +1,4 @@
-package com.vladima.gamingrental.controllers;
+package com.vladima.gamingrental.unit.controllers;
 
 import com.vladima.gamingrental.device.controllers.DeviceBaseController;
 import com.vladima.gamingrental.device.models.Device;
@@ -7,7 +7,7 @@ import com.vladima.gamingrental.device.services.DeviceBaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
 import com.vladima.gamingrental.helpers.StringifyJSON;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
-import com.vladima.gamingrental.security.configurations.TestConfigurationSecurity;
+import com.vladima.gamingrental.unit.configurations.TestConfigurationSecurity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

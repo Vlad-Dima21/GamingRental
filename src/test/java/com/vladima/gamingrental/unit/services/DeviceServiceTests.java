@@ -1,4 +1,4 @@
-package com.vladima.gamingrental.services;
+package com.vladima.gamingrental.unit.services;
 
 import com.vladima.gamingrental.device.models.Device;
 import com.vladima.gamingrental.device.models.DeviceBase;

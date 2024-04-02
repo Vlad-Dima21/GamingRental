@@ -1,4 +1,4 @@
-package com.vladima.gamingrental.security.configurations;
+package com.vladima.gamingrental.unit.configurations;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
@@ -18,14 +18,8 @@ public class TestConfigurationSecurity {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> {
-                            auth.anyRequest().permitAll();
-                        }
-                )
-                .sessionManagement(httpSecuritySessionManagementConfigurer -> {
-                    httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-                })
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
+                .sessionManagement(httpSecuritySessionManagementConfigurer -> httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
-
     }
 }

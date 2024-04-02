@@ -1,4 +1,4 @@
-package com.vladima.gamingrental.services;
+package com.vladima.gamingrental.unit.services;
 
 import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.client.repositories.ClientRepository;

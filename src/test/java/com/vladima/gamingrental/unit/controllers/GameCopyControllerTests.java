@@ -1,13 +1,12 @@
-package com.vladima.gamingrental.controllers;
+package com.vladima.gamingrental.unit.controllers;
 
 import com.vladima.gamingrental.device.models.DeviceBase;
 import com.vladima.gamingrental.games.controllers.GameCopyController;
-import com.vladima.gamingrental.games.dto.GameCopyDTO;
 import com.vladima.gamingrental.games.models.Game;
 import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.games.services.GameCopyService;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
-import com.vladima.gamingrental.security.configurations.TestConfigurationSecurity;
+import com.vladima.gamingrental.unit.configurations.TestConfigurationSecurity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
