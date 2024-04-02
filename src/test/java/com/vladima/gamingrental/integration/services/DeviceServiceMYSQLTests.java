@@ -46,7 +46,7 @@ public class DeviceServiceMYSQLTests {
     }
 
     @Test
-    @DisplayName("Unit test for fetching the units for a given device by its name that returns the list of available units")
+    @DisplayName("Integration test for fetching the units for a given device by its name that returns the list of available units")
     public void givenDeviceBaseName_getByDeviceBaseName_returnsAvailableUnits() {
         var deviceBase = sampledDevice.getDeviceBase();
         var expectedUnits = deviceBase.getDevices().stream()

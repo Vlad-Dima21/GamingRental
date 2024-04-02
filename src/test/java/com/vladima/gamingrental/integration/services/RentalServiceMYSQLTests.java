@@ -45,7 +45,7 @@ public class RentalServiceMYSQLTests {
     }
 
     @Test
-    @DisplayName("Unit test for fetching rentals by a client with an invalid email that throws an error")
+    @DisplayName("Integration test for fetching rentals by a client with an invalid email that throws an error")
     public void whenInvalidEmail_getRentals_throwsEntityOperationException() {
         var invalidEmail = "test@email.com";
         var expected = new EntityOperationException(
@@ -60,7 +60,7 @@ public class RentalServiceMYSQLTests {
     }
 
     @Test
-    @DisplayName("Unit test for fetching rentals with an nonexistent device name that throws an error")
+    @DisplayName("Integration test for fetching rentals with an nonexistent device name that throws an error")
     public void whenInvalidDeviceName_getRentals_throwsEntityOperationException() {
         var invalidDevice = "Spaghetti";
         var exception = assertThrows(EntityOperationException.class,
@@ -70,7 +70,7 @@ public class RentalServiceMYSQLTests {
     }
 
     @Test
-    @DisplayName("Unit test for creating a rental with an invalid device unit id that throws an error")
+    @DisplayName("Integration test for creating a rental with an invalid device unit id that throws an error")
     public void whenInvalidDeviceId_createRequest_throwsEntityOperationException() {
         var invalidId = Long.MAX_VALUE;
         var expected = new EntityOperationException(
@@ -83,7 +83,7 @@ public class RentalServiceMYSQLTests {
     }
 
     @Test
-    @DisplayName("Unit test for creating a rental with invalid game copies ids that throws an error")
+    @DisplayName("Integration test for creating a rental with invalid game copies ids that throws an error")
     public void whenInvalidGameCopiesIds_createRequest_throwsEntityOperationException() {
         var expected = new EntityOperationException(
                 "Invalid game copies",
@@ -97,7 +97,7 @@ public class RentalServiceMYSQLTests {
     }
 
     @Test
-    @DisplayName("Unit test for marking a nonexistent rental as returned")
+    @DisplayName("Integration test for marking a nonexistent rental as returned")
     public void whenRentalDoesNotExist_rentalReturned_throwsEntityOperationException() {
         assertEquals("Rental not found", assertThrows(EntityOperationException.class, () -> rentalService.rentalReturned(Long.MAX_VALUE)).getMessage());
     }

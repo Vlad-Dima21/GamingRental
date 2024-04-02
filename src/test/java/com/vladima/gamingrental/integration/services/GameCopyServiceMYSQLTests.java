@@ -23,7 +23,7 @@ public class GameCopyServiceMYSQLTests {
     private GameCopyService service;
 
     @Test
-    @DisplayName("Unit test for fetching the game copies for a specific game (by id) that throws an error")
+    @DisplayName("Integration test for fetching the game copies for a specific game (by id) that throws an error")
     public void givenInvalidGameId_getCopies_throwsEntityOperationException() {
         var maxId = Long.MAX_VALUE;
         var expected = new EntityOperationException(

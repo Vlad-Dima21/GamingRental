@@ -85,7 +85,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, Client
         }
         client.setClientName(clientDTO.getClientName());
         client.setClientEmail(clientDTO.getClientEmail());
-        client.setClientPhone(client.getClientPhone());
+        client.setClientPhone(clientDTO.getClientPhone());
         return client.toDTO();
     }
 
