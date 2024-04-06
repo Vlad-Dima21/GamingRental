@@ -22,30 +22,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
-public class ClientControllerMYSQLTests extends BaseControllerMYSQLTests {
+public class ClientControllerMYSQLTests extends BaseControllerMYSQLTests<Client> {
 
     @Autowired
     private ClientRepository repository;
 
-    private Client sampledClient;
+    @Override
+    protected ClientRepository getRepository() {
+        return repository;
+    }
 
-    @Before
     public void init() throws Exception {
-        var random = new Random();
-        var models = repository.findAll();
-        sampledClient = models.get(random.nextInt(models.size()));
+        super.init();
         retrieveAdminToken(new AdminDTO("admin", "admin"));
     }
 
     @Test
     @DisplayName("Integration test for fetching client by id that returns the client")
     public void whenValidId_getClientById_returnsClient() throws Exception {
-        mockMvc.perform(get("/api/clients/{id}", sampledClient.getClientId())
+        mockMvc.perform(get("/api/clients/{id}", sampledModel.getClientId())
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.clientName").value(sampledClient.getClientName()))
-                .andExpect(jsonPath("$.clientEmail").value(sampledClient.getClientEmail()));
+                .andExpect(jsonPath("$.clientName").value(sampledModel.getClientName()))
+                .andExpect(jsonPath("$.clientEmail").value(sampledModel.getClientEmail()));
     }
 
     @Test
@@ -74,7 +74,7 @@ public class ClientControllerMYSQLTests extends BaseControllerMYSQLTests {
         );
         mockMvc.perform(post("/api/clients/create")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(StringifyJSON.toJSON(sampledClient.toDTO()))
+                        .content(StringifyJSON.toJSON(sampledModel.toDTO()))
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken))
                 .andDo(print())
                 .andExpect(status().isConflict())
@@ -88,7 +88,7 @@ public class ClientControllerMYSQLTests extends BaseControllerMYSQLTests {
         mockMvc.perform(post("/api/clients/create")
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(StringifyJSON.toJSON(new Client(sampledClient.getClientName(), sampledClient.getClientEmail(), null).toDTO())))
+                        .content(StringifyJSON.toJSON(new Client(sampledModel.getClientName(), sampledModel.getClientEmail(), null).toDTO())))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message").value("Client must have a phone number"));
@@ -98,11 +98,11 @@ public class ClientControllerMYSQLTests extends BaseControllerMYSQLTests {
     @DisplayName("Integration test for filtering clients by name that returns a list of clients")
     public void whenNameFiltered_getFilteredClients_returnClientsJSON() throws Exception {
         mockMvc.perform(get("/api/clients")
-                        .param("name", sampledClient.getClientName())
+                        .param("name", sampledModel.getClientName())
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].clientEmail").value(sampledClient.getClientEmail()));
+                .andExpect(jsonPath("$[0].clientEmail").value(sampledModel.getClientEmail()));
     }
 
     @Test
@@ -125,15 +125,15 @@ public class ClientControllerMYSQLTests extends BaseControllerMYSQLTests {
     @Test
     @DisplayName("Integration test for updating a client's info that returns the client back")
     public void givenClient_updateClient_returnsClient() throws Exception {
-        var modifiedClient = sampledClient.toDTO();
+        var modifiedClient = sampledModel.toDTO();
         modifiedClient.setClientPhone("0720 234 560");
-        mockMvc.perform(put("/api/clients/update/{id}", sampledClient.getClientId())
+        mockMvc.perform(put("/api/clients/update/{id}", sampledModel.getClientId())
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(StringifyJSON.toJSON(modifiedClient)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.clientEmail").value(sampledClient.getClientEmail()))
+                .andExpect(jsonPath("$.clientEmail").value(sampledModel.getClientEmail()))
                 .andExpect(jsonPath("$.clientPhone").value(modifiedClient.getClientPhone()));
     }
 

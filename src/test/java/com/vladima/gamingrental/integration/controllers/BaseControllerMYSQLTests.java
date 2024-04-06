@@ -34,9 +34,7 @@ public abstract class BaseControllerMYSQLTests<Model> {
 
     protected Model sampledModel;
 
-    protected JpaRepository<Model, Long> getRepository() {
-        return null;
-    }
+    protected abstract JpaRepository<Model, Long> getRepository();
 
     @Before
     public void init() throws Exception {

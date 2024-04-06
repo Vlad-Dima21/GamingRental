@@ -1,14 +1,11 @@
 package com.vladima.gamingrental.integration.controllers;
 
-import com.vladima.gamingrental.device.dto.DeviceDTO;
 import com.vladima.gamingrental.device.models.Device;
 import com.vladima.gamingrental.device.repositories.DeviceRepository;
 import com.vladima.gamingrental.helpers.EntityOperationException;
 import com.vladima.gamingrental.security.dto.UserClientDTO;
-import com.vladima.gamingrental.security.dto.UserDTO;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.json.JacksonJsonParser;
@@ -23,19 +20,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class DeviceControllerMYSQLTests extends BaseControllerMYSQLTests{
+public class DeviceControllerMYSQLTests extends BaseControllerMYSQLTests<Device>{
 
     @Autowired
     private DeviceRepository repository;
 
-    private Device sampledDevice;
+    @Override
+    protected DeviceRepository getRepository() {
+        return repository;
+    }
 
-    @Before
     public void init() throws Exception {
-        var random = new Random();
-        var models = repository.findAll();
-        sampledDevice = models.get(random.nextInt(models.size()));
-        retrieveUserToken(new UserClientDTO("test@email.com", "test", "test", "0720 000 000"));
+        super.init();
+        retrieveUserToken(new UserClientDTO("test@email.com", "test", "test", "0720 345 999"));
     }
 
     @Test
@@ -56,7 +53,7 @@ public class DeviceControllerMYSQLTests extends BaseControllerMYSQLTests{
     @Test
     @DisplayName("Integration test for fetching units that are available")
     public void whenFilteredByAvailability_getByDeviceBaseName_returnUnitsJSON() throws Exception {
-        var deviceBaseName = sampledDevice.getDeviceBase().getDeviceBaseName();
+        var deviceBaseName = sampledModel.getDeviceBase().getDeviceBaseName();
         var stringResult = mockMvc.perform(get("/api/units/of")
                         .param("name", deviceBaseName)
                         .param("availableOnly", String.valueOf(true)))

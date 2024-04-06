@@ -6,7 +6,6 @@ import com.vladima.gamingrental.device.repositories.DeviceBaseRepository;
 import com.vladima.gamingrental.helpers.EntityOperationException;
 import com.vladima.gamingrental.helpers.StringifyJSON;
 import com.vladima.gamingrental.security.dto.AdminDTO;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +16,6 @@ import org.springframework.http.MediaType;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -25,25 +23,25 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class DeviceBaseControllerMYSQLTests extends BaseControllerMYSQLTests{
+public class DeviceBaseControllerMYSQLTests extends BaseControllerMYSQLTests<DeviceBase>{
 
     @Autowired
     private DeviceBaseRepository repository;
 
-    private DeviceBase sampledDevice;
+    @Override
+    protected DeviceBaseRepository getRepository() {
+        return repository;
+    }
 
-    @Before
     public void init() throws Exception {
-        var random = new Random();
-        var models = repository.findAll();
-        sampledDevice = models.get(random.nextInt(models.size()));
+        super.init();
         retrieveAdminToken(new AdminDTO("admin", "admin"));
     }
 
     @Test
     @DisplayName("Integration test for creating a new device with an already used name that returns an error json")
     public void  whenExistingDeviceName_createDevice_returnErrorJSON() throws Exception {
-        var dto = new DeviceBaseDTO(sampledDevice.getDeviceBaseName(), sampledDevice.getDeviceBaseProducer(), sampledDevice.getDeviceBaseYearOfRelease());
+        var dto = new DeviceBaseDTO(sampledModel.getDeviceBaseName(), sampledModel.getDeviceBaseProducer(), sampledModel.getDeviceBaseYearOfRelease());
         var exception = new EntityOperationException(
                 "Device not added",
                 "A device with the same name already exists",
@@ -61,7 +59,7 @@ public class DeviceBaseControllerMYSQLTests extends BaseControllerMYSQLTests{
     @Test
     @DisplayName("Integration test for fetching devices given a filter")
     public void whenFilteredByName_getFilteredDevices_returnDevicesJSON() throws Exception {
-        var nameFilter = sampledDevice.getDeviceBaseName().substring(0, 2);
+        var nameFilter = sampledModel.getDeviceBaseName().substring(0, 2);
         var stringResults = mockMvc.perform(get("/api/devices")
                         .param("name", nameFilter))
                 .andDo(print())
@@ -69,14 +67,14 @@ public class DeviceBaseControllerMYSQLTests extends BaseControllerMYSQLTests{
                 .andExpect(jsonPath("$").isArray())
                 .andReturn().getResponse().getContentAsString();
         var result = new JacksonJsonParser().parseList(stringResults)
-                .stream().filter(d -> Objects.equals(((LinkedHashMap<?, ?>)d).get("deviceBaseName"), sampledDevice.getDeviceBaseName())).toList();
+                .stream().filter(d -> Objects.equals(((LinkedHashMap<?, ?>)d).get("deviceBaseName"), sampledModel.getDeviceBaseName())).toList();
         assertNotNull(result);
     }
 
     @Test
     @DisplayName("Unit test for deleting a device")
     public void whenValidDevice_deleteDevice_noContent() throws Exception {
-        mockMvc.perform(delete("/api/devices/remove/{id}", sampledDevice.getDeviceBaseId())
+        mockMvc.perform(delete("/api/devices/remove/{id}", sampledModel.getDeviceBaseId())
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken))
                 .andDo(print())
                 .andExpect(status().isNoContent());
