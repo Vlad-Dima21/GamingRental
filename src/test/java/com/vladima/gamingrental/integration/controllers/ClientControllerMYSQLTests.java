@@ -126,7 +126,7 @@ public class ClientControllerMYSQLTests extends BaseControllerMYSQLTests {
     @DisplayName("Integration test for updating a client's info that returns the client back")
     public void givenClient_updateClient_returnsClient() throws Exception {
         var modifiedClient = sampledClient.toDTO();
-        modifiedClient.setClientPhone("0720 000 000");
+        modifiedClient.setClientPhone("0720 234 560");
         mockMvc.perform(put("/api/clients/update/{id}", sampledClient.getClientId())
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken)
                         .contentType(MediaType.APPLICATION_JSON)

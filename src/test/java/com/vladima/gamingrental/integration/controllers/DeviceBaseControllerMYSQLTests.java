@@ -10,13 +10,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.json.JacksonJsonParser;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
+import java.util.LinkedHashMap;
+import java.util.Objects;
 import java.util.Random;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -52,5 +56,29 @@ public class DeviceBaseControllerMYSQLTests extends BaseControllerMYSQLTests{
                 .andDo(print())
                 .andExpect(status().isConflict())
                 .andExpect(jsonPath("$.message").value(exception.getMessage()));
+    }
+
+    @Test
+    @DisplayName("Integration test for fetching devices given a filter")
+    public void whenFilteredByName_getFilteredDevices_returnDevicesJSON() throws Exception {
+        var nameFilter = sampledDevice.getDeviceBaseName().substring(0, 2);
+        var stringResults = mockMvc.perform(get("/api/devices")
+                        .param("name", nameFilter))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$").isArray())
+                .andReturn().getResponse().getContentAsString();
+        var result = new JacksonJsonParser().parseList(stringResults)
+                .stream().filter(d -> Objects.equals(((LinkedHashMap<?, ?>)d).get("deviceBaseName"), sampledDevice.getDeviceBaseName())).toList();
+        assertNotNull(result);
+    }
+
+    @Test
+    @DisplayName("Unit test for deleting a device")
+    public void whenValidDevice_deleteDevice_noContent() throws Exception {
+        mockMvc.perform(delete("/api/devices/remove/{id}", sampledDevice.getDeviceBaseId())
+                        .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken))
+                .andDo(print())
+                .andExpect(status().isNoContent());
     }
 }
