@@ -13,7 +13,9 @@ import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.games.services.GameCopyService;
 import com.vladima.gamingrental.helpers.BaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
+import com.vladima.gamingrental.helpers.SortDirection;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -30,16 +32,19 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
     private final DeviceService deviceService;
     private final GameCopyService gameCopyService;
 
+    private final int PAGE_SIZE = 10;
+
     public RentalServiceImpl(RentalRepository repository, ClientService clientService, ClientRepository clientRepository, DeviceService deviceService, GameCopyService gameCopyService) {
         super(repository);
         this.clientService = clientService;
         this.clientRepository = clientRepository;
         this.deviceService = deviceService;
         this.gameCopyService = gameCopyService;
-    }
+}
 
     @Override
-    public List<RentalDTO> getRentals(String clientEmail, String deviceName, Boolean returned, boolean pastDue) {
+    public List<RentalDTO> getRentals(String clientEmail, String deviceName, Boolean returned, boolean pastDue, Integer page, SortDirection sort) {
+        var pageRequest = PageRequest.of(page != null ? page - 1 : 0, PAGE_SIZE);
         if (clientEmail != null) clientService.getByEmail(clientEmail);
         if (deviceName != null && deviceService.getByDeviceBaseName(deviceName, false).isEmpty()) {
             throw new EntityOperationException(
@@ -48,7 +53,8 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
                 HttpStatus.NOT_FOUND
             );
         }
-        return getRepository().getRentals(clientEmail, deviceName, returned, pastDue)
+        pageRequest = sort != null ? pageRequest.withSort(sort.by("rentalReturnDate")): pageRequest;
+        return getRepository().getRentals(clientEmail, deviceName, returned, pastDue, pageRequest)
                 .stream().map(Rental::toDTO)
                 .toList();
     }

@@ -3,6 +3,7 @@ package com.vladima.gamingrental.client.controllers;
 import com.vladima.gamingrental.client.dto.RentalDTO;
 import com.vladima.gamingrental.client.dto.RentalRequestDTO;
 import com.vladima.gamingrental.client.services.RentalService;
+import com.vladima.gamingrental.helpers.SortDirection;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -57,9 +58,11 @@ public class RentalController {
 //        @RequestParam(required = false) @Parameter(description = "Client Email") String clientEmail,
         @RequestParam(required = false) @Parameter(description = "Device Name") String  deviceName,
         @RequestParam(required = false) @Parameter(description = "Rental is returned") Boolean returned,
-        @RequestParam(defaultValue = "false") @Parameter(description = "Only rentals that are past due") boolean pastDue
+        @RequestParam(defaultValue = "false") @Parameter(description = "Only rentals that are past due") boolean pastDue,
+        @RequestParam(required = false) @Parameter(description = "Page number") @Min(1) Integer page,
+        @RequestParam(required = false) @Parameter(description = "Sort by return date") SortDirection sort
     ) {
-        return new ResponseEntity<>(rentalService.getRentals(authentication.getName(), deviceName, returned, pastDue), HttpStatus.OK);
+        return new ResponseEntity<>(rentalService.getRentals(authentication.getName(), deviceName, returned, pastDue, page, sort), HttpStatus.OK);
     }
 
     @Operation(summary = "Register a new rental")

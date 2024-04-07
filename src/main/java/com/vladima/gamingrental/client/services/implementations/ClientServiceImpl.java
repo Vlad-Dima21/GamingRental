@@ -6,7 +6,10 @@ import com.vladima.gamingrental.client.repositories.ClientRepository;
 import com.vladima.gamingrental.client.services.ClientService;
 import com.vladima.gamingrental.helpers.BaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
+import com.vladima.gamingrental.helpers.PageableResponseDTO;
+import com.vladima.gamingrental.helpers.SortDirection;
 import jakarta.transaction.Transactional;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +22,28 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, Client
 
     public ClientServiceImpl(ClientRepository repository) {
         super(repository);
+    }
+
+    private final int PAGE_SIZE = 10;
+
+    @Override
+    public PageableResponseDTO<ClientDTO> getFiltered(String email, String name, Integer page, SortDirection sort) {
+        var pageRequest = PageRequest.of(page != null ? page - 1 : 0, PAGE_SIZE);
+        pageRequest = sort != null ? pageRequest.withSort(sort.by("clientName")): pageRequest;
+        if (email == null && name == null) {
+            return getAllPageable(pageRequest);
+        }
+        if (email != null) {
+            return new PageableResponseDTO<>(1, List.of(getByEmail(email)));
+        }
+        return getByName(name, pageRequest);
+    }
+
+    public PageableResponseDTO<ClientDTO> getAllPageable(PageRequest pageRequest) {
+        var result =  getRepository().findAll(pageRequest);
+        var items = result.stream().map(Client::toDTO).toList();
+        var total = result.getTotalPages();
+        return new PageableResponseDTO<>(total, items);
     }
 
     @Override
@@ -35,11 +60,12 @@ public class ClientServiceImpl extends BaseServiceImpl<Client, ClientDTO, Client
     }
 
     @Override
-    public List<ClientDTO> getByName(String name) {
-        return getRepository().findByClientNameContaining(name)
-                .stream()
+    public PageableResponseDTO<ClientDTO> getByName(String name, PageRequest pageRequest) {
+        var result = getRepository().findByClientNameContaining(name, pageRequest);
+        var items = result.stream()
                 .map(Client::toDTO)
                 .toList();
+        return new PageableResponseDTO<>(result.getTotalPages(), items);
     }
 
     @Override

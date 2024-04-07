@@ -30,11 +30,6 @@ public class DeviceControllerMYSQLTests extends BaseControllerMYSQLTests<Device>
         return repository;
     }
 
-    public void init() throws Exception {
-        super.init();
-        retrieveUserToken(new UserClientDTO("test@email.com", "test", "test", "0720 345 999"));
-    }
-
     @Test
     @DisplayName("Integration test for fetching units based on the device id")
     public void whenInvalidId_getByDeviceBaseId_returnErrorJSON() throws Exception {

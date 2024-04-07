@@ -76,7 +76,7 @@ public class RentalControllerTests {
             "Client not found",
             MessageFormat.format("Error fetching client with email {0}", client.getClientEmail()),
             HttpStatus.NOT_FOUND);
-        given(service.getRentals("test",null,null,false))
+        given(service.getRentals("test",null,null,false, null, null))
                 .willThrow(exception);
 
         mockMvc.perform(get("/api/rentals")
@@ -91,7 +91,7 @@ public class RentalControllerTests {
     @WithMockUser(username = "test", password = "test")
     @DisplayName("Unit test for fetching rentals that returns the list")
     public void givenFilters_getRentals_returnRentalsJSON() throws Exception {
-        given(service.getRentals("test", deviceBase.getDeviceBaseName(), null, false))
+        given(service.getRentals("test", deviceBase.getDeviceBaseName(), null, false, null, null))
                 .willReturn(client.getClientRentals().stream().map(Rental::toDTO).toList());
 
         mockMvc.perform(get("/api/rentals")

@@ -54,7 +54,7 @@ public class RentalServiceMYSQLTests {
             HttpStatus.NOT_FOUND
         );
         var exception = assertThrows(EntityOperationException.class,
-                () -> rentalService.getRentals(invalidEmail, "", false, false)
+                () -> rentalService.getRentals(invalidEmail, "", false, false, null, null)
         );
         assertEquals(expected, exception);
     }
@@ -64,7 +64,7 @@ public class RentalServiceMYSQLTests {
     public void whenInvalidDeviceName_getRentals_throwsEntityOperationException() {
         var invalidDevice = "Spaghetti";
         var exception = assertThrows(EntityOperationException.class,
-                () -> rentalService.getRentals(sampledClient.getClientEmail(), invalidDevice, false, false)
+                () -> rentalService.getRentals(sampledClient.getClientEmail(), invalidDevice, false, false, null, null)
         );
         assertEquals(MessageFormat.format("No such device as {0}", invalidDevice), exception.getExtraInfo());
     }

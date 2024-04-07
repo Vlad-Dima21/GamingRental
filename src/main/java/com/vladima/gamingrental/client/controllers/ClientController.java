@@ -1,9 +1,9 @@
 package com.vladima.gamingrental.client.controllers;
 
 import com.vladima.gamingrental.client.dto.ClientDTO;
-import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.client.services.ClientService;
-import com.vladima.gamingrental.helpers.EntityOperationException;
+import com.vladima.gamingrental.helpers.PageableResponseDTO;
+import com.vladima.gamingrental.helpers.SortDirection;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -75,17 +75,13 @@ public class ClientController {
             )
     })
     @GetMapping
-    public ResponseEntity<List<ClientDTO>> getFilteredClients(
-        @RequestParam(required = false) @Parameter(description = "Filtered by full email") String email,
-        @RequestParam(required = false) @Parameter(description = "Filtered by name (may be contained)") String name)
+    public ResponseEntity<PageableResponseDTO<ClientDTO>> getFilteredClients(
+            @RequestParam(required = false) @Parameter(description = "Filtered by full email") String email,
+            @RequestParam(required = false) @Parameter(description = "Filtered by name (may be contained)") String name,
+            @RequestParam(required = false) @Parameter(description = "List page number") @Min(1) Integer page,
+            @RequestParam(required = false) @Parameter(description = "Sort clients by name") SortDirection sort)
     {
-        if (email == null && name == null) {
-            return new ResponseEntity<>(clientService.getAll(), HttpStatus.OK);
-        }
-        if (email != null) {
-            return new ResponseEntity<>(List.of(clientService.getByEmail(email)), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(clientService.getByName(name), HttpStatus.OK);
+        return ResponseEntity.ok(clientService.getFiltered(email, name, page, sort));
     }
 
     @Operation(summary = "Add a new client")

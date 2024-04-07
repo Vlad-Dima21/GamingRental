@@ -1,9 +1,11 @@
 package com.vladima.gamingrental.helpers;
 
+import org.springframework.data.domain.PageRequest;
+
 import java.util.List;
 
 public interface BaseService<Model extends BaseModel<ModelDTO>, ModelDTO extends BaseDTO<Model>> {
-    List<ModelDTO> getAll();
+    List<ModelDTO> getAll(PageRequest pageRequest);
     Model getModelById(Long id);
     ModelDTO getById(Long id);
     ModelDTO create(ModelDTO modelDTO);

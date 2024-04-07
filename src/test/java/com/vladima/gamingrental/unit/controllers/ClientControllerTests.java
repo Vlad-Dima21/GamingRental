@@ -4,6 +4,7 @@ import com.vladima.gamingrental.client.controllers.ClientController;
 import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.client.services.implementations.ClientServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
+import com.vladima.gamingrental.helpers.PageableResponseDTO;
 import com.vladima.gamingrental.helpers.StringifyJSON;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
 import com.vladima.gamingrental.unit.configurations.TestConfigurationSecurity;
@@ -115,15 +116,15 @@ public class ClientControllerTests {
     @Test
     @DisplayName("Unit test for filtering clients by name that returns a list of clients")
     public void whenNameFiltered_getFilteredClients_returnClientsJSON() throws Exception {
-        given(service.getByName(ArgumentMatchers.anyString()))
-                .willReturn(List.of(client1.toDTO(), client2.toDTO()));
+        given(service.getByName(ArgumentMatchers.anyString(), ArgumentMatchers.any()))
+                .willReturn(new PageableResponseDTO<>(2, List.of(client1.toDTO(), client2.toDTO())));
 
         mockMvc.perform(get("/api/clients")
                 .param("name", "test"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].clientEmail").value(client1.getClientEmail()))
-                .andExpect(jsonPath("$[1].clientEmail").value(client2.getClientEmail()));
+                .andExpect(jsonPath("$.items[0].clientEmail").value(client1.getClientEmail()))
+                .andExpect(jsonPath("$.items[1].clientEmail").value(client2.getClientEmail()));
     }
 
     @Test

@@ -62,7 +62,7 @@ public class DeviceBaseServiceImpl extends BaseServiceImpl<DeviceBase, DeviceBas
     public List<DeviceBaseExtrasDTO> getFiltered(String name, String producer, Integer year, boolean ifAvailable) {
         List<DeviceBaseExtrasDTO> devices;
         if (name == null && producer == null && year == null) {
-            devices = getAll();
+            devices = getAll(null); //todo maybe add pagination here
         } else {
             var byName = name != null ? getByName(name) : null;
             var byProducer = producer != null ? getByProducer(producer) : null;

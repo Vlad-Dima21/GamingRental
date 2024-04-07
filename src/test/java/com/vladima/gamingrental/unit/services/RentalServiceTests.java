@@ -79,7 +79,7 @@ public class RentalServiceTests {
                 .willThrow(serviceException);
 
         var exception = Assertions.assertThrows(EntityOperationException.class,
-                () -> rentalService.getRentals(client.getClientEmail(), deviceBase.getDeviceBaseName(), null, false));
+                () -> rentalService.getRentals(client.getClientEmail(), deviceBase.getDeviceBaseName(), null, false, null, null));
         assertEquals(serviceException.getExtraInfo(), exception.getExtraInfo());
     }
 
@@ -90,7 +90,7 @@ public class RentalServiceTests {
                 .willReturn(List.of());
 
         var exception = Assertions.assertThrows(EntityOperationException.class,
-                () -> rentalService.getRentals(client.getClientEmail(), deviceBase.getDeviceBaseName(), null, false));
+                () -> rentalService.getRentals(client.getClientEmail(), deviceBase.getDeviceBaseName(), null, false, null, null));
         assertEquals(MessageFormat.format("No such device as {0}", deviceBase.getDeviceBaseName()), exception.getExtraInfo());
     }
 
