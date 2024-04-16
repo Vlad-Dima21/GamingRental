@@ -102,7 +102,7 @@ public class ClientControllerMYSQLTests extends BaseControllerMYSQLTests<Client>
                         .header(HttpHeaders.AUTHORIZATION, "Bearer " + adminToken))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].clientEmail").value(sampledModel.getClientEmail()));
+                .andExpect(jsonPath("$.items[0].clientEmail").value(sampledModel.getClientEmail()));
     }
 
     @Test

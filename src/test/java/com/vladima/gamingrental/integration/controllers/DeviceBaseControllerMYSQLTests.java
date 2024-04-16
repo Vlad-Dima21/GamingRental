@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -64,10 +65,10 @@ public class DeviceBaseControllerMYSQLTests extends BaseControllerMYSQLTests<Dev
                         .param("name", nameFilter))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.items").isArray())
                 .andReturn().getResponse().getContentAsString();
-        var result = new JacksonJsonParser().parseList(stringResults)
-                .stream().filter(d -> Objects.equals(((LinkedHashMap<?, ?>)d).get("deviceBaseName"), sampledModel.getDeviceBaseName())).toList();
+        var result = ((List<LinkedHashMap<?, ?>>)(new JacksonJsonParser().parseMap(stringResults).get("items")))
+                .stream().filter(d -> Objects.equals(d.get("deviceBaseName"), sampledModel.getDeviceBaseName())).toList();
         assertNotNull(result);
     }
 

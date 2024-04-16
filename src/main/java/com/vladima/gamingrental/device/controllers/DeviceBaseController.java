@@ -4,6 +4,8 @@ import com.vladima.gamingrental.client.dto.RentalDTO;
 import com.vladima.gamingrental.device.dto.DeviceBaseDTO;
 import com.vladima.gamingrental.device.dto.DeviceBaseExtrasDTO;
 import com.vladima.gamingrental.device.services.DeviceBaseService;
+import com.vladima.gamingrental.helpers.PageableResponseDTO;
+import com.vladima.gamingrental.helpers.SortDirection;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -69,13 +71,15 @@ public class DeviceBaseController {
             )
     })
     @GetMapping
-    public ResponseEntity<List<DeviceBaseExtrasDTO>> getFilteredDevices(
-        @RequestParam(required = false) @Parameter(description = "Name of device") String name,
-        @RequestParam(required = false) @Parameter(description = "Producer name") String producer,
-        @RequestParam(required = false) @Parameter(description = "Released after the year") Integer year,
-        @RequestParam(required = false, defaultValue = "false") @Parameter(description = "Only available") boolean ifAvailable
-    ) {
-        return new ResponseEntity<>(deviceBaseService.getFiltered(name, producer, year, ifAvailable), HttpStatus.OK);
+    public ResponseEntity<PageableResponseDTO<DeviceBaseExtrasDTO>> getFilteredDevices(
+            @RequestParam(required = false) @Parameter(description = "Name of device") String name,
+            @RequestParam(required = false) @Parameter(description = "Producer name") String producer,
+            @RequestParam(required = false) @Parameter(description = "Released after the year") Integer year,
+            @RequestParam(required = false, defaultValue = "false") @Parameter(description = "Only available") boolean ifAvailable,
+            @RequestParam(required = false, defaultValue = "1") @Parameter(description = "Page number") int page,
+            @RequestParam(required = false, defaultValue = "asc") @Parameter(description = "Sort devices by name")SortDirection sort
+            ) {
+        return new ResponseEntity<>(deviceBaseService.getFiltered(name, producer, year, ifAvailable, page, sort), HttpStatus.OK);
     }
 
     @Operation(summary = "Register a new device")

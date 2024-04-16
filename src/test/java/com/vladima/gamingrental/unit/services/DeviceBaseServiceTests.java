@@ -5,6 +5,7 @@ import com.vladima.gamingrental.device.models.DeviceBase;
 import com.vladima.gamingrental.device.repositories.DeviceBaseRepository;
 import com.vladima.gamingrental.device.services.DeviceBaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
+import com.vladima.gamingrental.helpers.SortDirection;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -13,6 +14,10 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
 import java.text.MessageFormat;
@@ -86,18 +91,18 @@ public class DeviceBaseServiceTests {
         given(repository.findByDeviceBaseYearOfReleaseGreaterThanEqual(ps5.getDeviceBaseYearOfRelease()))
                 .willReturn(List.of(ps5, xbox));
 
-        var returnedDevices = service.getFiltered(ps5.getDeviceBaseName(), ps5.getDeviceBaseProducer(), ps5.getDeviceBaseYearOfRelease(),false);
-        assertIterableEquals(List.of(ps5.toDTO()), returnedDevices);
+        var returnedDevices = service.getFiltered(ps5.getDeviceBaseName(), ps5.getDeviceBaseProducer(), ps5.getDeviceBaseYearOfRelease(),false, 1, SortDirection.asc);
+        assertIterableEquals(List.of(ps5.toDTO()), returnedDevices.getItems());
     }
 
     @Test
     @DisplayName("Unit test for fetching devices by availability that returns the one with available units")
     public void whenFilteredByAvailability_getFiltered_returnsDeviceBase() {
-        given(repository.findAll())
-                .willReturn(List.of(ps5, xbox));
+        given(repository.findAll((Pageable) ArgumentMatchers.any()))
+                .willReturn(new PageImpl<>(List.of(ps5, xbox)));
 
-        var returnedDevices = service.getFiltered(null, null, null, true);
-        assertIterableEquals(List.of(xbox.toDTO()), returnedDevices);
+        var returnedDevices = service.getFiltered(null, null, null, true, 1, SortDirection.asc);
+        assertIterableEquals(List.of(xbox.toDTO()), returnedDevices.getItems());
     }
 
     @Test

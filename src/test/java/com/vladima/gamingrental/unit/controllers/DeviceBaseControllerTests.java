@@ -5,6 +5,8 @@ import com.vladima.gamingrental.device.models.Device;
 import com.vladima.gamingrental.device.models.DeviceBase;
 import com.vladima.gamingrental.device.services.DeviceBaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
+import com.vladima.gamingrental.helpers.PageableResponseDTO;
+import com.vladima.gamingrental.helpers.SortDirection;
 import com.vladima.gamingrental.helpers.StringifyJSON;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
 import com.vladima.gamingrental.unit.configurations.TestConfigurationSecurity;
@@ -75,13 +77,13 @@ public class DeviceBaseControllerTests {
     @DisplayName("Unit test for fetching devices given a filter")
     public void whenFilteredByName_getFilteredDevices_returnDevicesJSON() throws Exception {
         var searchBy = ps5.getDeviceBaseName().substring(0,2);
-        given(service.getFiltered(searchBy, null, null, false))
-                .willReturn(List.of(ps5.toDTO()));
+        given(service.getFiltered(searchBy, null, null, false, 1, SortDirection.asc))
+                .willReturn(new PageableResponseDTO<>(1, List.of(ps5.toDTO())));
         mockMvc.perform(get("/api/devices")
                 .param("name", searchBy))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].deviceBaseName").value(ps5.getDeviceBaseName()));
+                .andExpect(jsonPath("$.items[0].deviceBaseName").value(ps5.getDeviceBaseName()));
     }
 
     @Test

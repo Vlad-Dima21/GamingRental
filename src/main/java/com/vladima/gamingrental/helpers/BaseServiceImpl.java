@@ -4,6 +4,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
@@ -21,11 +22,8 @@ public abstract class BaseServiceImpl<Model extends BaseModel<ModelDTO>, ModelDT
     private final String LOG_NAME = getLogName();
 
     @Override
-    public List<ModelDTO> getAll(PageRequest pageRequest) {
-        return repository.findAll(pageRequest)
-                .stream()
-                .map(Model::toDTO)
-                .toList();
+    public Page<ModelDTO> getAll(PageRequest pageRequest) {
+        return repository.findAll(pageRequest).map(Model::toDTO);
     }
 
     @Override
