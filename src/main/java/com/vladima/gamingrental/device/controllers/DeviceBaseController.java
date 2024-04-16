@@ -76,7 +76,7 @@ public class DeviceBaseController {
             @RequestParam(required = false) @Parameter(description = "Producer name") String producer,
             @RequestParam(required = false) @Parameter(description = "Released after the year") Integer year,
             @RequestParam(required = false, defaultValue = "false") @Parameter(description = "Only available") boolean ifAvailable,
-            @RequestParam(required = false, defaultValue = "1") @Parameter(description = "Page number") int page,
+            @RequestParam(required = false, defaultValue = "1") @Parameter(description = "Page number") @Min(1) int page,
             @RequestParam(required = false, defaultValue = "asc") @Parameter(description = "Sort devices by name")SortDirection sort
             ) {
         return new ResponseEntity<>(deviceBaseService.getFiltered(name, producer, year, ifAvailable, page, sort), HttpStatus.OK);
