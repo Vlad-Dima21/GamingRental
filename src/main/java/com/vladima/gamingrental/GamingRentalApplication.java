@@ -1,5 +1,6 @@
 package com.vladima.gamingrental;
 
+import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.security.models.Role;
 import com.vladima.gamingrental.security.models.User;
 import com.vladima.gamingrental.security.repositories.RoleRepository;
@@ -23,10 +24,22 @@ public class GamingRentalApplication {
     @Bean
     CommandLineRunner run(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleRepository roleRepository) {
         return arg -> {
-            if (roleRepository.findByAuthority("ADMIN") != null) return;
-            Role adminRole = roleRepository.save(new Role("ADMIN"));
+            Role adminRole = roleRepository.findByAuthority("ADMIN");
+            if (adminRole == null) {
+                adminRole = roleRepository.save(new Role("ADMIN"));
+            }
             var admin = new User("admin", passwordEncoder.encode("admin"), adminRole);
             userRepository.save(admin);
+
+
+            Role clientRole = roleRepository.findByAuthority("CLIENT");
+            if (clientRole == null) {
+                clientRole = roleRepository.save(new Role("CLIENT"));
+            }
+            var testUser = new User(null, passwordEncoder.encode("test"), null, null, clientRole);
+            var testClient = new Client("test", "test@email.com", "0201732.511-", testUser);
+            testUser.setClient(testClient);
+            userRepository.save(testUser);
         };
     }
 
