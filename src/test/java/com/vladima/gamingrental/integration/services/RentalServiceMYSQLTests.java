@@ -47,7 +47,7 @@ public class RentalServiceMYSQLTests {
     @Test
     @DisplayName("Integration test for fetching rentals by a client with an invalid email that throws an error")
     public void whenInvalidEmail_getRentals_throwsEntityOperationException() {
-        var invalidEmail = "test@email.com";
+        var invalidEmail = "email_not_in_use@email.com";
         var expected = new EntityOperationException(
             "Client not found",
             MessageFormat.format("Error fetching client with email {0}", invalidEmail),

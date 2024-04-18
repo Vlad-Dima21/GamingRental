@@ -63,7 +63,7 @@ public class DeviceBaseServiceImpl extends BaseServiceImpl<DeviceBase, DeviceBas
 
     @Override
     public PageableResponseDTO<DeviceBaseExtrasDTO> getFiltered(String name, String producer, Integer year, boolean ifAvailable, int page, SortDirection sort) {
-        var pageRequest = PageRequest.of(page, PAGE_SIZE, sort.by("deviceBaseName"));
+        var pageRequest = PageRequest.of(page - 1, PAGE_SIZE, sort.by("deviceBaseName"));
         int totalPages = 1;
         List<DeviceBaseExtrasDTO> result;
         if (name == null && producer == null && year == null) {

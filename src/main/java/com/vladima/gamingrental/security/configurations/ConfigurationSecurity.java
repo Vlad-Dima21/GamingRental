@@ -19,6 +19,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -115,11 +116,9 @@ public class ConfigurationSecurity {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .authorizeHttpRequests(auth -> {
-                            auth.requestMatchers(ADMIN_ACCESS).hasRole("ADMIN");
-                            auth.requestMatchers(CLIENT_ACCESS).hasAnyRole("CLIENT");
-                            auth.requestMatchers(PUBLIC_ACCESS).permitAll();
-                            auth.requestMatchers(toH2Console()).permitAll();
-                            auth.anyRequest().hasAnyRole("ADMIN", "CLIENT");
+                            auth.requestMatchers(ADMIN_ACCESS).hasRole("ADMIN")
+                                    .requestMatchers(CLIENT_ACCESS).hasAnyRole("CLIENT")
+                                    .anyRequest().permitAll();
                         }
                 )
                 .oauth2ResourceServer((oauth2) -> oauth2
@@ -131,7 +130,11 @@ public class ConfigurationSecurity {
                     httpSecuritySessionManagementConfigurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS);
                 })
                 .build();
+    }
 
+    @Bean
+    public WebSecurityCustomizer ignoringCustomizer() {
+        return (web -> web.ignoring().requestMatchers(PUBLIC_ACCESS));
     }
 
     @Bean
@@ -142,5 +145,5 @@ public class ConfigurationSecurity {
         return new ProviderManager(daoProvider);
     }
 
-    //todo https://www.baeldung.com/spring-security-custom-authentication-failure-handler
+    //todo maybe https://www.baeldung.com/spring-security-custom-authentication-failure-handler
 }
