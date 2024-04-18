@@ -21,10 +21,10 @@ import {
 import { login } from '@/helpers/auth';
 import { useFormState } from 'react-dom';
 
-const LoginPage = () => {
+const LoginComponent = () => {
   const [formState, formAction] = useFormState(login, undefined);
   return (
-    <div className='p-16 max-w-5xl md:min-w-[600px] m-auto'>
+    <div className='p-16 max-w-5xl md:min-w-[700px] m-auto'>
       <Card>
         <CardHeader>
           <CardTitle>Sign In</CardTitle>
@@ -38,6 +38,11 @@ const LoginPage = () => {
               type='email'
               required
               defaultValue={'test@email.com'}
+              className={
+                formState?.error?.fieldName === 'userEmail'
+                  ? 'border-red-600 !ring-red-600'
+                  : ''
+              }
             />
             <Label htmlFor='password'>Password</Label>
             <Input
@@ -46,15 +51,20 @@ const LoginPage = () => {
               type='password'
               required
               defaultValue={'test'}
+              className={
+                formState?.error?.fieldName === 'userPassword'
+                  ? 'border-red-600 !ring-red-600'
+                  : ''
+              }
             />
           </CardContent>
-          <CardFooter>
+          <CardFooter className='flex justify-between gap-2'>
             <Button>Sign In</Button>
             {!!formState?.success && (
               <span className='text-green-400'>{formState.success}</span>
             )}
             {!!formState?.error && (
-              <span className='text-red-500'>{formState.error}</span>
+              <span className='text-red-500'>{formState.error.details}</span>
             )}
           </CardFooter>
         </form>
@@ -63,4 +73,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default LoginComponent;

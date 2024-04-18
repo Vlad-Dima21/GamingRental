@@ -2,8 +2,18 @@
 
 import { cookies } from 'next/headers';
 import { jwtDecode } from 'jwt-decode';
+import { revalidatePath } from 'next/cache';
 
-type FormState = { error?: string; success?: string } | undefined;
+type Session = { sub: string; exp: number; roles: string };
+type FormState =
+  | {
+      error?: {
+        details: string;
+        fieldName?: string;
+      };
+      success?: string;
+    }
+  | undefined;
 
 export const login = async (
   prevState: FormState,
@@ -23,7 +33,7 @@ export const login = async (
   if (response.ok) {
     const { token }: { token: string; userEmail: string } =
       await response.json();
-    const decodedToken = jwtDecode(token);
+    const decodedToken: Session = jwtDecode(token);
     if (decodedToken.exp) {
       cookies().set('session', token, {
         httpOnly: true,
@@ -32,8 +42,26 @@ export const login = async (
       return { success: 'Login successful' };
     }
   } else {
-    const { details }: { message: string; details: string } =
-      await response.json();
-    return { error: details };
+    try {
+      const {
+        details,
+        fieldName,
+      }: { message: string; details: string; fieldName: string } =
+        await response.json();
+      return { error: { details, fieldName } };
+    } catch (error) {
+      return { error: { details: 'Invalid credentials' } };
+    }
   }
+};
+
+export const logout = async (): Promise<void> => {
+  cookies().set('session', '', { httpOnly: true, expires: new Date(0) });
+  revalidatePath('/');
+};
+
+export const getSession = async (): Promise<Session | null> => {
+  const session = cookies().get('session')?.value;
+  if (!session) return null;
+  return jwtDecode(session);
 };

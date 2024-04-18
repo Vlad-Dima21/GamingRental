@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.JwtClaimsSet;
@@ -81,16 +82,26 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserDTO, UserReposito
 
     @Override
     public AdminResponseDTO loginAdmin(AdminDTO adminDTO) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(adminDTO.getUserName(), adminDTO.getUserPassword())
-        );
+        Authentication auth;
+        try {
+             auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(adminDTO.getUserName(), adminDTO.getUserPassword())
+            );
+        } catch (AuthenticationException e) {
+            throw new EntityOperationException("Invalid credentials", "", HttpStatus.UNAUTHORIZED);
+        }
         return new AdminResponseDTO(generateTokenFromAuth(auth));
     }
 
     private UserResponseDTO authenticateUser(UserDTO userDTO) {
-        Authentication auth = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(userDTO.getUserEmail(), userDTO.getUserPassword())
-        );
+        Authentication auth;
+        try {
+            auth = authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(userDTO.getUserEmail(), userDTO.getUserPassword())
+            );
+        } catch (AuthenticationException e) {
+            throw new EntityOperationException("Invalid credentials", "", HttpStatus.UNAUTHORIZED);
+        }
         var token = generateTokenFromAuth(auth);
         return new UserResponseDTO(userDTO.getUserEmail(), token);
     }

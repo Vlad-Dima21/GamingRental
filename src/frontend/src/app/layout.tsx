@@ -6,7 +6,10 @@ import { AppBar } from '@/components/AppBar';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Gaming Rental',
+  title: {
+    default: 'Gaming Rental',
+    template: `%s | Gaming Rental`,
+  },
   description: 'Rent games for your favorite console',
 };
 
