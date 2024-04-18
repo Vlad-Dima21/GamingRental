@@ -23,7 +23,7 @@ export const login = async (
   const userEmail = formData.get('email') as string;
   const userPassword = formData.get('password') as string;
 
-  const response = await fetch(`${process.env.BACKEND_URL}/api/auth/login`, {
+  const response = await fetch(`${process.env.BACKEND_URL}/auth/login`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -61,11 +61,13 @@ export const logout = async (): Promise<void> => {
   revalidatePath('/');
 };
 
-export const getSession = async (enforceAuth?: boolean): Promise<Session | null> => {
+export const getSession = async (
+  enforceAuth?: boolean
+): Promise<Session | null> => {
   const session = cookies().get('session')?.value;
   if (!session) {
     !!enforceAuth && redirect('/login');
     return null;
-  };
+  }
   return jwtDecode(session);
 };

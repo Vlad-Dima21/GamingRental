@@ -21,7 +21,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <main className='flex flex-col min-h-screen'>
+        <main className='flex flex-col min-h-screen bg-gradient-to-t from-indigo-100  to-white'>
           <AppBar />
           {children}
         </main>

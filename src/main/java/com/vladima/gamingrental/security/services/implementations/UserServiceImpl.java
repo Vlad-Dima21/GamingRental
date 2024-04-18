@@ -10,6 +10,7 @@ import com.vladima.gamingrental.security.repositories.UserRepository;
 import com.vladima.gamingrental.security.services.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -99,7 +100,7 @@ public class UserServiceImpl extends BaseServiceImpl<User, UserDTO, UserReposito
             auth = authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(userDTO.getUserEmail(), userDTO.getUserPassword())
             );
-        } catch (AuthenticationException e) {
+        } catch (BadCredentialsException e) {
             throw new EntityOperationException("Invalid credentials", "", HttpStatus.UNAUTHORIZED);
         }
         var token = generateTokenFromAuth(auth);

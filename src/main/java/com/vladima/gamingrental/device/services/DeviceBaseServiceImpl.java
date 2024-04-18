@@ -18,7 +18,7 @@ import java.util.List;
 
 @Service
 public class DeviceBaseServiceImpl extends BaseServiceImpl<DeviceBase, DeviceBaseExtrasDTO, DeviceBaseRepository> implements DeviceBaseService {
-    private static final int PAGE_SIZE = 10;
+    private static final int PAGE_SIZE = 3;
 
     public DeviceBaseServiceImpl(DeviceBaseRepository repository) {
         super(repository);

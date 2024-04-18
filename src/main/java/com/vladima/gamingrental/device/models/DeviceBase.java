@@ -1,6 +1,5 @@
 package com.vladima.gamingrental.device.models;
 
-import com.vladima.gamingrental.device.dto.DeviceBaseDTO;
 import com.vladima.gamingrental.device.dto.DeviceBaseExtrasDTO;
 import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.helpers.BaseModel;
@@ -31,6 +30,9 @@ public class DeviceBase implements BaseModel<DeviceBaseExtrasDTO> {
 
     private int deviceBaseYearOfRelease;
 
+    @Column(length = 300)
+    private String deviceBaseImageUrl;
+
     @OneToMany(mappedBy = "deviceBase", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Device> devices;
 
@@ -49,6 +51,6 @@ public class DeviceBase implements BaseModel<DeviceBaseExtrasDTO> {
         if (devices != null) {
             availableUnits = (int) devices.stream().filter(Device::isDeviceAvailable).count();
         }
-        return new DeviceBaseExtrasDTO(deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease, availableUnits);
+        return new DeviceBaseExtrasDTO(deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease, availableUnits, deviceBaseImageUrl);
     }
 }

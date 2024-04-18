@@ -1,12 +1,12 @@
 -- init devices
-insert into device_base(device_base_id, device_base_name, device_base_producer, device_base_year_of_release)
-    values(1, 'PS5 Slim', 'Sony', 2018);
-insert into device_base(device_base_id, device_base_name, device_base_producer, device_base_year_of_release)
-    values(2, 'Xbox Series S', 'Microsoft', 2019);
-insert into device_base(device_base_id, device_base_name, device_base_producer, device_base_year_of_release)
-    values(3, 'Xbox Series X', 'Microsoft', 2014);
-insert into device_base(device_base_id, device_base_name, device_base_producer, device_base_year_of_release)
-    values(4, 'Nintendo Switch', 'Nintendo', 2016);
+insert into device_base(device_base_id, device_base_name, device_base_producer, device_base_year_of_release, device_base_image_url)
+    values(1, 'PS5 Slim', 'Sony', 2018, 'https://cdn.ozone.ro/media/catalog/product/cache/1/image/400x498/a4e40ebdc3e371adff845072e1c73f37/k/o/0fb9fa76b73891f5e77e5f27f7dac893/consola-playstation-5-slim-31.jpg');
+insert into device_base(device_base_id, device_base_name, device_base_producer, device_base_year_of_release, device_base_image_url)
+    values(2, 'Xbox Series S', 'Microsoft', 2019, 'https://lcdn.altex.ro/resize/media/catalog/product/c/o/2bd48d28d1c32adea0e55139a4e6434a/consola_microsoft_xbox_series_s_digital_edition_carbon_black_01_f214bea0.jpg');
+insert into device_base(device_base_id, device_base_name, device_base_producer, device_base_year_of_release, device_base_image_url)
+    values(3, 'Xbox Series X', 'Microsoft', 2014, 'https://s13emagst.akamaized.net/products/32508/32507400/images/res_206705d9f4ec5f4ef02090a56ad9af50.jpg');
+insert into device_base(device_base_id, device_base_name, device_base_producer, device_base_year_of_release, device_base_image_url)
+    values(4, 'Nintendo Switch', 'Nintendo', 2016, 'https://lcdn.altex.ro/resize/media/catalog/product/C/o/2bd48d28d1c32adea0e55139a4e6434a/Consola_Nintendo_Switch_Red_Blue_2019_HAD_Baterie_noua_Cutia_04c66c4b.jpg');
 
 -- init units
 insert into device(device_id, device_is_available, device_number_of_controllers, device_base_id)
