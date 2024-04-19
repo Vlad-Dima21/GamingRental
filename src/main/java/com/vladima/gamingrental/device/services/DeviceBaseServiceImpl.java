@@ -26,7 +26,7 @@ public class DeviceBaseServiceImpl extends BaseServiceImpl<DeviceBase, DeviceBas
 
     @Override
     public List<DeviceBaseExtrasDTO> getByName(String name) {
-        return getRepository().findByDeviceBaseNameContaining(name)
+        return getRepository().findByDeviceBaseNameContainingIgnoreCase(name)
                 .stream()
                 .map(DeviceBase::toDTO)
                 .toList();
@@ -39,7 +39,7 @@ public class DeviceBaseServiceImpl extends BaseServiceImpl<DeviceBase, DeviceBas
 
     @Override
     public List<DeviceBaseExtrasDTO> getByProducer(String producer) {
-        return getRepository().findByDeviceBaseProducer(producer)
+        return getRepository().findByDeviceBaseProducerIgnoreCase(producer)
                 .stream()
                 .map(DeviceBase::toDTO)
                 .toList();

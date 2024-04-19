@@ -14,8 +14,6 @@ import org.mockito.ArgumentMatchers;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -84,9 +82,9 @@ public class DeviceBaseServiceTests {
     @Test
     @DisplayName("Unit test for fetching a device by all its fields, without accounting for available units, that returns said device")
     public void whenFilteredByNameProducerYear_getFiltered_returnsDeviceBase() {
-        given(repository.findByDeviceBaseNameContaining(ps5.getDeviceBaseName()))
+        given(repository.findByDeviceBaseNameContainingIgnoreCase(ps5.getDeviceBaseName()))
                 .willReturn(List.of(ps5));
-        given(repository.findByDeviceBaseProducer(ps5.getDeviceBaseProducer()))
+        given(repository.findByDeviceBaseProducerIgnoreCase(ps5.getDeviceBaseProducer()))
                 .willReturn(List.of(ps5));
         given(repository.findByDeviceBaseYearOfReleaseGreaterThanEqual(ps5.getDeviceBaseYearOfRelease()))
                 .willReturn(List.of(ps5, xbox));
