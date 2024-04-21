@@ -64,23 +64,8 @@ public class DeviceBaseServiceImpl extends BaseServiceImpl<DeviceBase, DeviceBas
     @Override
     public PageableResponseDTO<DeviceBaseExtrasDTO> getFiltered(String name, String producer, Integer year, boolean ifAvailable, int page, SortDirection sort) {
         var pageRequest = PageRequest.of(page - 1, PAGE_SIZE, sort.by("deviceBaseName"));
-        int totalPages = 1;
-        List<DeviceBaseExtrasDTO> result;
-        if (name == null && producer == null && year == null) {
-            var allDevices = getAll(pageRequest);
-            result = allDevices.toList();
-            totalPages = allDevices.getTotalPages();
-        } else {
-            var byName = name != null ? getByName(name) : null;
-            var byProducer = producer != null ? getByProducer(producer) : null;
-            var byYear = year != null ? getByYear(year) : null;
-            result = byName == null ? (byProducer == null ? byYear : byProducer) : byName;
-            if (byName != null) result = result.stream().filter(byName::contains).toList();
-            if (byProducer != null) result = result.stream().filter(byProducer::contains).toList();
-            if (byYear != null) result = result.stream().filter(byYear::contains).toList();
-        }
-        result = result.stream().filter(d -> !ifAvailable || d.getNoOfUnitsAvailable() > 0).toList();
-        return new PageableResponseDTO<>(totalPages, result);
+        var result = getRepository().findFiltered(name, producer, year, ifAvailable, pageRequest);
+        return new PageableResponseDTO<>(result.getTotalPages(), result.stream().map(DeviceBase::toDTO).toList());
     }
 
     @Override

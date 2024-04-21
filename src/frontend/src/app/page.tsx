@@ -75,7 +75,7 @@ export default async function Home({
             {devices.map((device) => (
               <Link
                 key={device.deviceBaseName}
-                href={`/device/${device.deviceBaseName}`}
+                href={`/device/${device.deviceBaseId}`}
               >
                 <Card className='flex gap-2 p-5 justify-between bg-white/70 backdrop-blur-sm hover:border-purple-600 hover:shadow-md'>
                   <div>

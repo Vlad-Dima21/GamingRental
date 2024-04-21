@@ -11,11 +11,15 @@ import lombok.EqualsAndHashCode;
 @Data
 public class DeviceExtrasDTO extends DeviceDTO{
 
+    @NotNull
+    private Long deviceId;
+
     @NotEmpty
     private String deviceName;
 
-    public DeviceExtrasDTO(@Min(0) int deviceNumberOfControllers, boolean deviceIsAvailable, String deviceName) {
+    public DeviceExtrasDTO(@Min(0) int deviceNumberOfControllers, boolean deviceIsAvailable, Long deviceId, String deviceName) {
         super(deviceNumberOfControllers, deviceIsAvailable);
+        this.deviceId = deviceId;
         this.deviceName = deviceName;
     }
 }

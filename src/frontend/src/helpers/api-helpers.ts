@@ -21,5 +21,5 @@ export default ['get', 'post', 'patch'].reduce(
     };
     return acc;
   },
-  {} as { [key: string]: (url: string, data?: object) => Promise<Response> } // Provide initial value and fix the type
+  {} as { [key: string]: (url: string, data?: object) => Promise<Response> }
 );

@@ -32,7 +32,7 @@ public class DeviceController {
                     responseCode = "200",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = DeviceBaseExtrasDTO.class)
+                            schema = @Schema(implementation = DeviceExtrasDTO.class)
                     ),
                     description = "Device units returned"
             ),
@@ -58,7 +58,7 @@ public class DeviceController {
                     responseCode = "200",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            schema = @Schema(implementation = DeviceBaseExtrasDTO.class)
+                            schema = @Schema(implementation = DeviceExtrasDTO.class)
                     ),
                     description = "Device units returned"
             ),

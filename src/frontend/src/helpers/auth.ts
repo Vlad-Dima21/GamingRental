@@ -5,7 +5,7 @@ import { jwtDecode } from 'jwt-decode';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-type Session = { sub: string; exp: number; roles: string };
+export type Session = { sub: string; exp: number; roles: string };
 export type FormState =
   | {
       error?: {

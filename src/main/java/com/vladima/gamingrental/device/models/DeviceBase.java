@@ -51,6 +51,6 @@ public class DeviceBase implements BaseModel<DeviceBaseExtrasDTO> {
         if (devices != null) {
             availableUnits = (int) devices.stream().filter(Device::isDeviceAvailable).count();
         }
-        return new DeviceBaseExtrasDTO(deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease, availableUnits, deviceBaseImageUrl);
+        return new DeviceBaseExtrasDTO(deviceBaseId, deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease, availableUnits, deviceBaseImageUrl);
     }
 }
