@@ -39,7 +39,7 @@ public class DeviceServiceTests {
     public void init() {
         ps5 = new DeviceBase(
                 1L, "PS5", "Sony",
-                2018, List.of(),
+                2018, null, List.of(),
                 List.of()
         );
         ps5Unit1 = new Device(1L, 1, true, ps5, null);

@@ -59,7 +59,7 @@ public class RentalControllerTests {
         client = new Client(1L, "ionut", "ion@email.com", "0729289182", null, List.of());
         game = new Game(1L, "Roblox", "Sandbox", List.of());
         deviceBase = new DeviceBase(
-                1L, "PS5", "Sony", 2018,
+                1L, "PS5", "Sony", 2018, "",
                 null,
                 null
         );

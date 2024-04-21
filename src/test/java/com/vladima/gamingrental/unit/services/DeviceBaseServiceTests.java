@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 
@@ -41,12 +42,12 @@ public class DeviceBaseServiceTests {
     public void init() {
         ps5 = new DeviceBase(
             1L, "PS5", "Sony",
-                2018, List.of(),
+                2018, null, List.of(),
                 List.of()
         );
         xbox = new DeviceBase(
             2L, "Xbox Series X", "Microsoft",
-                2019, List.of(new Device(3, true)),
+                2019, null, List.of(new Device(3, true)),
                 List.of()
         );
     }
@@ -82,25 +83,11 @@ public class DeviceBaseServiceTests {
     @Test
     @DisplayName("Unit test for fetching a device by all its fields, without accounting for available units, that returns said device")
     public void whenFilteredByNameProducerYear_getFiltered_returnsDeviceBase() {
-        given(repository.findByDeviceBaseNameContainingIgnoreCase(ps5.getDeviceBaseName()))
-                .willReturn(List.of(ps5));
-        given(repository.findByDeviceBaseProducerIgnoreCase(ps5.getDeviceBaseProducer()))
-                .willReturn(List.of(ps5));
-        given(repository.findByDeviceBaseYearOfReleaseGreaterThanEqual(ps5.getDeviceBaseYearOfRelease()))
-                .willReturn(List.of(ps5, xbox));
+        given(repository.findFiltered(ArgumentMatchers.anyString(), ArgumentMatchers.anyString(), ArgumentMatchers.anyInt(), ArgumentMatchers.anyBoolean(), ArgumentMatchers.any()))
+                .willReturn(new PageImpl<>(List.of(ps5)));
 
         var returnedDevices = service.getFiltered(ps5.getDeviceBaseName(), ps5.getDeviceBaseProducer(), ps5.getDeviceBaseYearOfRelease(),false, 1, SortDirection.asc);
         assertIterableEquals(List.of(ps5.toDTO()), returnedDevices.getItems());
-    }
-
-    @Test
-    @DisplayName("Unit test for fetching devices by availability that returns the one with available units")
-    public void whenFilteredByAvailability_getFiltered_returnsDeviceBase() {
-        given(repository.findAll((Pageable) ArgumentMatchers.any()))
-                .willReturn(new PageImpl<>(List.of(ps5, xbox)));
-
-        var returnedDevices = service.getFiltered(null, null, null, true, 1, SortDirection.asc);
-        assertIterableEquals(List.of(xbox.toDTO()), returnedDevices.getItems());
     }
 
     @Test
