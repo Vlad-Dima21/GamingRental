@@ -21,7 +21,10 @@ export default function CartProvider({
     getCartFromLocalStorage(sessionEmail ?? '')
   );
 
-  const setUserCart = (cartItems: CartItem[]) => setCart(cartItems);
+  const setUserCart = (cartItems: CartItem[]) => {
+    setCart(cartItems);
+    setCartToLocalStorage(sessionEmail ?? '', cartItems);
+  };
   return (
     <CartContext.Provider value={{ email: sessionEmail, cart, setUserCart }}>
       {children}

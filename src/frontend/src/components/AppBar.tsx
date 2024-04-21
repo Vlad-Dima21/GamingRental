@@ -12,7 +12,7 @@ import { ShoppingCart } from 'lucide-react';
 const oswald = Oswald({ weight: '400', subsets: ['latin'] });
 
 export const AppBar = () => {
-  const { email, cart, setUserCart } = useContext(CartContext);
+  const { email, cart } = useContext(CartContext);
   return (
     <nav className='shadow-sm p-4'>
       <header className='flex justify-between max-w-5xl m-auto'>

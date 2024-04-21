@@ -11,8 +11,9 @@ import {
 } from 'next/navigation';
 import PageableContainer from '@/components/PageableContainer';
 import { Input } from '@/components/ui/input';
+import strippedUrlSearchParams from '@/helpers/search-params-helper';
 
-interface PathParams {
+interface SearchParams {
   page: string;
   name: string;
   producer: string;
@@ -23,7 +24,7 @@ interface PathParams {
 export default async function Home({
   searchParams,
 }: {
-  searchParams: Partial<PathParams>;
+  searchParams: Partial<SearchParams>;
 }) {
   searchParams.name == '' && delete searchParams.name;
   searchParams.producer == '' && delete searchParams.producer;
@@ -43,12 +44,7 @@ export default async function Home({
             className='flex gap-5'
             action={async (formData: FormData) => {
               'use server';
-              redirect(
-                `/?${new ReadonlyURLSearchParams({
-                  ...searchParams,
-                  ...Object.fromEntries(formData),
-                }).toString()}`
-              );
+              redirect(`/?${strippedUrlSearchParams(formData).toString()}`);
             }}
           >
             <Input

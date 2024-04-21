@@ -20,7 +20,7 @@ export default function PageableContainer<T>({
 }) {
   const page = searchParams.page ? parseInt(searchParams.page) : 1;
 
-  if (page > totalPages) {
+  if (page > totalPages && totalPages > 0) {
     redirect(
       `${baseUrl}?${new ReadonlyURLSearchParams({
         ...searchParams,
@@ -30,33 +30,42 @@ export default function PageableContainer<T>({
   }
   return (
     <div className='w-full h-full flex flex-col gap-3 justify-between'>
-      {children}
-      <div className='flex w-full justify-between'>
-        <Button
-          asChild
-          variant='outline'
-          className={page == 1 ? 'invisible' : ''}
-        >
-          <Link
-            href={`${baseUrl}?${new ReadonlyURLSearchParams({
-              ...searchParams,
-              page: (page - 1).toString(),
-            })}`}
+      {totalPages > 0 && children}
+      {totalPages == 0 && (
+        <div className='flex flex-col justify-end items-center min-h-[200px]'>
+          <span className='text-lg font-bold'>
+            No results match your search
+          </span>
+        </div>
+      )}
+      {totalPages > 0 && (
+        <div className='flex w-full justify-between'>
+          <Button
+            asChild
+            variant='outline'
+            className={page == 1 ? 'invisible' : ''}
           >
-            Previous page
-          </Link>
-        </Button>
-        <Button asChild className={page == totalPages ? 'invisible' : ''}>
-          <Link
-            href={`${baseUrl}?${new ReadonlyURLSearchParams({
-              ...searchParams,
-              page: (page + 1).toString(),
-            })}`}
-          >
-            Next page
-          </Link>
-        </Button>
-      </div>
+            <Link
+              href={`${baseUrl}?${new ReadonlyURLSearchParams({
+                ...searchParams,
+                page: (page - 1).toString(),
+              })}`}
+            >
+              Previous page
+            </Link>
+          </Button>
+          <Button asChild className={page == totalPages ? 'invisible' : ''}>
+            <Link
+              href={`${baseUrl}?${new ReadonlyURLSearchParams({
+                ...searchParams,
+                page: (page + 1).toString(),
+              })}`}
+            >
+              Next page
+            </Link>
+          </Button>
+        </div>
+      )}
     </div>
   );
 }
