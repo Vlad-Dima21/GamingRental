@@ -19,39 +19,24 @@ export default function GameCard({
   ...props
 }: GameCardProps) {
   const { cart, setUserCart } = useContext(CartContext);
-  const isInCart = cart.some(
-    (item) =>
-      item.deviceBaseId == device.deviceBaseId &&
-      item.gameCopies?.includes(gameCopy.gameCopyId)
-  );
+  const isInCart = cart?.gameCopiesIds?.includes(gameCopy.gameCopyId);
+
   const removeFromCart = () => {
-    const cartCopy = cart.slice();
-    const cartBaseIndex = cartCopy.findIndex(
-        (item) => item.deviceBaseId === device.deviceBaseId
-      ),
-      cartDevice = cartCopy[cartBaseIndex];
-    cartDevice.gameCopies = cartDevice.gameCopies?.filter(
-      (gc) => gc != gameCopy.gameCopyId
-    );
-    !cartDevice.deviceUnits?.length && !cartDevice.gameCopies?.length
-      ? setUserCart(cartCopy.toSpliced(cartBaseIndex, 1))
-      : setUserCart(cartCopy);
+    if (!cart) return;
+    const cartCopy = cart.gameCopiesIds?.slice() ?? [];
+    setUserCart({
+      ...cart,
+      gameCopiesIds: cartCopy.filter((c) => c != gameCopy.gameCopyId),
+    });
   };
 
   const addToCart = () => {
-    const cartCopy = cart.slice();
-    let cartDevice = cartCopy.find(
-      (c) => c.deviceBaseId === device.deviceBaseId
-    );
-    if (!cartDevice) {
-      cartDevice = { deviceBaseId: device.deviceBaseId };
-      cartCopy.push(cartDevice);
-    }
-    cartDevice.gameCopies = [
-      ...(cartDevice.gameCopies ?? []),
-      gameCopy.gameCopyId,
-    ];
-    setUserCart(cartCopy);
+    if (!cart) return;
+    const cartCopy = cart.gameCopiesIds?.slice() ?? [];
+    setUserCart({
+      ...cart,
+      gameCopiesIds: [...cartCopy, gameCopy.gameCopyId],
+    });
   };
 
   return (
@@ -64,7 +49,7 @@ export default function GameCard({
     >
       <div className='flex items-center gap-2'>
         <span>{gameCopy.gameBase.gameName}</span>
-        <Badge variant='default'>{gameCopy.gameBase.gameGenre}</Badge>
+        <Badge variant='outline'>{gameCopy.gameBase.gameGenre}</Badge>
       </div>
       {!isInCart && (
         <Button onClick={addToCart} className='mt-6'>

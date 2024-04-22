@@ -15,7 +15,7 @@ async function commonFetch(
     method,
     headers: {
       'Content-Type': 'application/json',
-      ...(session && { Authorization: `Bearer ${session}` }),
+      ...(session && { Authorization: `Bearer ${session.token}` }),
     },
     ...(data && { body: JSON.stringify(data) }),
   });

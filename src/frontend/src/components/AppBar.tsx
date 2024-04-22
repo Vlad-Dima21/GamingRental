@@ -8,6 +8,7 @@ import { Oswald } from 'next/font/google';
 import { useContext } from 'react';
 import { CartContext } from '@/contexts/cart-context';
 import { ShoppingCart } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 const oswald = Oswald({ weight: '400', subsets: ['latin'] });
 
@@ -16,15 +17,17 @@ export const AppBar = () => {
   return (
     <nav className='shadow-sm p-4'>
       <header className='flex justify-between max-w-5xl m-auto'>
-        <h1 className='text-2xl'>
-          <Link href={'/'} className='flex gap-2'>
+        <h1 className='text-2xl flex items-center'>
+          <Link href={'/'} className='flex items-center gap-2'>
             <Image
               src={require('@/assets/game-controller.png')}
               alt='Gaming Rental'
               width={32}
               height={32}
             />
-            <span className={oswald.className}>Gaming Rental</span>
+            <span className={cn(oswald.className, 'hidden md:inline')}>
+              Gaming Rental
+            </span>
           </Link>
         </h1>
         {!email && (
@@ -39,7 +42,7 @@ export const AppBar = () => {
         )}
         {email && (
           <div className='flex gap-2'>
-            <Button asChild variant='link'>
+            <Button asChild variant='link' className='hidden md:inline-flex'>
               <Link href={'/rentals'}>{email}</Link>
             </Button>
             <Button
@@ -50,15 +53,9 @@ export const AppBar = () => {
               <Link href={'/cart'}>
                 <div className='relative'>
                   <ShoppingCart />
-                  {cart.length > 0 && (
+                  {!!cart && (
                     <div className='absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900'>
-                      {cart.reduce(
-                        (acc, item) =>
-                          (acc +=
-                            (item.deviceUnits?.length ?? 0) +
-                            (item.gameCopies?.length ?? 0)),
-                        0
-                      )}
+                      {1 + (cart.gameCopiesIds?.length ?? 0)}
                     </div>
                   )}
                 </div>

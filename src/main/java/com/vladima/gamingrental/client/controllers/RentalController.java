@@ -75,14 +75,14 @@ public class RentalController {
                     ),
                     description = "Rental was registered successfully"
             ),
-//            @ApiResponse(
-//                    responseCode = "404",
-//                    content = @Content(
-//                            mediaType = MediaType.APPLICATION_JSON_VALUE,
-//                            schema = @Schema(implementation = EntitiesExceptionHandler.ExceptionFormat.class)
-//                    ),
-//                    description = "Client not found or device unit not found"
-//            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    content = @Content(
+                            mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = EntitiesExceptionHandler.ExceptionFormat.class)
+                    ),
+                    description = "Device unit not found"
+            ),
             @ApiResponse(
                     responseCode = "400",
                     content = @Content(

@@ -28,7 +28,7 @@ export default async function RootLayout({
         <main className='flex flex-col min-h-screen bg-gradient-to-t from-indigo-100  to-white'>
           <CartProvider session={session}>
             <AppBar />
-            {children}
+            <div className='p-4 overflow-auto'>{children}</div>
           </CartProvider>
         </main>
       </body>

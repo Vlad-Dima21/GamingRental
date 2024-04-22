@@ -28,11 +28,11 @@ insert into device(device_id, device_is_available, device_number_of_controllers,
 
 -- init clients
 insert into client(client_id, client_email, client_name, client_phone)
-    values(2, 'vlad@email.com', 'vlad', '0720 XXX XXX');
+    values(-3, 'vlad@email.com', 'vlad', '0720 XXX XXX');
 insert into client(client_id, client_email, client_name, client_phone)
-    values(3, 'gheorghe@email.com', 'Gheorghe Ionut', '0721 987 123');
+    values(-2, 'gheorghe@email.com', 'Gheorghe Ionut', '0721 987 123');
 insert into client(client_id, client_email, client_name, client_phone)
-    values(4, 'vasile_t@email.com', 'Vasile Turcu', '0754 098 126');
+    values(-1, 'vasile_t@email.com', 'Vasile Turcu', '0754 098 126');
 
 -- init games
 insert into game(game_id, game_genre, game_name)

@@ -7,6 +7,7 @@ import { Badge } from './ui/badge';
 import { Gamepad } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { CartContext } from '@/contexts/cart-context';
+import { cn } from '@/lib/utils';
 
 interface DeviceCardProps extends HTMLAttributes<HTMLDivElement> {
   device: Device;
@@ -19,46 +20,27 @@ export default function DeviceCard({
   ...props
 }: DeviceCardProps) {
   const { cart, setUserCart } = useContext(CartContext);
-  const isInCart = cart.some(
-    (item) =>
-      item.deviceBaseId == device.deviceBaseId &&
-      item.deviceUnits?.includes(device.deviceId)
-  );
+  const isInCart = cart?.deviceUnitId == device.deviceId;
 
   const removeFromCart = () => {
-    const cartCopy = cart.slice();
-    const cartBaseIndex = cartCopy.findIndex(
-        (item) => item.deviceBaseId === device.deviceBaseId
-      ),
-      cartDevice = cartCopy[cartBaseIndex];
-    cartDevice.deviceUnits = cartDevice.deviceUnits?.filter(
-      (du) => du != device.deviceId
-    );
-    !cartDevice.deviceUnits?.length
-      ? setUserCart(cartCopy.toSpliced(cartBaseIndex, 1))
-      : setUserCart(cartCopy);
+    setUserCart(void 0);
   };
 
   const addToCart = () => {
-    const cartCopy = cart.slice();
-    let cartDevice = cartCopy.find(
-      (c) => c.deviceBaseId === device.deviceBaseId
-    );
-    if (!cartDevice) {
-      cartDevice = { deviceBaseId: device.deviceBaseId };
-      cartCopy.push(cartDevice);
-    }
-    cartDevice.deviceUnits = [
-      ...(cartDevice.deviceUnits ?? []),
-      device.deviceId,
-    ];
-    setUserCart(cartCopy);
+    setUserCart({
+      deviceBaseId: device.deviceBaseId,
+      deviceUnitId: device.deviceId,
+      numberOfDays: 30,
+    });
   };
 
   return (
     <Card
       {...props}
-      className='flex flex-col gap-2 p-5 justify-around bg-white/70 backdrop-blur-sm hover:shadow-md'
+      className={cn(
+        'flex flex-col gap-2 p-5 justify-around bg-white/70 backdrop-blur-sm hover:shadow-md min-w-[200px]',
+        props.className
+      )}
     >
       <div className='flex items-center gap-2'>
         <span>Unit no. {index + 1}</span>
@@ -79,16 +61,11 @@ export default function DeviceCard({
           disabled={!device.deviceIsAvailable}
           className='mt-6'
         >
-          Add to cart
+          {!cart ? 'Add to cart' : 'Replace in cart'}
         </Button>
       )}
       {isInCart && (
-        <Button
-          variant={'outline'}
-          onClick={removeFromCart}
-          disabled={!device.deviceIsAvailable}
-          className='mt-6'
-        >
+        <Button variant={'outline'} onClick={removeFromCart} className='mt-6'>
           Remove from cart
         </Button>
       )}

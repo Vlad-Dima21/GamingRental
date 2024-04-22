@@ -5,7 +5,12 @@ import { jwtDecode } from 'jwt-decode';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export type Session = { sub: string; exp: number; roles: string };
+export type Session = {
+  sub: string;
+  exp: number;
+  roles: string;
+  token: string;
+};
 export type FormState =
   | {
       error?: {
@@ -110,13 +115,10 @@ export const logout = async (): Promise<void> => {
   revalidatePath('/');
 };
 
-export const getSession = async (
-  enforceAuth?: boolean
-): Promise<Session | null> => {
+export const getSession = async (): Promise<Session | null> => {
   const session = cookies().get('session')?.value;
   if (!session) {
-    !!enforceAuth && redirect('/login');
     return null;
   }
-  return jwtDecode(session);
+  return { ...(jwtDecode(session) as Session), token: session };
 };

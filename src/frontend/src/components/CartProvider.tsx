@@ -7,7 +7,7 @@ import {
   setCartToLocalStorage,
 } from '@/contexts/cart-context';
 import { Session } from '@/helpers/auth';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function CartProvider({
   session,
@@ -17,14 +17,19 @@ export default function CartProvider({
   children: React.ReactNode;
 }) {
   const sessionEmail = session?.sub;
-  const [cart, setCart] = useState<CartItem[]>(
+  const [cart, setCart] = useState<CartItem | undefined>(
     getCartFromLocalStorage(sessionEmail ?? '')
   );
 
-  const setUserCart = (cartItems: CartItem[]) => {
-    setCart(cartItems);
-    setCartToLocalStorage(sessionEmail ?? '', cartItems);
+  const setUserCart = (cartItem: CartItem | undefined) => {
+    setCart(cartItem);
+    setCartToLocalStorage(sessionEmail ?? '', cartItem);
   };
+
+  useEffect(() => {
+    setCart(getCartFromLocalStorage(sessionEmail ?? ''));
+  }, [sessionEmail]);
+
   return (
     <CartContext.Provider value={{ email: sessionEmail, cart, setUserCart }}>
       {children}
