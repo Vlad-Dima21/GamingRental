@@ -2,6 +2,7 @@ package com.vladima.gamingrental.games.services;
 
 import com.vladima.gamingrental.device.services.DeviceBaseService;
 import com.vladima.gamingrental.games.dto.GameCopyDTO;
+import com.vladima.gamingrental.games.dto.GameCopyExtrasDTO;
 import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.games.repositories.GameCopyRepository;
 import com.vladima.gamingrental.games.repositories.GameRepository;
@@ -15,7 +16,7 @@ import java.text.MessageFormat;
 import java.util.List;
 
 @Service
-public class GameCopyServiceImpl extends BaseServiceImpl<GameCopy, GameCopyDTO, GameCopyRepository> implements GameCopyService {
+public class GameCopyServiceImpl extends BaseServiceImpl<GameCopy, GameCopyExtrasDTO, GameCopyRepository> implements GameCopyService {
 
     private final GameRepository gameRepository;
     private final DeviceBaseService deviceBaseService;
@@ -31,7 +32,7 @@ public class GameCopyServiceImpl extends BaseServiceImpl<GameCopy, GameCopyDTO, 
     }
 
     @Override
-    public List<GameCopyDTO> getCopies(Long gameId, Long deviceId, boolean onlyAvailable) {
+    public List<GameCopyExtrasDTO> getCopies(Long gameId, Long deviceId, boolean onlyAvailable) {
         String incorrectModelName = null;
         if (gameId != null && !gameRepository.existsById(gameId)) incorrectModelName = "game";
         if (deviceId != null) {
@@ -59,12 +60,12 @@ public class GameCopyServiceImpl extends BaseServiceImpl<GameCopy, GameCopyDTO, 
 
     //region unused
     @Override
-    public GameCopyDTO create(GameCopyDTO gameCopyDTO) {
+    public GameCopyExtrasDTO create(GameCopyExtrasDTO gameCopyDTO) {
         return null;
     }
 
     @Override
-    public GameCopyDTO updateInfo(Long id, GameCopyDTO gameCopyDTO) {
+    public GameCopyExtrasDTO updateInfo(Long id, GameCopyExtrasDTO gameCopyDTO) {
         return null;
     }
     //endregion

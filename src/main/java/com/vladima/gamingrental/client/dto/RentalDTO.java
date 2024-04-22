@@ -3,6 +3,7 @@ package com.vladima.gamingrental.client.dto;
 import com.vladima.gamingrental.client.models.Rental;
 import com.vladima.gamingrental.device.dto.DeviceDTO;
 import com.vladima.gamingrental.games.dto.GameCopyDTO;
+import com.vladima.gamingrental.games.dto.GameCopyExtrasDTO;
 import com.vladima.gamingrental.helpers.BaseDTO;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Future;
@@ -36,7 +37,7 @@ public class RentalDTO implements BaseDTO<Rental> {
     private DeviceDTO rentalDevice;
 
     @Valid
-    private List<GameCopyDTO> rentalGames;
+    private List<GameCopyExtrasDTO> rentalGames;
     @Override
     public Rental toModel() {
         return new Rental(rentalDueDate, rentalReturnDate, rentalClient.toModel(), rentalDevice.toModel(),

@@ -1,5 +1,5 @@
 import Image from 'next/image';
-import api from '@/helpers/api-helpers';
+import { get } from '@/helpers/api-helpers';
 import DeviceBase from '@/models/DeviceBase';
 import PageableResponse from '@/models/PageableResponse';
 import Link from 'next/link';
@@ -29,7 +29,7 @@ export default async function Home({
   searchParams.name == '' && delete searchParams.name;
   searchParams.producer == '' && delete searchParams.producer;
 
-  const response = await api.get(
+  const response = await get(
     `/devices?${new ReadonlyURLSearchParams(searchParams).toString()}`
   );
   const data: PageableResponse<DeviceBase> = await response.json();

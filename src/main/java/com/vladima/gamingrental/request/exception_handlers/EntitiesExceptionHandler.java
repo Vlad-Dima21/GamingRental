@@ -23,7 +23,7 @@ public class EntitiesExceptionHandler {
     @Data
     @AllArgsConstructor
     public static class ExceptionFormat {
-        String message, details;
+        String message, details, fieldName;
     }
     @ExceptionHandler({EntityOperationException.class})
     public ResponseEntity<Map<String, String>> operationException(EntityOperationException e) {

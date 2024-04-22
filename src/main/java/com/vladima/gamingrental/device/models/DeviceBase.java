@@ -1,5 +1,6 @@
 package com.vladima.gamingrental.device.models;
 
+import com.vladima.gamingrental.device.dto.DeviceBaseDTO;
 import com.vladima.gamingrental.device.dto.DeviceBaseExtrasDTO;
 import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.helpers.BaseModel;
@@ -51,6 +52,12 @@ public class DeviceBase implements BaseModel<DeviceBaseExtrasDTO> {
         if (devices != null) {
             availableUnits = (int) devices.stream().filter(Device::isDeviceAvailable).count();
         }
-        return new DeviceBaseExtrasDTO(deviceBaseId, deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease, availableUnits, deviceBaseImageUrl);
+        return new DeviceBaseExtrasDTO(deviceBaseId, deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease, availableUnits, deviceBaseImageUrl,
+                devices != null ? devices.stream().map(Device::toDTO).toList() : List.of(),
+                deviceGameCopies != null ? deviceGameCopies.stream().map(GameCopy::toDTO).toList() : List.of());
+    }
+
+    public DeviceBaseDTO toBaseDTO() {
+        return new DeviceBaseDTO(deviceBaseName, deviceBaseProducer, deviceBaseYearOfRelease);
     }
 }

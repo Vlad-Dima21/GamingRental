@@ -1,3 +1,6 @@
+import Device from './Device';
+import GameCopy from './GameCopy';
+
 export default interface DeviceBase {
   deviceBaseId: number;
   deviceBaseName: string;
@@ -5,4 +8,7 @@ export default interface DeviceBase {
   deviceBaseYearOfRelease: number;
   noOfUnitsAvailable: number;
   deviceBaseImageUrl: string;
+
+  deviceBaseUnits: Device[];
+  deviceBaseGameCopies: GameCopy[];
 }

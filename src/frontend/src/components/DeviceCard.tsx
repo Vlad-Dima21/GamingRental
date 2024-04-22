@@ -19,14 +19,40 @@ export default function DeviceCard({
   ...props
 }: DeviceCardProps) {
   const { cart, setUserCart } = useContext(CartContext);
-  const isInCart = cart.some((item) => item.deviceId === device.deviceId);
+  const isInCart = cart.some(
+    (item) =>
+      item.deviceBaseId == device.deviceBaseId &&
+      item.deviceUnits?.includes(device.deviceId)
+  );
 
   const removeFromCart = () => {
-    const cartIndex = cart.findIndex(
-      (item) => item.deviceId === device.deviceId
+    const cartCopy = cart.slice();
+    const cartBaseIndex = cartCopy.findIndex(
+        (item) => item.deviceBaseId === device.deviceBaseId
+      ),
+      cartDevice = cartCopy[cartBaseIndex];
+    cartDevice.deviceUnits = cartDevice.deviceUnits?.filter(
+      (du) => du != device.deviceId
     );
-    if (cartIndex === -1) return;
-    setUserCart(cart.toSpliced(cartIndex, 1));
+    !cartDevice.deviceUnits?.length
+      ? setUserCart(cartCopy.toSpliced(cartBaseIndex, 1))
+      : setUserCart(cartCopy);
+  };
+
+  const addToCart = () => {
+    const cartCopy = cart.slice();
+    let cartDevice = cartCopy.find(
+      (c) => c.deviceBaseId === device.deviceBaseId
+    );
+    if (!cartDevice) {
+      cartDevice = { deviceBaseId: device.deviceBaseId };
+      cartCopy.push(cartDevice);
+    }
+    cartDevice.deviceUnits = [
+      ...(cartDevice.deviceUnits ?? []),
+      device.deviceId,
+    ];
+    setUserCart(cartCopy);
   };
 
   return (
@@ -49,7 +75,7 @@ export default function DeviceCard({
       </div>
       {!isInCart && (
         <Button
-          onClick={() => setUserCart([...cart, { deviceId: device.deviceId }])}
+          onClick={addToCart}
           disabled={!device.deviceIsAvailable}
           className='mt-6'
         >

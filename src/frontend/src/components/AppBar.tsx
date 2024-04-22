@@ -52,7 +52,13 @@ export const AppBar = () => {
                   <ShoppingCart />
                   {cart.length > 0 && (
                     <div className='absolute inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-red-500 border-2 border-white rounded-full -top-2 -end-2 dark:border-gray-900'>
-                      {cart.length}
+                      {cart.reduce(
+                        (acc, item) =>
+                          (acc +=
+                            (item.deviceUnits?.length ?? 0) +
+                            (item.gameCopies?.length ?? 0)),
+                        0
+                      )}
                     </div>
                   )}
                 </div>

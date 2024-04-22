@@ -1,19 +1,35 @@
 import DeviceCard from '@/components/DeviceCard';
-import api from '@/helpers/api-helpers';
+import { get } from '@/helpers/api-helpers';
 import Device from '@/models/Device';
 import DeviceBase from '@/models/DeviceBase';
+import { Metadata } from 'next';
+
+async function getDeviceAndDeviceBase(
+  id: number
+): Promise<[DeviceBase, Device[]]> {
+  return await Promise.all([
+    get(`/devices/${id}`).then((res) => res.json()),
+    get(`/units/of-id/${id}`).then((res) => res.json()),
+  ]);
+}
+
+export async function generateMetadata({
+  params: { id },
+}: {
+  params: { id: number };
+}) {
+  const [deviceBase, devices] = await getDeviceAndDeviceBase(id);
+  return {
+    title: deviceBase.deviceBaseName,
+  };
+}
 
 export default async function DevicePage({
   params: { id },
 }: {
   params: { id: number };
 }) {
-  const deviceBaseReq = await api.get(`/devices/${id}`),
-    deviceBase: DeviceBase = await deviceBaseReq.json();
-
-  const deviceReq = await api.get(`/units/of-id/${id}`),
-    devices: Device[] = await deviceReq.json();
-
+  const [deviceBase, devices] = await getDeviceAndDeviceBase(id);
   return (
     <div className='flex flex-col max-w-5xl gap-10 mx-auto w-full py-16'>
       <div className='flex items-end gap-2'>

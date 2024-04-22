@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import java.util.List;
 
 public interface BaseService<Model extends BaseModel<ModelDTO>, ModelDTO extends BaseDTO<Model>> {
-    Page<ModelDTO> getAll(PageRequest pageRequest);
+    List<ModelDTO> getAll();
     Model getModelById(Long id);
     ModelDTO getById(Long id);
     ModelDTO create(ModelDTO modelDTO);

@@ -49,6 +49,6 @@ public class Device implements BaseModel<DeviceExtrasDTO> {
 
     @Override
     public DeviceExtrasDTO toDTO() {
-        return new DeviceExtrasDTO(deviceNumberOfControllers, deviceAvailable, deviceId, deviceBase.getDeviceBaseName());
+        return new DeviceExtrasDTO(deviceNumberOfControllers, deviceAvailable, deviceId, deviceBase.getDeviceBaseId(), deviceBase.getDeviceBaseName());
     }
 }

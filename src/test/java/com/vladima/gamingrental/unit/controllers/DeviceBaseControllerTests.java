@@ -50,9 +50,10 @@ public class DeviceBaseControllerTests {
     public void init() {
         ps5 = new DeviceBase(
                 1L, "PS5", "Sony",
-                2018, "", List.of(new Device(2, true)),
+                2018, "", null,
                 List.of()
         );
+        ps5.setDevices(List.of(new Device(2, true, ps5)));
     }
 
     @Test

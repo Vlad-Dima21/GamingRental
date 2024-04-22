@@ -2,6 +2,7 @@ package com.vladima.gamingrental.games.controllers;
 
 import com.vladima.gamingrental.device.dto.DeviceBaseExtrasDTO;
 import com.vladima.gamingrental.games.dto.GameCopyDTO;
+import com.vladima.gamingrental.games.dto.GameCopyExtrasDTO;
 import com.vladima.gamingrental.games.services.GameCopyService;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,7 +35,7 @@ public class GameCopyController {
                     responseCode = "200",
                     content = @Content(
                             mediaType = MediaType.APPLICATION_JSON_VALUE,
-                            array = @ArraySchema(schema = @Schema(implementation = GameCopyDTO.class))
+                            array = @ArraySchema(schema = @Schema(implementation = GameCopyExtrasDTO.class))
                     ),
                     description = "List of game copies"
             ),
@@ -48,7 +49,7 @@ public class GameCopyController {
             )
     })
     @GetMapping
-    public ResponseEntity<List<GameCopyDTO>> getGameCopies(
+    public ResponseEntity<List<GameCopyExtrasDTO>> getGameCopies(
         @RequestParam(required = false) @Parameter(description = "Filter by game ID") Long gameId,
         @RequestParam(required = false) @Parameter(description = "Filter by device ID") Long deviceId,
         @RequestParam(required = false) @Parameter(description = "Fetch only available copies") boolean onlyAvailable

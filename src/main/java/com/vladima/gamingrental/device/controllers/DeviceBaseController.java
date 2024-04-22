@@ -130,4 +130,9 @@ public class DeviceBaseController {
         deviceBaseService.removeById(id);
         return new ResponseEntity<>("Device deleted", HttpStatus.NO_CONTENT);
     }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<DeviceBaseExtrasDTO>> getAllDevices() {
+        return ResponseEntity.ok(deviceBaseService.getAll());
+    }
 }

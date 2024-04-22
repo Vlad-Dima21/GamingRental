@@ -2,6 +2,7 @@ package com.vladima.gamingrental.games.models;
 
 import com.vladima.gamingrental.device.models.DeviceBase;
 import com.vladima.gamingrental.games.dto.GameCopyDTO;
+import com.vladima.gamingrental.games.dto.GameCopyExtrasDTO;
 import com.vladima.gamingrental.helpers.BaseModel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Data
 @Entity
 @Table
-public class GameCopy implements BaseModel<GameCopyDTO>{
+public class GameCopy implements BaseModel<GameCopyExtrasDTO>{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,7 +41,7 @@ public class GameCopy implements BaseModel<GameCopyDTO>{
     }
 
     @Override
-    public GameCopyDTO toDTO() {
-        return new GameCopyDTO(gameBase.toDTO(), gameDevice.toDTO(), isAvailable);
+    public GameCopyExtrasDTO toDTO() {
+        return new GameCopyExtrasDTO(gameBase.getGameId(), gameCopyId, gameDevice.getDeviceBaseId(), gameBase.toDTO(), gameDevice.toBaseDTO(), isAvailable);
     }
 }

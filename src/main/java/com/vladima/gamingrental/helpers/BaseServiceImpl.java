@@ -22,8 +22,8 @@ public abstract class BaseServiceImpl<Model extends BaseModel<ModelDTO>, ModelDT
     private final String LOG_NAME = getLogName();
 
     @Override
-    public Page<ModelDTO> getAll(PageRequest pageRequest) {
-        return repository.findAll(pageRequest).map(Model::toDTO);
+    public List<ModelDTO> getAll() {
+        return repository.findAll().stream().map(Model::toDTO).toList();
     }
 
     @Override

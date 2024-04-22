@@ -1,8 +1,9 @@
 import { createContext, useState } from 'react';
 
 export interface CartItem {
-  deviceId?: number;
-  gameCopyId?: number;
+  deviceUnits?: number[];
+  deviceBaseId?: number;
+  gameCopies?: number[];
 }
 
 export interface UserContext {
@@ -20,7 +21,7 @@ export const CartContext = createContext<UserContext>({
 const CART_KEY = 'cart';
 
 export function getCartFromLocalStorage(email: string): CartItem[] {
-  const stringifiedCart = localStorage.getItem(CART_KEY);
+  const stringifiedCart = localStorage?.getItem(CART_KEY);
   if (stringifiedCart) {
     try {
       const entireCart: { [email: string]: CartItem[] } =
@@ -38,7 +39,7 @@ export function getCartFromLocalStorage(email: string): CartItem[] {
 }
 
 export function setCartToLocalStorage(email: string, cart: CartItem[]) {
-  const stringifiedCart = localStorage.getItem(CART_KEY);
+  const stringifiedCart = localStorage?.getItem(CART_KEY);
   try {
     const entireCart: { [email: string]: CartItem[] } = stringifiedCart
       ? JSON.parse(stringifiedCart)
