@@ -36,7 +36,7 @@ export default async function DevicePage({
         <h1 className='text-2xl font-bold'>{deviceBase.deviceBaseName}</h1>
         <span className='text-xl opacity-70'>units</span>
       </div>
-      <div className='grid grid-cols-3 gap-4'>
+      <div className='grid grid-cols-1 md:grid-cols-3 gap-4'>
         {devices.map((device, index) => (
           <DeviceCard key={device.deviceId} device={device} index={index} />
         ))}

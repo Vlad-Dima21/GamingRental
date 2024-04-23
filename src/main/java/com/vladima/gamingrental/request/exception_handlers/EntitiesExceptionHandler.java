@@ -30,6 +30,7 @@ public class EntitiesExceptionHandler {
         Map<String, String> response = new HashMap<>();
         response.put("message", e.getMessage());
         if (!e.getExtraInfo().isBlank()) response.put("details", e.getExtraInfo());
+        if (e.getFieldName() != null && !e.getFieldName().isBlank()) response.put("fieldName", e.getFieldName());
         return new ResponseEntity<>(response, e.getStatus());
     }
 

@@ -36,25 +36,25 @@ export default async function Home({
   const { items: devices, totalPages } = data;
 
   return (
-    <div className='p-16 flex flex-col items-center'>
+    <div className='p-4 sm:p-8 md:p-16 flex flex-col items-center'>
       <div className='space-y-5 max-w-5xl w-full'>
-        <div className='flex justify-between items-center'>
+        <div className='flex flex-col lg:flex-row justify-between items-center gap-5'>
           <h1 className='text-2xl font-bold'>Devices</h1>
           <form
-            className='flex gap-5'
+            className='flex gap-5 flex-col md:flex-row w-full md:w-auto max-w-5xl'
             action={async (formData: FormData) => {
               'use server';
               redirect(`/?${strippedUrlSearchParams(formData).toString()}`);
             }}
           >
             <Input
-              className='w-[300px]'
+              className='w-full md:w-[300px]'
               placeholder='Search by name...'
               name='name'
               defaultValue={searchParams.name}
             />
             <Input
-              className='w-[300px]'
+              className='w-full md:w-[300px]'
               placeholder='Search by producer...'
               name='producer'
               defaultValue={searchParams.producer}
@@ -73,7 +73,7 @@ export default async function Home({
                 key={device.deviceBaseName}
                 href={`/device/${device.deviceBaseId}`}
               >
-                <Card className='flex gap-2 p-5 justify-between bg-white/70 backdrop-blur-sm hover:border-purple-600 hover:shadow-md'>
+                <Card className='flex flex-col md:flex-row gap-2 p-5 justify-between bg-white/70 backdrop-blur-sm hover:border-purple-600 hover:shadow-md'>
                   <div>
                     <CardHeader>
                       <CardTitle>{device.deviceBaseName}</CardTitle>
@@ -88,7 +88,7 @@ export default async function Home({
                     width={150}
                     height={150}
                     objectFit='cover'
-                    className='border border-gray-300 rounded-md'
+                    className='border border-gray-300 rounded-md self-center md:self-auto'
                     alt={device.deviceBaseName}
                   />
                 </Card>

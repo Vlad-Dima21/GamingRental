@@ -4,6 +4,7 @@ import './globals.css';
 import { AppBar } from '@/components/AppBar';
 import { getSession } from '@/helpers/auth';
 import CartProvider from '@/components/CartProvider';
+import Footer from '@/components/Footer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -31,6 +32,7 @@ export default async function RootLayout({
             <div className='p-4 overflow-auto'>{children}</div>
           </CartProvider>
         </main>
+        <Footer />
       </body>
     </html>
   );

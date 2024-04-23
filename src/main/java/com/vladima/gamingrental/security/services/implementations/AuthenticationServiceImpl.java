@@ -27,6 +27,6 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         if (!emailPattern.matcher(username).matches()) {
             return repository.findByAdminUsername(username).orElseThrow(() -> new EntityOperationException("User not found", "Invalid admin", HttpStatus.NOT_FOUND));
         }
-        return repository.findByClient_ClientEmail(username).orElseThrow(() -> new EntityOperationException("User not found", "Email not found", HttpStatus.NOT_FOUND));
+        return repository.findByClient_ClientEmail(username).orElseThrow(() -> new EntityOperationException("User not found", "Email not found", "userEmail", HttpStatus.NOT_FOUND));
     }
 }
