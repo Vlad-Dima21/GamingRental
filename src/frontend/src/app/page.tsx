@@ -12,6 +12,8 @@ import {
 import PageableContainer from '@/components/PageableContainer';
 import { Input } from '@/components/ui/input';
 import strippedUrlSearchParams from '@/helpers/search-params-helper';
+import SortButton from '@/components/SortButton';
+import SortDirection from '@/helpers/sort-directions';
 
 interface SearchParams {
   page: string;
@@ -28,6 +30,7 @@ export default async function Home({
 }) {
   searchParams.name == '' && delete searchParams.name;
   searchParams.producer == '' && delete searchParams.producer;
+  searchParams.sort == '' && delete searchParams.sort;
 
   const response = await get(
     `/devices?${new ReadonlyURLSearchParams(searchParams).toString()}`
@@ -41,20 +44,25 @@ export default async function Home({
         <div className='flex flex-col lg:flex-row justify-between items-center gap-5'>
           <h1 className='text-2xl font-bold'>Devices</h1>
           <form
-            className='flex gap-5 flex-col md:flex-row w-full md:w-auto max-w-5xl'
+            className='flex gap-5 flex-col lg:flex-row w-full lg:w-auto max-w-5xl'
             action={async (formData: FormData) => {
               'use server';
               redirect(`/?${strippedUrlSearchParams(formData).toString()}`);
             }}
           >
+            <div className='flex gap-2 w-full lg:w-auto'>
+              <SortButton searchParams={searchParams} baseUrl='/'>
+                Name
+              </SortButton>
+              <Input
+                className='flex-grow lg:flex-initial md:w-[230px]'
+                placeholder='Search by name...'
+                name='name'
+                defaultValue={searchParams.name}
+              />
+            </div>
             <Input
-              className='w-full md:w-[300px]'
-              placeholder='Search by name...'
-              name='name'
-              defaultValue={searchParams.name}
-            />
-            <Input
-              className='w-full md:w-[300px]'
+              className='w-full'
               placeholder='Search by producer...'
               name='producer'
               defaultValue={searchParams.producer}

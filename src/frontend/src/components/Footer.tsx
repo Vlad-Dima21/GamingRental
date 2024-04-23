@@ -2,6 +2,18 @@ import Link from 'next/link';
 import { Button } from './ui/button';
 import { getSession } from '@/helpers/auth';
 
+function FooterLink({
+  children,
+}: {
+  children: React.ReactElement<typeof Link>;
+}) {
+  return (
+    <Button asChild variant='link' className='text-white hover:text-indigo-100'>
+      {children}
+    </Button>
+  );
+}
+
 export default async function Footer() {
   const session = await getSession();
   return (
@@ -11,31 +23,19 @@ export default async function Footer() {
           !!session ? 'grid-cols-3' : 'grid-cols-2'
         } justify-items-center gap-3 md:gap-10`}
       >
-        <Button
-          asChild
-          variant='link'
-          className='text-white hover:text-orange-400'
-        >
+        <FooterLink>
           <Link href={'/'}>Home</Link>
-        </Button>
+        </FooterLink>
         {session && (
-          <Button
-            asChild
-            variant='link'
-            className='text-white hover:text-orange-400'
-          >
+          <FooterLink>
             <Link href={'/rentals'}>Rentals</Link>
-          </Button>
+          </FooterLink>
         )}
-        <Button
-          asChild
-          variant='link'
-          className='text-white hover:text-orange-400'
-        >
+        <FooterLink>
           <a href='https://github.com/Vlad-Dima21/GamingRental' target='_blank'>
             GitHub
           </a>
-        </Button>
+        </FooterLink>
       </div>
     </div>
   );
