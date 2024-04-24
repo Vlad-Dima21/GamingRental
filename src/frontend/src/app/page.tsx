@@ -44,7 +44,7 @@ export default async function Home({
         <div className='flex flex-col lg:flex-row justify-between items-center gap-5'>
           <h1 className='text-2xl font-bold'>Devices</h1>
           <form
-            className='flex gap-5 flex-col lg:flex-row w-full lg:w-auto max-w-5xl'
+            className='flex gap-2 flex-col lg:flex-row w-full lg:w-auto max-w-5xl'
             action={async (formData: FormData) => {
               'use server';
               redirect(`/?${strippedUrlSearchParams(formData).toString()}`);

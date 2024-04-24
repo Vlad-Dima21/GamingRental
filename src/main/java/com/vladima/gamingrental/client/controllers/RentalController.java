@@ -3,6 +3,7 @@ package com.vladima.gamingrental.client.controllers;
 import com.vladima.gamingrental.client.dto.RentalDTO;
 import com.vladima.gamingrental.client.dto.RentalRequestDTO;
 import com.vladima.gamingrental.client.services.RentalService;
+import com.vladima.gamingrental.helpers.PageableResponseDTO;
 import com.vladima.gamingrental.helpers.SortDirection;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
 import io.swagger.v3.oas.annotations.Operation;
@@ -53,7 +54,7 @@ public class RentalController {
             )
     })
     @GetMapping
-    public ResponseEntity<List<RentalDTO>> getRentals(
+    public ResponseEntity<PageableResponseDTO<RentalDTO>> getRentals(
         Authentication authentication,
 //        @RequestParam(required = false) @Parameter(description = "Client Email") String clientEmail,
         @RequestParam(required = false) @Parameter(description = "Device Name") String  deviceName,

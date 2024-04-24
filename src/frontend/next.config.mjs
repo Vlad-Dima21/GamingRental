@@ -5,6 +5,9 @@ const hostnames = [
   'www.google.com',
   'lcdn.altex.ro',
   's13emagst.akamaized.net',
+  'gmedia.playstation.com',
+  'www.punchtechnology.co.uk',
+  'm.media-amazon.com',
 ];
 
 const nextConfig = {

@@ -1,6 +1,7 @@
 package com.vladima.gamingrental.unit.controllers;
 
 import com.vladima.gamingrental.client.controllers.RentalController;
+import com.vladima.gamingrental.client.dto.RentalDTO;
 import com.vladima.gamingrental.client.dto.RentalRequestDTO;
 import com.vladima.gamingrental.client.models.Client;
 import com.vladima.gamingrental.client.models.Rental;
@@ -10,6 +11,7 @@ import com.vladima.gamingrental.device.models.DeviceBase;
 import com.vladima.gamingrental.games.models.Game;
 import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.helpers.EntityOperationException;
+import com.vladima.gamingrental.helpers.PageableResponseDTO;
 import com.vladima.gamingrental.helpers.StringifyJSON;
 import com.vladima.gamingrental.request.exception_handlers.EntitiesExceptionHandler;
 import com.vladima.gamingrental.unit.configurations.TestConfigurationSecurity;
@@ -23,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -92,7 +95,7 @@ public class RentalControllerTests {
     @DisplayName("Unit test for fetching rentals that returns the list")
     public void givenFilters_getRentals_returnRentalsJSON() throws Exception {
         given(service.getRentals("test", deviceBase.getDeviceBaseName(), null, false, null, null))
-                .willReturn(client.getClientRentals().stream().map(Rental::toDTO).toList());
+                .willReturn(new PageableResponseDTO<>(1, client.getClientRentals().stream().map(Rental::toDTO).toList()));
 
         mockMvc.perform(get("/api/rentals")
                 .param("deviceName", deviceBase.getDeviceBaseName()))

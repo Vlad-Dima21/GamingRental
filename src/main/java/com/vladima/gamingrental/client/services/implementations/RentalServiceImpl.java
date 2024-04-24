@@ -13,6 +13,7 @@ import com.vladima.gamingrental.games.models.GameCopy;
 import com.vladima.gamingrental.games.services.GameCopyService;
 import com.vladima.gamingrental.helpers.BaseServiceImpl;
 import com.vladima.gamingrental.helpers.EntityOperationException;
+import com.vladima.gamingrental.helpers.PageableResponseDTO;
 import com.vladima.gamingrental.helpers.SortDirection;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +44,7 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
 }
 
     @Override
-    public List<RentalDTO> getRentals(String clientEmail, String deviceName, Boolean returned, boolean pastDue, Integer page, SortDirection sort) {
+    public PageableResponseDTO<RentalDTO> getRentals(String clientEmail, String deviceName, Boolean returned, boolean pastDue, Integer page, SortDirection sort) {
         var pageRequest = PageRequest.of(page != null ? page - 1 : 0, PAGE_SIZE);
         if (clientEmail != null) clientService.getByEmail(clientEmail);
         if (deviceName != null && deviceService.getByDeviceBaseName(deviceName, false).isEmpty()) {
@@ -54,9 +55,8 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
             );
         }
         pageRequest = sort != null ? pageRequest.withSort(sort.by("rentalReturnDate")): pageRequest;
-        return getRepository().getRentals(clientEmail, deviceName, returned, pastDue, pageRequest)
-                .stream().map(Rental::toDTO)
-                .toList();
+        var rentals = getRepository().getRentals(clientEmail, deviceName, returned, pastDue, pageRequest);
+        return new PageableResponseDTO<>(rentals.getTotalPages(), rentals.map(Rental::toDTO).toList());
     }
 
     public RentalDTO createRental(String clientEmail, RentalRequestDTO rentalRequestDTO) {
