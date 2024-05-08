@@ -1,13 +1,18 @@
+import GameCard from '@/components/GameCard';
 import PageableContainer from '@/components/PageableContainer';
+import ReloginButton from '@/components/ReloginButton';
 import SortButton from '@/components/SortButton';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { get } from '@/helpers/api-helpers';
-import { getSession } from '@/helpers/auth';
+import { get, patch } from '@/helpers/api-helpers';
+import { getSession, logout } from '@/helpers/auth';
 import strippedUrlSearchParams from '@/helpers/search-params-helper';
 import PageableResponse from '@/models/PageableResponse';
 import Rental from '@/models/Rental';
 import { Metadata } from 'next';
+import { revalidatePath } from 'next/cache';
 import { ReadonlyURLSearchParams, redirect } from 'next/navigation';
 
 export const metadata: Metadata = {
@@ -30,9 +35,11 @@ export default async function RentalsPage({
   const response = await get(
     `/rentals?${new ReadonlyURLSearchParams(searchParams).toString()}`
   );
+  let shouldLogin = false;
   let data: PageableResponse<Rental>;
   if (!response.ok) {
     data = { items: [], totalPages: 0 };
+    shouldLogin = response.status === 401;
   } else {
     data = await response.json();
   }
@@ -70,48 +77,93 @@ export default async function RentalsPage({
           baseUrl='/rentals'
         >
           <div className='w-full flex flex-col gap-5'>
-            {data.items.map((rental) => (
-              <Card
-                key={new Date(rental.rentalDueDate).getTime()}
-                className='flex flex-col md:flex-row gap-2 p-5 justify-between bg-white/70 backdrop-blur-sm hover:shadow-md'
-              >
-                <div>
-                  <CardHeader>
-                    <CardTitle className='flex items-end gap-2'>
-                      <span
-                        className={
-                          new Date(rental.rentalDueDate) <
-                          (rental.rentalReturnDate
-                            ? new Date(rental.rentalReturnDate)
-                            : new Date())
-                            ? 'text-red-500'
-                            : ''
-                        }
+            {data.items
+              .map((rental) => ({
+                ...rental,
+                isPastDue:
+                  new Date(rental.rentalDueDate) <
+                  (rental.rentalReturnDate
+                    ? new Date(rental.rentalReturnDate)
+                    : new Date()),
+                isReturned: !!rental.rentalReturnDate,
+              }))
+              .map((rental) => (
+                <Card
+                  key={new Date(rental.rentalDueDate).getTime()}
+                  className='flex flex-col md:flex-row gap-2 p-5 justify-between bg-white/70 backdrop-blur-sm hover:shadow-md'
+                >
+                  <div className='w-full'>
+                    <CardHeader>
+                      <CardTitle className='flex flex-col gap-2'>
+                        <div className='flex items-end gap-2'>
+                          <span>{rental.rentalDevice.deviceName}</span>
+                          <span className='text-sm text-gray-600'>
+                            {new Date(
+                              rental.rentalDueDate
+                            ).toLocaleDateString()}
+                          </span>
+                        </div>
+                        <Badge
+                          variant={rental.isReturned ? 'default' : 'outline'}
+                          className={`w-fit ${
+                            rental.isPastDue
+                              ? 'bg-red-500 text-white'
+                              : rental.isReturned
+                              ? 'bg-green-400 text-white'
+                              : ''
+                          }`}
+                        >
+                          {rental.isReturned ? 'Returned' : 'On rent'}
+                        </Badge>
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className='w-full flex flex-col md:flex-row justify-between gap-5'>
+                      <div className='flex justify-between'>
+                        <div className='w-full md:w-fit flex flex-col md:flex-row gap-2 md:py-2'>
+                          {rental.rentalGames.map((g) => (
+                            <GameCard
+                              key={g.gameId}
+                              gameCopy={g}
+                              readOnly={true}
+                              className='flex-grow'
+                            />
+                          ))}
+                        </div>
+                        {rental.rentalReturnDate && (
+                          <p>
+                            {new Date(
+                              rental.rentalReturnDate
+                            ).toLocaleDateString()}
+                          </p>
+                        )}
+                      </div>
+                      <form
+                        action={async (formData: FormData) => {
+                          'use server';
+                          const rentalId: number = parseInt(
+                            formData.get('rentalId') as string
+                          );
+                          await patch(`/rentals/return/${rentalId}`);
+                          revalidatePath('/rentals');
+                        }}
+                        className='w-full md:w-fit md:!min-w-[150px] md:self-end md:m-2'
                       >
-                        {rental.rentalDevice.deviceName}
-                      </span>
-                      <span className='text-sm text-gray-600'>
-                        {new Date(rental.rentalDueDate).toLocaleDateString()}
-                      </span>
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p>
-                      {rental.rentalGames
-                        .map((g) => g.gameBase.gameName)
-                        .join()}
-                    </p>
-                    {rental.rentalReturnDate && (
-                      <p>
-                        {new Date(rental.rentalReturnDate).toLocaleDateString()}
-                      </p>
-                    )}
-                  </CardContent>
-                </div>
-              </Card>
-            ))}
+                        <input hidden name='rentalId' value={rental.rentalId} />
+                        <Button
+                          className='w-full'
+                          variant={rental.isReturned ? 'outline' : 'default'}
+                          disabled={rental.isReturned}
+                        >
+                          Return
+                        </Button>
+                      </form>
+                    </CardContent>
+                  </div>
+                </Card>
+              ))}
           </div>
         </PageableContainer>
+        {shouldLogin && <ReloginButton />}
       </div>
     </div>
   );

@@ -22,6 +22,9 @@ import java.util.List;
 @Data
 public class RentalDTO implements BaseDTO<Rental> {
 
+    @NotNull
+    private Long rentalId;
+
     @Future
     @NotNull
     private LocalDateTime rentalDueDate;

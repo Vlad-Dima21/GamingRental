@@ -118,7 +118,6 @@ export default function CartPageContent({ rentalAction }: Props) {
                               <GameCard
                                 key={game.gameId}
                                 className='min-w-[200px]'
-                                device={device}
                                 gameCopy={game}
                               />
                             ))}

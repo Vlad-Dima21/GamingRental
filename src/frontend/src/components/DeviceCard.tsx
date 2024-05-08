@@ -38,7 +38,7 @@ export default function DeviceCard({
     <Card
       {...props}
       className={cn(
-        'flex flex-col gap-2 p-5 justify-around bg-white/70 backdrop-blur-sm hover:shadow-md min-w-[200px]',
+        'flex flex-col gap-2 p-5 justify-around bg-white/70 backdrop-blur-sm hover:shadow-md min-w-[200px] transition-all duration-200',
         props.className
       )}
     >

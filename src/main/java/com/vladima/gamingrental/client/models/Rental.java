@@ -56,7 +56,7 @@ public class Rental implements BaseModel<RentalDTO> {
 
     @Override
     public RentalDTO toDTO() {
-        return new RentalDTO(rentalDueDate, rentalReturnDate, rentalClient.toDTO(), rentalDevice.toDTO(),
+        return new RentalDTO(rentalId, rentalDueDate, rentalReturnDate, rentalClient.toDTO(), rentalDevice.toDTO(),
                 rentalGames.stream().map(GameCopy::toDTO).toList());
     }
 }

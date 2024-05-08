@@ -1,3 +1,5 @@
+'use client';
+
 import { CartContext } from '@/contexts/cart-context';
 import DeviceBase from '@/models/DeviceBase';
 import GameCopy from '@/models/GameCopy';
@@ -10,12 +12,12 @@ import { cn } from '@/lib/utils';
 
 interface GameCardProps extends HTMLAttributes<HTMLDivElement> {
   gameCopy: GameCopy;
-  device: DeviceBase;
+  readOnly?: boolean;
 }
 
 export default function GameCard({
   gameCopy,
-  device,
+  readOnly,
   ...props
 }: GameCardProps) {
   const { cart, setUserCart } = useContext(CartContext);
@@ -51,12 +53,12 @@ export default function GameCard({
         <span>{gameCopy.gameBase.gameName}</span>
         <Badge variant='outline'>{gameCopy.gameBase.gameGenre}</Badge>
       </div>
-      {!isInCart && (
+      {!readOnly && !isInCart && (
         <Button onClick={addToCart} className='mt-6'>
           Add to cart
         </Button>
       )}
-      {isInCart && (
+      {!readOnly && isInCart && (
         <Button variant='outline' onClick={removeFromCart} className='mt-6'>
           Remove from cart
         </Button>

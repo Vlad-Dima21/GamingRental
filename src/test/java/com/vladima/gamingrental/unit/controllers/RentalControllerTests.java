@@ -101,7 +101,7 @@ public class RentalControllerTests {
                 .param("deviceName", deviceBase.getDeviceBaseName()))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$[0].rentalClient.clientName").value(client.getClientName()));
+                .andExpect(jsonPath("$.items[0].rentalClient.clientName").value(client.getClientName()));
     }
 
     @Test

@@ -37,7 +37,7 @@ public class DeviceBaseServiceMYSQLTests {
     public void setup() {
         repository.deleteAll();
         testingDevices = repository.saveAll(List.of(
-            new DeviceBase("PS4", "Sony", 2014),
+            new DeviceBase("PS4 Slim", "Sony", 2014),
             new DeviceBase("Xbox 360", "Microsoft", 2005),
             new DeviceBase("Xbox One", "Microsoft", 2014),
             new DeviceBase("PSVita", "Sony", 2011)
