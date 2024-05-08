@@ -40,7 +40,7 @@ public class EntitiesExceptionHandler {
         String fieldName = e.getBindingResult().getFieldError().getField();
         var fieldValue = e.getBindingResult().getFieldError().getRejectedValue();
         String fieldMessage = e.getBindingResult().getFieldError().getDefaultMessage();
-        response.put("details", MessageFormat.format("Invalid value {0} for {1}", fieldValue, getReadableName(fieldName)));
+        response.put("details", MessageFormat.format("Invalid value for {0}", getReadableName(fieldName)));
         response.put("message", fieldMessage);
         response.put("fieldName", fieldName);
 

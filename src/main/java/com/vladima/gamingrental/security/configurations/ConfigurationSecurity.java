@@ -144,6 +144,4 @@ public class ConfigurationSecurity {
         daoProvider.setPasswordEncoder(passwordEncoder());
         return new ProviderManager(daoProvider);
     }
-
-    //todo maybe https://www.baeldung.com/spring-security-custom-authentication-failure-handler
 }

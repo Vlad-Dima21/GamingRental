@@ -60,11 +60,11 @@ insert into device(device_id, device_is_available, device_number_of_controllers,
 
 -- init clients
 insert into client(client_id, client_email, client_name, client_phone)
-    values(10000, 'vlad@email.com', 'vlad', '0720 231 812');
+    values(1, 'vlad@email.com', 'vlad', '0720 231 812');
 insert into client(client_id, client_email, client_name, client_phone)
-    values(10001, 'gheorghe@email.com', 'Gheorghe Ionut', '0721 987 123');
+    values(2, 'gheorghe@email.com', 'Gheorghe Ionut', '0721 987 123');
 insert into client(client_id, client_email, client_name, client_phone)
-    values(10002, 'vasile_t@email.com', 'Vasile Turcu', '0754 098 126');
+    values(3, 'vasile_t@email.com', 'Vasile Turcu', '0754 098 126');
 
 -- init games
 insert into game(game_id, game_genre, game_name)
@@ -77,23 +77,90 @@ insert into game(game_id, game_genre, game_name)
     values(4, 'Multiplayer', 'Among Us');
 insert into game(game_id, game_genre, game_name)
     values(5, 'Football', 'FC24');
+insert into game(game_id, game_genre, game_name)
+    values(6, 'Action', 'God of War Ragnarök');
+insert into game(game_id, game_genre, game_name)
+    values(7, 'Action', 'Cyberpunk 2077');
+insert into game(game_id, game_genre, game_name)
+    values(8, 'Action', 'Assassin''s Creed Valhalla');
+
 
 -- init game copies
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(1, 1, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(2, 1, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(3, 1, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(1, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(1, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(1, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(2, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(3, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(4, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(5, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(6, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(7, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(8, 1, true);
 
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(4, 2, 6, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(5, 2, 6, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values( 2, 6, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values( 2, 6, true);
 
 
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(6, 3, 7, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(3, 7, true);
 
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(7, 4, 7, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(4, 7, true);
+
+insert into game_copy(game_id, device_base_id, is_available)
+    values(5, 4, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(7, 4, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(6, 4, true);
+
+insert into game_copy(game_id, device_base_id, is_available)
+    values(8, 9, true);
+
+-- init rentals
+insert into rental(rental_client_id, rental_device_id, rental_due_date, rental_return_date)
+    values(1, 1, '2023-12-12', '2023-12-10');
+insert into rental_game_copy(game_copy_id, rental_id)
+    values(15, 1);
+insert into rental_game_copy(game_copy_id, rental_id)
+    values(12, 1);
+insert into rental_game_copy(game_copy_id, rental_id)
+    values(13, 1);
+insert into rental_game_copy(game_copy_id, rental_id)
+    values(14, 1);
+
+insert into rental(rental_client_id, rental_device_id, rental_due_date, rental_return_date)
+    values(1, 5, '2024-03-12', '2024-04-09');
+
+insert into rental(rental_client_id, rental_device_id, rental_due_date, rental_return_date)
+    values(1, 6, '2024-03-12', '2024-04-09');
+
+insert into rental(rental_client_id, rental_device_id, rental_due_date, rental_return_date)
+    values(1, 7, '2024-03-12', '2024-04-09');
+
+insert into rental(rental_client_id, rental_device_id, rental_due_date, rental_return_date)
+    values(1, 8, '2024-03-12', '2024-04-09');
+
+insert into rental(rental_client_id, rental_device_id, rental_due_date, rental_return_date)
+    values(1, 9, '2024-03-12', '2024-04-09');
+
+insert into rental(rental_client_id, rental_device_id, rental_due_date, rental_return_date)
+    values(1, 10, '2024-03-12', '2024-04-09');
+
+insert into rental(rental_client_id, rental_device_id, rental_due_date, rental_return_date)
+    values(1, 11, '2024-03-12', '2024-04-09');
+
+insert into rental(rental_client_id, rental_device_id, rental_due_date, rental_return_date)
+    values(1, 12, '2024-03-12', '2024-04-09');

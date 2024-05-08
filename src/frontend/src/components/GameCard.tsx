@@ -50,7 +50,7 @@ export default function GameCard({
       )}
     >
       <div className='flex items-center gap-2'>
-        <span>{gameCopy.gameBase.gameName}</span>
+        <span className='text-nowrap'>{gameCopy.gameBase.gameName}</span>
         <Badge variant='outline'>{gameCopy.gameBase.gameGenre}</Badge>
       </div>
       {!readOnly && !isInCart && (

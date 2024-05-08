@@ -14,6 +14,8 @@ import { useContext, useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { ActionResult } from './page';
 import { useRouter } from 'next/navigation';
+import { ScrollArea } from '@radix-ui/react-scroll-area';
+import { ScrollBar } from '@/components/ui/scroll-area';
 
 interface Props {
   rentalAction: (cartItem: CartItem) => Promise<ActionResult | undefined>;
@@ -103,25 +105,27 @@ export default function CartPageContent({ rentalAction }: Props) {
                         <h3 className='text-lg font-bold'>
                           Games available for this device
                         </h3>
-                        <div className='flex items-center gap-4 overflow-auto pb-2'>
-                          {device.deviceBaseGameCopies
-                            .filter((game) => game.available)
-                            .filter(
-                              (game, idx, arr) =>
-                                arr.findIndex(
-                                  (g) =>
-                                    g.gameBase.gameName ==
-                                    game.gameBase.gameName
-                                ) === idx
-                            )
-                            .map((game) => (
-                              <GameCard
-                                key={game.gameId}
-                                className='min-w-[200px]'
-                                gameCopy={game}
-                              />
-                            ))}
-                        </div>
+                        <ScrollArea>
+                          <div className='flex items-center gap-4 pb-2'>
+                            {device.deviceBaseGameCopies
+                              .filter((game) => game.available)
+                              .filter(
+                                (game, idx, arr) =>
+                                  arr.findIndex(
+                                    (g) =>
+                                      g.gameBase.gameName ==
+                                      game.gameBase.gameName
+                                  ) === idx
+                              )
+                              .map((game) => (
+                                <GameCard
+                                  key={game.gameId}
+                                  className='w-fit'
+                                  gameCopy={game}
+                                />
+                              ))}
+                          </div>
+                        </ScrollArea>
                       </>
                     )}
                   </div>

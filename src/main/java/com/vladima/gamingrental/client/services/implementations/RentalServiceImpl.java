@@ -33,7 +33,7 @@ public class RentalServiceImpl extends BaseServiceImpl<Rental, RentalDTO, Rental
     private final DeviceService deviceService;
     private final GameCopyService gameCopyService;
 
-    private final int PAGE_SIZE = 10;
+    private final int PAGE_SIZE = 3;
 
     public RentalServiceImpl(RentalRepository repository, ClientService clientService, ClientRepository clientRepository, DeviceService deviceService, GameCopyService gameCopyService) {
         super(repository);

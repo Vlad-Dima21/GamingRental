@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { get, patch } from '@/helpers/api-helpers';
 import { getSession, logout } from '@/helpers/auth';
 import strippedUrlSearchParams from '@/helpers/search-params-helper';
@@ -98,6 +99,7 @@ export default async function RentalsPage({
                         <div className='flex items-end gap-2'>
                           <span>{rental.rentalDevice.deviceName}</span>
                           <span className='text-sm text-gray-600'>
+                            due{' '}
                             {new Date(
                               rental.rentalDueDate
                             ).toLocaleDateString()}
@@ -105,7 +107,7 @@ export default async function RentalsPage({
                         </div>
                         <Badge
                           variant={rental.isReturned ? 'default' : 'outline'}
-                          className={`w-fit ${
+                          className={`w-fit space-x-2 ${
                             rental.isPastDue
                               ? 'bg-red-500 text-white'
                               : rental.isReturned
@@ -113,50 +115,57 @@ export default async function RentalsPage({
                               : ''
                           }`}
                         >
-                          {rental.isReturned ? 'Returned' : 'On rent'}
+                          <span>
+                            {rental.isReturned ? 'Returned' : 'On rent'}
+                          </span>
+                          {rental.rentalReturnDate && (
+                            <span>
+                              {new Date(
+                                rental.rentalReturnDate
+                              ).toLocaleDateString()}
+                            </span>
+                          )}
                         </Badge>
                       </CardTitle>
                     </CardHeader>
                     <CardContent className='w-full flex flex-col md:flex-row justify-between gap-5'>
-                      <div className='flex justify-between'>
-                        <div className='w-full md:w-fit flex flex-col md:flex-row gap-2 md:py-2'>
+                      <div className='flex-grow flex justify-between overflow-auto'>
+                        <div className='grow flex flex-col md:flex-row gap-2 md:py-2'>
                           {rental.rentalGames.map((g) => (
                             <GameCard
                               key={g.gameId}
                               gameCopy={g}
                               readOnly={true}
-                              className='flex-grow'
+                              className='grow'
                             />
                           ))}
                         </div>
-                        {rental.rentalReturnDate && (
-                          <p>
-                            {new Date(
-                              rental.rentalReturnDate
-                            ).toLocaleDateString()}
-                          </p>
-                        )}
                       </div>
-                      <form
-                        action={async (formData: FormData) => {
-                          'use server';
-                          const rentalId: number = parseInt(
-                            formData.get('rentalId') as string
-                          );
-                          await patch(`/rentals/return/${rentalId}`);
-                          revalidatePath('/rentals');
-                        }}
-                        className='w-full md:w-fit md:!min-w-[150px] md:self-end md:m-2'
-                      >
-                        <input hidden name='rentalId' value={rental.rentalId} />
-                        <Button
-                          className='w-full'
-                          variant={rental.isReturned ? 'outline' : 'default'}
-                          disabled={rental.isReturned}
+                      {!rental.isReturned && (
+                        <form
+                          action={async (formData: FormData) => {
+                            'use server';
+                            const rentalId: number = parseInt(
+                              formData.get('rentalId') as string
+                            );
+                            await patch(`/rentals/return/${rentalId}`);
+                            revalidatePath('/rentals');
+                          }}
+                          className='flex-shrink md:self-end md:m-2'
                         >
-                          Return
-                        </Button>
-                      </form>
+                          <input
+                            hidden
+                            name='rentalId'
+                            value={rental.rentalId}
+                          />
+                          <Button
+                            variant={rental.isReturned ? 'outline' : 'default'}
+                            className='w-full'
+                          >
+                            Return
+                          </Button>
+                        </form>
+                      )}
                     </CardContent>
                   </div>
                 </Card>

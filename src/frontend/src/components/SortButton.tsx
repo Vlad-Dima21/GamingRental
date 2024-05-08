@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 
 interface SearchParamsWithSort {
+  page: string | undefined;
   sort: string | undefined;
 }
 
@@ -27,13 +28,15 @@ export default function SortButton({
   const sort = SortDirection.opposite(searchParams.sort),
     ArrowComp =
       sort == SortDirection.Ascending ? ArrowDownWideNarrow : ArrowUpWideNarrow;
+  let strippedSearchParams = { ...searchParams };
+  delete strippedSearchParams.page;
   return (
     <>
       <input type='hidden' name='sort' value={searchParams.sort} />
       <Button asChild variant={'outline'} className='gap-2'>
         <Link
           href={`${baseUrl}?${new ReadonlyURLSearchParams({
-            ...searchParams,
+            ...strippedSearchParams,
             sort: sort,
           }).toString()}`}
         >
