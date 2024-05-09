@@ -15,6 +15,8 @@ import Rental from '@/models/Rental';
 import { Metadata } from 'next';
 import { revalidatePath } from 'next/cache';
 import { ReadonlyURLSearchParams, redirect } from 'next/navigation';
+import DeviceBase from '@/models/DeviceBase';
+import SelectFilter from '@/components/SelectFilter';
 
 export const metadata: Metadata = {
   title: 'Your rentals',
@@ -44,6 +46,11 @@ export default async function RentalsPage({
   } else {
     data = await response.json();
   }
+
+  const devices: DeviceBase[] = await get('/devices/all').then((res) =>
+    res.json()
+  );
+
   return (
     <div className='p-4 sm:p-8 md:p-16 flex flex-col items-center'>
       <div className='space-y-5 max-w-5xl w-full'>
@@ -62,11 +69,20 @@ export default async function RentalsPage({
               <SortButton searchParams={searchParams} baseUrl='/rentals'>
                 Return date
               </SortButton>
-              <Input
+              {/* <Input
                 className='flex-grow lg:flex-initial md:w-[230px]'
                 placeholder='Search by name...'
                 name='deviceName'
                 defaultValue={searchParams.deviceName}
+              /> */}
+              <SelectFilter
+                placeholder='Search by name'
+                values={devices.map((d) => ({
+                  text: d.deviceBaseName,
+                  value: d.deviceBaseName,
+                }))}
+                defaultValue={searchParams.deviceName}
+                selectName={'deviceName'}
               />
             </div>
             <input type='submit' hidden />
