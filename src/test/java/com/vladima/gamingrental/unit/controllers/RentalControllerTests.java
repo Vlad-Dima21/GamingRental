@@ -67,7 +67,7 @@ public class RentalControllerTests {
                 null
         );
         deviceBase.setDevices(List.of(new Device(1L, 1, true, deviceBase, null)));
-        deviceBase.setDeviceGameCopies(List.of(new GameCopy(1L, true, game, deviceBase)));
+        deviceBase.setDeviceGameCopies(List.of(new GameCopy(1L, true, game, deviceBase, null)));
         client.setClientRentals(List.of(new Rental(LocalDateTime.now(), null, client, deviceBase.getDevices().get(0), deviceBase.getDeviceGameCopies())));
     }
 

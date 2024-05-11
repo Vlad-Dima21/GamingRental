@@ -1,5 +1,6 @@
 package com.vladima.gamingrental.games.models;
 
+import com.vladima.gamingrental.client.models.Rental;
 import com.vladima.gamingrental.device.models.DeviceBase;
 import com.vladima.gamingrental.games.dto.GameCopyDTO;
 import com.vladima.gamingrental.games.dto.GameCopyExtrasDTO;
@@ -10,6 +11,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @EqualsAndHashCode
 @AllArgsConstructor
@@ -34,10 +37,20 @@ public class GameCopy implements BaseModel<GameCopyExtrasDTO>{
     @JoinColumn(name = "device_base_id")
     private DeviceBase gameDevice;
 
+    @ManyToMany(mappedBy = "rentalGames", cascade = CascadeType.ALL)
+    private List<Rental> gameRentals;
+
     public GameCopy(Game gameBase, DeviceBase gameDevice, boolean isAvailable) {
         this.isAvailable = isAvailable;
         this.gameBase = gameBase;
         this.gameDevice = gameDevice;
+    }
+
+    public GameCopy(boolean isAvailable, Game gameBase, DeviceBase gameDevice, List<Rental> gameRentals) {
+        this.isAvailable = isAvailable;
+        this.gameBase = gameBase;
+        this.gameDevice = gameDevice;
+        this.gameRentals = gameRentals;
     }
 
     @Override

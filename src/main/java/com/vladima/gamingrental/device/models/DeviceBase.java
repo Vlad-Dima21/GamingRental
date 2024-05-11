@@ -46,6 +46,15 @@ public class DeviceBase implements BaseModel<DeviceBaseExtrasDTO> {
         this.deviceBaseYearOfRelease = deviceBaseYearOfRelease;
     }
 
+    public DeviceBase(String deviceBaseName, String deviceBaseProducer, int deviceBaseYearOfRelease, String deviceBaseImageUrl, List<Device> devices, List<GameCopy> deviceGameCopies) {
+        this.deviceBaseName = deviceBaseName;
+        this.deviceBaseProducer = deviceBaseProducer;
+        this.deviceBaseYearOfRelease = deviceBaseYearOfRelease;
+        this.deviceBaseImageUrl = deviceBaseImageUrl;
+        this.devices = devices;
+        this.deviceGameCopies = deviceGameCopies;
+    }
+
     @Override
     public DeviceBaseExtrasDTO toDTO() {
         int availableUnits = 0;

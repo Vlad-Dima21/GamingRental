@@ -54,6 +54,13 @@ public class Client implements BaseModel<ClientDTO> {
         this.clientUser = user;
     }
 
+    public Client(String clientName, String clientEmail, String clientPhone, User clientUser, List<Rental> clientRentals) {
+        this.clientName = clientName;
+        this.clientEmail = clientEmail;
+        this.clientPhone = clientPhone;
+        this.clientUser = clientUser;
+        this.clientRentals = clientRentals;
+    }
 
     @Override
     public ClientDTO toDTO() {

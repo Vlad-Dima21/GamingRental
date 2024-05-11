@@ -47,6 +47,14 @@ public class Device implements BaseModel<DeviceExtrasDTO> {
         this.deviceBase = deviceBase;
     }
 
+    public Device(int deviceNumberOfControllers, boolean deviceAvailable, DeviceBase deviceBase, List<Rental> deviceRentals) {
+        this.deviceNumberOfControllers = deviceNumberOfControllers;
+        this.deviceAvailable = deviceAvailable;
+        this.deviceBase = deviceBase;
+        this.deviceRentals = deviceRentals;
+    }
+
+
     @Override
     public DeviceExtrasDTO toDTO() {
         return new DeviceExtrasDTO(deviceNumberOfControllers, deviceAvailable, deviceId, deviceBase.getDeviceBaseId(), deviceBase.getDeviceBaseName());

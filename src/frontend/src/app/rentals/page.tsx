@@ -69,13 +69,8 @@ export default async function RentalsPage({
               <SortButton searchParams={searchParams} baseUrl='/rentals'>
                 Return date
               </SortButton>
-              {/* <Input
-                className='flex-grow lg:flex-initial md:w-[230px]'
-                placeholder='Search by name...'
-                name='deviceName'
-                defaultValue={searchParams.deviceName}
-              /> */}
               <SelectFilter
+                className='grow'
                 placeholder='Search by name'
                 values={devices.map((d) => ({
                   text: d.deviceBaseName,

@@ -65,7 +65,7 @@ public class RentalServiceTests {
                 null
         );
         deviceBase.setDevices(List.of(new Device(1L, 1, true, deviceBase, null)));
-        deviceBase.setDeviceGameCopies(List.of(new GameCopy(1L, true, game, deviceBase)));
+        deviceBase.setDeviceGameCopies(List.of(new GameCopy(1L, true, game, deviceBase, null)));
     }
 
     @Test

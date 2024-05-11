@@ -19,7 +19,7 @@ import java.util.Set;
 @EqualsAndHashCode
 @Data
 @Entity
-@Table
+@Table(name = "users")
 public class User implements UserDetails, BaseModel<UserDTO> {
 
     @Id
@@ -32,7 +32,7 @@ public class User implements UserDetails, BaseModel<UserDTO> {
     @Column(unique = true)
     private String adminUsername;
 
-    @OneToOne(mappedBy = "clientUser", optional = false, cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "clientUser", cascade = CascadeType.ALL)
     private Client client;
 
     @ManyToOne(optional = false)

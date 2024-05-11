@@ -36,6 +36,12 @@ public class Game implements BaseModel<GameDTO> {
         this.gameGenre = gameGenre;
     }
 
+    public Game(String gameName, String gameGenre, List<GameCopy> gameCopies) {
+        this.gameName = gameName;
+        this.gameGenre = gameGenre;
+        this.gameCopies = gameCopies;
+    }
+
     @Override
     public GameDTO toDTO() {
         return new GameDTO(gameName, gameGenre);

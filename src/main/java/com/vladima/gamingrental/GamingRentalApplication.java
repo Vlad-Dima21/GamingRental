@@ -5,6 +5,7 @@ import com.vladima.gamingrental.security.models.Role;
 import com.vladima.gamingrental.security.models.User;
 import com.vladima.gamingrental.security.repositories.RoleRepository;
 import com.vladima.gamingrental.security.repositories.UserRepository;
+import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -35,6 +36,9 @@ public class GamingRentalApplication {
             Role clientRole = roleRepository.findByAuthority("CLIENT");
             if (clientRole == null) {
                 clientRole = roleRepository.save(new Role("CLIENT"));
+            }
+            if (userRepository.findByClient_ClientEmail("test@email.com").isPresent()) {
+                return;
             }
             var testUser = new User(null, passwordEncoder.encode("test"), null, null, clientRole);
             var testClient = new Client("test", "test@email.com", "0201732.511-", testUser);

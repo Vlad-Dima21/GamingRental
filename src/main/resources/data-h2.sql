@@ -86,45 +86,45 @@ insert into game(game_id, game_genre, game_name)
 
 
 -- init game copies
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(1, 1, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(2, 1, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(3, 1, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(4, 2, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(5, 3, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(6, 4, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(7, 5, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(8, 6, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(9, 7, 1, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(10, 8, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(1, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(1, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(1, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(2, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(3, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(4, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(5, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(6, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(7, 1, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(8, 1, true);
 
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(4, 2, 6, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(5, 2, 6, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(2, 6, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(2, 6, true);
 
 
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(6, 3, 7, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(3, 7, true);
 
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(7, 4, 7, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(4, 7, true);
 
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(8, 5, 4, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(9, 7, 4, true);
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(10, 6, 4, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(5, 4, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(7, 4, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(6, 4, true);
 
-insert into game_copy(game_copy_id, game_id, device_base_id, is_available)
-    values(11, 8, 9, true);
+insert into game_copy(game_id, device_base_id, is_available)
+    values(8, 9, true);
