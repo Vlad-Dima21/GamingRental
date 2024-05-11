@@ -9,10 +9,10 @@ import java.util.List;
 
 @Repository
 public interface GameCopyRepository extends JpaRepository<GameCopy, Long> {
-    @Query("SELECT gc FROM GameCopy gc JOIN Game g where g.gameName = :name")
+    @Query("SELECT gc FROM GameCopy gc WHERE gc.gameBase.gameName = :name")
     List<GameCopy> findByGameName(String name);
 
-    @Query("SELECT gc FROM GameCopy gc JOIN Game g where g.gameId = :id")
+    @Query("SELECT gc FROM GameCopy gc WHERE gc.gameBase.gameId = :id")
     List<GameCopy> findByGameId(Long id);
 
     @Query("SELECT gc FROM GameCopy gc WHERE gc.gameDevice.deviceBaseId = :deviceId AND gc.isAvailable AND gc.gameCopyId IN (:ids)")

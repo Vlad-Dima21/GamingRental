@@ -50,7 +50,7 @@ public class RentalRepositoryTests {
     private Rental rental;
 
     @BeforeEach
-    public void setUp() {
+    public void init() {
         if (rental != null) {
             return;
         }

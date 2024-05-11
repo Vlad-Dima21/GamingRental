@@ -41,7 +41,7 @@ public class ClientRepositoryTests {
     private Client client;
 
     @BeforeEach
-    public void setUp() {
+    public void init() {
         client = new Client();
         client.setClientName("Test Client");
         client.setClientEmail("testClient@email.com");
