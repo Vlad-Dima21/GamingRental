@@ -79,10 +79,7 @@ export default function CartPageContent({ rentalAction }: Props) {
               {devices
                 ?.filter((device) => cart.deviceBaseId == device.deviceBaseId)
                 .map((device) => (
-                  <div
-                    key={device.deviceBaseId}
-                    className='pt-2 space-y-4 overflow-auto'
-                  >
+                  <div key={device.deviceBaseId} className='pt-2 space-y-4'>
                     <h2 className='text-xl font-bold'>
                       {device.deviceBaseName}
                     </h2>
@@ -105,7 +102,7 @@ export default function CartPageContent({ rentalAction }: Props) {
                         <h3 className='text-lg font-bold'>
                           Games available for this device
                         </h3>
-                        <ScrollArea>
+                        <div className='overflow-auto'>
                           <div className='flex items-center gap-4 pb-2'>
                             {device.deviceBaseGameCopies
                               .filter((game) => game.available)
@@ -125,7 +122,7 @@ export default function CartPageContent({ rentalAction }: Props) {
                                 />
                               ))}
                           </div>
-                        </ScrollArea>
+                        </div>
                       </>
                     )}
                   </div>
