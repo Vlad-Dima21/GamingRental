@@ -1,4 +1,4 @@
-package com.vladima.gamingrental.integration.repositories;
+package com.vladima.gamingrental.unit.repositories;
 
 import com.vladima.gamingrental.device.models.DeviceBase;
 import com.vladima.gamingrental.device.repositories.DeviceBaseRepository;
